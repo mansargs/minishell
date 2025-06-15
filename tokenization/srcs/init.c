@@ -6,22 +6,11 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:23 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/14 21:11:26 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/06/15 14:31:39 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "token.h"
-
-t_token_class	classify_token_class(char token)
-{
-	if (token == '|' || token == '&' || token == '(' || token == ')')
-		return (TOKEN_CLASS_OPERATOR);
-	else if (token == '<' || token == '>')
-		return (TOKEN_CLASS_REDIRECTION);
-	else if (token == '$' || token == '\'' || token == '"' || token == '\\')
-		return (TOKEN_CLASS_META);
-	return (TOKEN_CLASS_WORD);
-}
+#include "../includes/token.h"
 
 t_token_type	single_token_type(const char *token)
 {
@@ -61,7 +50,7 @@ t_token_type	double_token_type(const char *token)
 	return (TOKEN_WORD);
 }
 
-t_token_type	classify_token_type(const char *token, int len)
+t_token_type	get_token_type(const char *token, int len)
 {
 	if (len == 1)
 		return (single_token_type(token));
@@ -70,3 +59,30 @@ t_token_type	classify_token_type(const char *token, int len)
 	return (TOKEN_WORD);
 }
 
+t_token_class	get_token_class(char token)
+{
+	if (token == '|' || token == '&' || token == '(' || token == ')')
+		return (TOKEN_CLASS_OPERATOR);
+	else if (token == '<' || token == '>')
+		return (TOKEN_CLASS_REDIRECTION);
+	else if (token == '$' || token == '\'' || token == '"' || token == '\\')
+		return (TOKEN_CLASS_META);
+	return (TOKEN_CLASS_WORD);
+}
+
+void	add_token(t_token **head, t_token *new_token)
+{
+	t_token	*tmp;
+
+	if (!head || !new_token)
+		return ;
+	if (!*head)
+	{
+		*head = new_token;
+		return ;
+	}
+	tmp = *head;
+	while (tmp->next_token)
+		tmp = tmp->next_token;
+	tmp->next_token = new_token;
+}

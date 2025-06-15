@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:19 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/14 23:31:47 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/06/15 16:43:20 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 typedef enum e_token_class
 {
-	TOKEN_CLASS_WORD,			// pxik
+	TOKEN_CLASS_WORD,			// word
 	TOKEN_CLASS_OPERATOR,		// &&, ||, |
 	TOKEN_CLASS_REDIRECTION,	// <, >, >>, <<
 	TOKEN_CLASS_META,			// $, ', ", \.
@@ -26,7 +26,7 @@ typedef enum e_token_class
 
 typedef enum e_token_type
 {
-	TOKEN_WORD,				// pxik
+	TOKEN_WORD,				// word
 	TOKEN_PIPE,				// |
 	TOKEN_OR,				// ||
 	TOKEN_AND,				// &&

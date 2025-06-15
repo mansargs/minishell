@@ -11,7 +11,7 @@ SRCS = ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c \
 		ft_lstsize_bonus.c ft_lstlast_bonus.c ft_join.c\
 		ft_lstadd_back_bonus.c ft_lstdelone_bonus.c \
 		ft_lstclear_bonus.c ft_lstiter_bonus.c \
-		ft_lstmap_bonus.c get_next_line.c error.c\
+		ft_lstmap_bonus.c get_next_line.c
 
 OBJS = ${SRCS:.c=.o}
 
@@ -27,29 +27,21 @@ RM = rm -f
 
 CFLAGS = -Wall -Wextra -Werror
 
-RESET			= \033[0m
-BLUE			= \033[34m
-CYAN			= \033[36m
-YELLOW			= \033[38;2;255;239;0m
-PINK			= \033[38;2;255;105;180m
-RED				= \033[31m
-
-
 %.o : %.c $(HEADER) Makefile
-	@echo "${CYAN}🔨 Compiling $<${RESET}"
+	@echo Compiling $<
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
 	@$(LIBC) $(NAME) $(OBJS)
-	@echo "${YELLOW}Libft compiled ✨ ${RESET}"
+	@echo Libft compiled
 
 clean:
 	@$(RM) $(OBJS)
 
 fclean: clean
-	@echo "${RED}🧹 Removing ${NAME} ${RESET}"
+	@echo Removing all
 	@$(RM) $(NAME)
 
 re: fclean all
