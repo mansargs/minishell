@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 20:35:41 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/15 18:26:02 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/06/15 19:11:47 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,14 +101,28 @@ int	handle_quoted_token(char *line, int i, t_token **head)
 	char	quote;
 	int		start;
 	int		j;
-	t_token *new_token;
 	char	*substr;
+	t_token	*new_token;
+	bool	single_quote;
+	bool	double_quote;
 
 	quote = line[i];
 	start = i + 1;
 	j = start;
+	single_quote = true;
+	double_quote = false;
+	if (quote == '\'')
+		single_quote = true;
+	else if (quote == '"')
+		double_quote = true;
 	while (line[j] && line[j] != quote)
+	{
+		if (line[j] == '\'' && double_quote == true)
+			break ;
+		else if (line[j] == '"' && double_quote == true)
+			break ;
 		j++;
+	}
 	if (line[j] != quote)
 		return (-1);
 	substr = ft_substr(line, start, j - start);
