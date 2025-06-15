@@ -20,11 +20,11 @@ typedef struct s_token	t_token;
 typedef enum e_token_type	t_token_type;
 typedef enum e_token_class	t_token_class;
 
-int				is_space(char tok);
-int				is_redirect(char tok);
-int				is_special_char(char tok);
+bool				is_space(char tok);
+bool				is_redirect(char tok);
+bool				is_special_char(char tok);
 void			free_tokens(t_token *head);
-int				is_special_operator(char tok);
+bool				is_special_operator(char tok);
 void			add_token(t_token **head, t_token *new_token);
 void			add_token(t_token **head, t_token *new_token);
 t_token_type	get_token_type(const char *token, int len);

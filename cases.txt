@@ -1,0 +1,18 @@
+
+'ls'						ls
+'ls'alisa					lsalisa
+'ls'123						ls123
+'ls' 'cat'					ls, cat
+'ls'>>file					ls, >>, file
+'echo'123>>out				echo123, >>, out
+'echo'abc'def'				echoabc, def
+'x''y''z'					xyz
+'hello'"world"				helloword
+
+'cmd'"arg1"arg2				cmdarg1arg2
+'file'>'out'				file, >, out
+'multi word''join''ed'		multi wordjoined
+'quote''merge'123abc		quotemerge123abc
+'cmd'"arg"					cmdarg
+'A'"B"'C'					ABC
+'a''b'>'c''d'				ab, >, cd

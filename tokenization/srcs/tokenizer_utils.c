@@ -12,24 +12,24 @@
 
 #include "../includes/token.h"
 
-int	is_space(char tok)
+bool	is_space(char tok)
 {
 	return (tok == ' ' || tok == '\t' || tok == '\n'
 		|| tok == '\v' || tok == '\f' || tok == '\r');
 }
 
-int	is_special_char(char tok)
+bool	is_special_char(char tok)
 {
 	return (tok == '|' || tok == '&' || tok == '<' || tok == '>'
 		|| tok == '(' || tok == ')' || tok == '\\' || tok == '$');
 }
 
-int	is_redirect(char tok)
+bool	is_redirect(char tok)
 {
 	return (tok == '<' || tok == '>');
 }
 
-int	is_special_operator(char tok)
+bool	is_special_operator(char tok)
 {
 	return (tok == '&' || tok == '(' || tok == ')'
 		|| tok == '|' || tok == ';');

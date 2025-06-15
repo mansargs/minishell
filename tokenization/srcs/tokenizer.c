@@ -96,44 +96,61 @@ static int	handle_word_token(const char *line, int i, t_token **head)
 	return (len);
 }
 
+static bool	ft_isspace(char *c)
+{
+	return (*c == ' ' || *c == '\t' || *c == '\n');
+}
+
+static bool	is_operation(char *c)
+{
+	return (*c == '|' || *c == '&');
+}
+
+static bool	is_redirection(char *c)
+{
+	return (*c == '<' || *c == '>');
+}
+
 int	handle_quoted_token(char *line, int i, t_token **head)
 {
-	char	quote;
-	int		start;
+	char	*str;
 	int		j;
-	char	*substr;
+	int		index;
+	char	quote;
 	t_token	*new_token;
-	bool	single_quote;
-	bool	double_quote;
 
-	quote = line[i];
-	start = i + 1;
-	j = start;
-	single_quote = true;
-	double_quote = false;
-	if (quote == '\'')
-		single_quote = true;
-	else if (quote == '"')
-		double_quote = true;
-	while (line[j] && line[j] != quote)
+	str = malloc(sizeof(char) * (ft_strlen(line) + 1));
+	if (!str)
+		return (-1);
+	index = 0;
+	j = i;
+	while (line[j])
 	{
-		if (line[j] == '\'' && double_quote == true)
+		if (line[j] == '\'' || line[j] == '"')
+		{
+			quote = line[j++];
+			while (line[j] && line[j] != quote)
+				str[index++] = line[j++];
+			if (line[j] != quote)
+				return (free(str), -1);
+			j++;
+		}
+		else if (!ft_isspace(line + j)
+			&& !is_operation(line + j)
+			&& !is_redirection(line + j))
+		{
+			str[index++] = line[j++];
+		}
+		else
 			break ;
-		else if (line[j] == '"' && double_quote == true)
-			break ;
-		j++;
 	}
-	if (line[j] != quote)
-		return (-1);
-	substr = ft_substr(line, start, j - start);
-	if (!substr)
-		return (-1);
-	new_token = create_token(substr, TOKEN_CLASS_WORD, TOKEN_WORD);
+	str[index] = '\0';
+	new_token = create_token(str, TOKEN_CLASS_WORD, TOKEN_WORD);
+	free(str);
 	if (!new_token)
-		return (free(substr), -1);
+		return (-1);
 	add_token(head, new_token);
-	free(substr);
-	return (j - i + 1);
+	return (j - i);
 }
 
 t_token	*tokenize(char *line)
