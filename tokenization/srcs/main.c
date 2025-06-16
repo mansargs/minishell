@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:25 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/15 14:32:19 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/06/16 13:53:01 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,11 @@ int	main(void)
 	while (1)
 	{
 		line = readline("minishell> ");
+		printf("%s", line);
 		if (!line)
 			break ;
+		if (!line[0])
+			continue ;
 		if (*line)
 			add_history(line);
 		tokens = tokenize(line);

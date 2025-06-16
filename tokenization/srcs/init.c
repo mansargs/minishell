@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:23 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/15 14:31:39 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/06/16 13:44:58 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ t_token_type	single_token_type(const char *token)
 	if (*token == '\'')
 		return (TOKEN_SINGLE_QUOTE);
 	if (*token == '"')
-		return (TOKEN_DUBLE_QUOTE);
+		return (TOKEN_DOUBLE_QUOTE);
 	if (*token == '\\')
 		return (TOKEN_ESCAPE);
 	return (TOKEN_WORD);
@@ -86,3 +86,4 @@ void	add_token(t_token **head, t_token *new_token)
 		tmp = tmp->next_token;
 	tmp->next_token = new_token;
 }
+

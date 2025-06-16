@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:21 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/15 18:59:28 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/06/16 13:27:38 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,6 @@ typedef struct s_token
 	t_token_type	token_type;
 	t_token_class	token_class;
 	struct s_token	*next_token;
-}	t_token;
+}					t_token;
 
 #endif

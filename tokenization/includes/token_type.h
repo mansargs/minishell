@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_type.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:19 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/15 16:43:20 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/06/16 13:22:53 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ typedef enum e_token_type
 	TOKEN_SINGLE_AND,		// &
 	TOKEN_DOLLAR,			// $
 	TOKEN_SINGLE_QUOTE,		// '
-	TOKEN_DUBLE_QUOTE,		// "
+	TOKEN_DOUBLE_QUOTE,		// "
 	TOKEN_ESCAPE,			// \.
 	TOKEN_PAREN_OPEN,		// (
 	TOKEN_PAREN_CLOSE,		// )
