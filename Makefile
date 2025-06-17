@@ -18,7 +18,8 @@ SRCS = \
 	$(SRC_DIR)/main.c \
 	$(SRC_DIR)/tokenizer.c \
 	$(SRC_DIR)/init.c \
-	$(SRC_DIR)/tokenizer_utils.c
+	$(SRC_DIR)/tokenizer_utils.c \
+	$(SRC_DIR)/defective_operator.c
 
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
