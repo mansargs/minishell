@@ -20,7 +20,7 @@ SRCS = \
 	$(SRC_DIR)/init.c \
 	$(SRC_DIR)/tokenizer_utils.c \
 	$(SRC_DIR)/defective_operator.c \
-	$(SRC_DIR)/token.c \
+	$(SRC_DIR)/token_quoted.c \
 
 
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)

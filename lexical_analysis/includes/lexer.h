@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:17 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/19 15:17:21 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/06/20 01:36:08 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ t_token			*tokenize(char *line);
 bool			wait_for_input_if_need(char **line);
 int				handle_quoted_token(char *line, int i, t_token **head);
 int				extract_quoted_string(char *line, int i, char *str);
-t_token			*create_token(const char *t_data, t_token_class t_class, t_token_type t_type);
-
+t_token			*create_token(const char *t_data, t_token_class t_class,
+	t_token_type t_type);
+token_quoted.c
 
 #endif
