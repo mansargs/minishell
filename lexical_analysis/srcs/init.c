@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:23 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/16 13:44:58 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/06/19 12:45:38 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,13 @@ t_token_type	single_token_type(const char *token)
 
 t_token_type	double_token_type(const char *token)
 {
-	if (ft_strncmp(token, "&&", 2) == 0)
+	if (!ft_strncmp(token, "&&", 2))
 		return (TOKEN_AND);
-	if (ft_strncmp(token, "||", 2) == 0)
+	if (!ft_strncmp(token, "||", 2))
 		return (TOKEN_OR);
-	if (ft_strncmp(token, ">>", 2) == 0)
+	if (!ft_strncmp(token, ">>", 2))
 		return (TOKEN_APPEND);
-	if (ft_strncmp(token, "<<", 2) == 0)
+	if (!ft_strncmp(token, "<<", 2))
 		return (TOKEN_HEREDOC);
 	return (TOKEN_WORD);
 }
