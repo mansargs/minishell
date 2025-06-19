@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 15:01:31 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/19 15:26:16 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/06/19 18:07:18 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ int	handle_quoted_token(char *line, int i, t_token **head)
 	char	*str;
 	int		j;
 	int		index;
-	char	quote;
 	t_token	*new_token;
 
 	str = malloc(sizeof(char) * (ft_strlen(line) + 1));
@@ -44,11 +43,8 @@ int	handle_quoted_token(char *line, int i, t_token **head)
 	{
 		if (line[j] == '\'' || line[j] == '"')
 		{
-			quote = line[j++];
-			while (line[j] && line[j] != quote)
+			while (line[j] && line[j] != ' ')
 				str[index++] = line[j++];
-			if (line[j] != quote)
-				return (free(str), -1);
 			j++;
 		}
 		else if (!ft_isspace(line + j)
