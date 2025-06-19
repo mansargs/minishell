@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:25 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/18 00:55:08 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/06/19 12:37:28 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,14 @@ void	print_token(t_token *token)
 	}
 }
 
-int	main(void)
+int	main(int argc, char *argv[])
 {
 	char	*line;
 	t_token	*tokens;
 
+	(void) argv;
+	if (argc > 1)
+		return (printf("This program must be run without any arguments.\n"), EXIT_FAILURE);
 	line = NULL;
 	tokens = NULL;
 	while (1)
@@ -36,12 +39,12 @@ int	main(void)
 		line = readline("minishell > ");
 		if (!line)
 			break ;
-		if (!line[0])
+		if (!*line)
 			continue ;
 		if (!wait_for_input_if_need(&line))
 		{
 			if (errno == ENOMEM)
-				return (free(line), free(tokens), ENOMEM);
+				return (free(line), free_tokens(tokens), ENOMEM);
 			continue;
 		}
 		add_history(line);

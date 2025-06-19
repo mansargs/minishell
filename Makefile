@@ -6,11 +6,11 @@ CC = cc
 
 CFLAGS = -Wall -Wextra -Werror
 
-SRC_DIR = tokenization/srcs
+SRC_DIR = lexical_analysis/srcs
 
 OBJ_DIR = obj
 
-INC_DIR = tokenization/includes
+INC_DIR = lexical_analysis/includes
 
 LIBFT_DIR = libft
 
