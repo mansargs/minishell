@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:17 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/18 00:53:28 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/06/19 15:17:21 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,9 @@ t_token_type	double_token_type(const char *token);
 t_token_class	get_token_class(char token);
 t_token			*tokenize(char *line);
 bool			wait_for_input_if_need(char **line);
+int				handle_quoted_token(char *line, int i, t_token **head);
+int				extract_quoted_string(char *line, int i, char *str);
+t_token			*create_token(const char *t_data, t_token_class t_class, t_token_type t_type);
+
 
 #endif

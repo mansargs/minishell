@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   defective_operator.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 00:51:12 by mansargs          #+#    #+#             */
-/*   Updated: 2025/06/18 00:55:47 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/06/19 15:00:28 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ static char	*find_last_word(const char *line)
 		--i;
 	start = i + 1;
 	last = ft_substr(line, start, end - start + 1);
-	// printf("last word %s\n", last);
 	return (last);
 }
 

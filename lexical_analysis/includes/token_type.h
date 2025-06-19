@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_type.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:19 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/16 13:22:53 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/06/19 14:55:44 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ typedef enum e_token_class
 	TOKEN_CLASS_WORD,			// word
 	TOKEN_CLASS_OPERATOR,		// &&, ||, |
 	TOKEN_CLASS_REDIRECTION,	// <, >, >>, <<
-	TOKEN_CLASS_META,			// $, ', ", \.
+	TOKEN_CLASS_META,			// $, ', ", \., ;
 }			t_token_class;
 
 typedef enum e_token_type
@@ -41,6 +41,7 @@ typedef enum e_token_type
 	TOKEN_ESCAPE,			// \.
 	TOKEN_PAREN_OPEN,		// (
 	TOKEN_PAREN_CLOSE,		// )
+	TOKEN_SEMI_COLON,		//;
 	TOKEN_EOF
 }			t_token_type;
 

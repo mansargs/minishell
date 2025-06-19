@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:23 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/19 12:45:38 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/06/19 14:59:52 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ t_token_type	single_token_type(const char *token)
 		return (TOKEN_DOUBLE_QUOTE);
 	if (*token == '\\')
 		return (TOKEN_ESCAPE);
+	if (*token == ';')
+		return (TOKEN_SEMI_COLON);
 	return (TOKEN_WORD);
 }
 
@@ -61,7 +63,8 @@ t_token_type	get_token_type(const char *token, int len)
 
 t_token_class	get_token_class(char token)
 {
-	if (token == '|' || token == '&' || token == '(' || token == ')')
+	if (token == '|' || token == '&' || token == '(' || token == ')'
+		|| token == ';')
 		return (TOKEN_CLASS_OPERATOR);
 	else if (token == '<' || token == '>')
 		return (TOKEN_CLASS_REDIRECTION);
