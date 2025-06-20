@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:25 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/19 12:37:28 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/06/20 14:30:22 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	main(int argc, char *argv[])
 		{
 			if (errno == ENOMEM)
 				return (free(line), free_tokens(tokens), ENOMEM);
-			continue;
+			continue ;
 		}
 		add_history(line);
 		tokens = tokenize(line);
@@ -56,15 +56,6 @@ int	main(int argc, char *argv[])
 			continue ;
 		}
 		print_token(tokens);
-		// while (tokens)
-		// {
-		// 	printf("current %s", tokens->token_data);
-		// 	if (tokens->next_token)
-		// 		printf("->	next %s\n", tokens->next_token->token_data);
-		// 	else
-		// 		printf("->	next NULL\n");
-		// 	tokens = tokens->next_token;
-		// }
 		free_tokens(tokens);
 		free(line);
 	}
