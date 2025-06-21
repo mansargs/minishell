@@ -1,19 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token.c                                            :+:      :+:    :+:   */
+/*   token_quoted.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 01:28:36 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/20 01:28:37 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/06/21 12:37:30 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/token.h"
 
-static int	add_quoted_token(char *line, int start,
-	t_token **head, int j)
+static int	add_quoted_token(char *line, int start, t_token **head, int j)
 {
 	char	*substr;
 	t_token	*new_token;
@@ -21,7 +20,7 @@ static int	add_quoted_token(char *line, int start,
 	substr = ft_substr(line, start, j - start);
 	if (!substr)
 		return (-1);
-	new_token = create_token(substr, TOKEN_CLASS_WORD, TOKEN_WORD);
+	new_token = create_token(substr, TOKEN_WORD);
 	free(substr);
 	if (!new_token)
 		return (-1);
@@ -55,4 +54,17 @@ int	handle_quoted_token(char *line, int i, t_token **head)
 	if (add_quoted_token(line, start, head, j) < 0)
 		return (-1);
 	return (j - i);
+}
+
+void	free_tokens(t_token *head)
+{
+	t_token	*tmp;
+
+	while (head)
+	{
+		tmp = head;
+		head = head->next_token;
+		free(tmp->token_data);
+		free(tmp);
+	}
 }

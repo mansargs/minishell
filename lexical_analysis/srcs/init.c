@@ -6,87 +6,93 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:23 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/19 14:59:52 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/06/21 12:28:33 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/token.h"
 
-t_token_type	single_token_type(const char *token)
+static t_operator_type	get_operator_type(const char *token, int len)
 {
-	if (*token == '|')
-		return (TOKEN_PIPE);
-	if (*token == '&')
-		return (TOKEN_SINGLE_AND);
-	if (*token == '(')
-		return (TOKEN_PAREN_OPEN);
-	if (*token == ')')
-		return (TOKEN_PAREN_CLOSE);
-	if (*token == '<')
-		return (TOKEN_REDIRECT_IN);
-	if (*token == '>')
-		return (TOKEN_REDIRECT_OUT);
-	if (*token == '$')
-		return (TOKEN_DOLLAR);
-	if (*token == '\'')
-		return (TOKEN_SINGLE_QUOTE);
-	if (*token == '"')
-		return (TOKEN_DOUBLE_QUOTE);
-	if (*token == '\\')
-		return (TOKEN_ESCAPE);
-	if (*token == ';')
-		return (TOKEN_SEMI_COLON);
-	return (TOKEN_WORD);
+	if (len == 2)
+	{
+		if (!ft_strncmp(token, "&&", 2))
+			return (OPERATOR_AND);
+		if (!ft_strncmp(token, "||", 2))
+			return (OPERATOR_OR);
+	}
+	else if (len == 1)
+	{
+		if (*token == '|')
+			return (OPERATOR_PIPE);
+		if (*token == '&')
+			return (OPERATOR_AMP);
+		if (*token == '(')
+			return (OPERATOR_PAREN_OPEN);
+		if (*token == ')')
+			return (OPERATOR_PAREN_CLOSE);
+		if (*token == '$')
+			return (OPERATOR_DOLLAR);
+	}
+	return (-1);
 }
 
-t_token_type	double_token_type(const char *token)
+static t_redirection_type	get_redirection_type(const char *token, int len)
 {
-	if (!ft_strncmp(token, "&&", 2))
-		return (TOKEN_AND);
-	if (!ft_strncmp(token, "||", 2))
-		return (TOKEN_OR);
-	if (!ft_strncmp(token, ">>", 2))
-		return (TOKEN_APPEND);
-	if (!ft_strncmp(token, "<<", 2))
-		return (TOKEN_HEREDOC);
-	return (TOKEN_WORD);
+	if (len == 2)
+	{
+		if (!ft_strncmp(token, ">>", 2))
+			return (REDIRECT_APPEND);
+		if (!ft_strncmp(token, "<<", 2))
+			return (REDIRECT_HEREDOC);
+	}
+	else if (len == 1)
+	{
+		if (*token == '<')
+			return (REDIRECT_IN);
+		if (*token == '>')
+			return (REDIRECT_OUT);
+	}
+	return (-1);
 }
 
 t_token_type	get_token_type(const char *token, int len)
 {
 	if (len == 1)
-		return (single_token_type(token));
+	{
+		if (*token == '|' || *token == '&' || *token == '('
+			|| *token == ')' || *token == '$')
+			return (TOKEN_OPERATOR);
+		if (*token == '<' || *token == '>')
+			return (TOKEN_REDIRECT);
+	}
 	else if (len == 2)
-		return (double_token_type(token));
+	{
+		if (!ft_strncmp(token, "&&", 2) || !ft_strncmp(token, "||", 2))
+			return (TOKEN_OPERATOR);
+		if (!ft_strncmp(token, ">>", 2) || !ft_strncmp(token, "<<", 2))
+			return (TOKEN_REDIRECT);
+	}
 	return (TOKEN_WORD);
 }
 
-t_token_class	get_token_class(char token)
+t_token	*create_token(const char *t_data, t_token_type t_type)
 {
-	if (token == '|' || token == '&' || token == '(' || token == ')'
-		|| token == ';')
-		return (TOKEN_CLASS_OPERATOR);
-	else if (token == '<' || token == '>')
-		return (TOKEN_CLASS_REDIRECTION);
-	else if (token == '$' || token == '\'' || token == '"' || token == '\\')
-		return (TOKEN_CLASS_META);
-	return (TOKEN_CLASS_WORD);
+	t_token	*token;
+
+	token = malloc(sizeof(t_token));
+	if (!token)
+		return (NULL);
+	token->token_data = ft_strdup(t_data);
+	token->token_type = t_type;
+	token->token_operator_type = -1;
+	token->token_redirect_type = -1;
+	if (t_type == TOKEN_OPERATOR)
+		token->token_operator_type
+			= get_operator_type(t_data, ft_strlen(t_data));
+	else if (t_type == TOKEN_REDIRECT)
+		token->token_redirect_type
+			= get_redirection_type(t_data, ft_strlen(t_data));
+	token->next_token = NULL;
+	return (token);
 }
-
-void	add_token(t_token **head, t_token *new_token)
-{
-	t_token	*tmp;
-
-	if (!head || !new_token)
-		return ;
-	if (!*head)
-	{
-		*head = new_token;
-		return ;
-	}
-	tmp = *head;
-	while (tmp->next_token)
-		tmp = tmp->next_token;
-	tmp->next_token = new_token;
-}
-
