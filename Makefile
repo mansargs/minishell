@@ -1,45 +1,49 @@
-MAKEFLAGS	+= --no-print-directory
+MAKEFLAGS += --no-print-directory
 
 NAME = minishell
 
 CC = cc
-
 CFLAGS = -Wall -Wextra -Werror
 
-SRC_DIR = lexical_analysis/srcs
+SRC_DIR = source
+OBJ_DIR = objects
+LIB_DIR = library
 
-OBJ_DIR = obj
+LIBFT_DIR = $(LIB_DIR)/libft
+LEXICAL = $(SRC_DIR)/lexical_analysis
+SYNTAX = $(SRC_DIR)/syntax_analysis
 
-INC_DIR = lexical_analysis/includes
-
-LIBFT_DIR = libft
+INCLUDES = -Iincludes -I$(LIBFT_DIR)
 
 SRCS = \
 	$(SRC_DIR)/main.c \
-	$(SRC_DIR)/tokenizer.c \
-	$(SRC_DIR)/init.c \
-	$(SRC_DIR)/tokenizer_utils.c \
-	$(SRC_DIR)/defective_operator.c \
-	$(SRC_DIR)/token_quoted.c \
+	$(LEXICAL)/tokenizer.c \
+	$(LEXICAL)/init.c \
+	$(LEXICAL)/tokenizer_utils.c \
+	$(LEXICAL)/defective_operator.c \
+	$(LEXICAL)/token_quoted.c \
+	$(SYNTAX)/syntax.c
 
-
-OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 
 LIBS = -lreadline
 
-INCLUDES = -I$(INC_DIR) -I$(LIBFT_DIR)
-
+# Target rule
 $(NAME): $(OBJS) $(LIBFT_DIR)/libft.a
-	@echo Compiling $<
+	@echo Linking $(NAME)
 	@$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) $(LIBFT_DIR)/libft.a $(LIBS) -o $(NAME)
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
+# Rule to build .o files
+$(OBJ_DIR)/%.o: %.c | $(OBJ_DIR)
+	@mkdir -p $(dir $@)
 	@echo Compiling $<
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
+# Create object directory if it doesn't exist
 $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
 
+# Build libft
 $(LIBFT_DIR)/libft.a:
 	@$(MAKE) -C $(LIBFT_DIR)
 
