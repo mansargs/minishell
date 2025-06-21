@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:21 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/21 18:51:42 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/06/21 19:37:24 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ typedef enum e_operator_type
 
 typedef enum e_redirection_type
 {
-	REDIRECTION_NONE,
+	REDIRECT_NONE,
 	REDIRECT_IN,				//    >"
 	REDIRECT_OUT,				//2  ">"
 	REDIRECT_APPEND,			//3  ">>"

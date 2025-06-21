@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:25 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/21 18:56:36 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/06/21 19:53:52 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,8 +108,6 @@ int	main(int argc, char *argv[])
 		}
 		add_history(line);
 		tokens = tokenize(line);
-		if (last_is_redirection(tokens))
-			continue;
 		if (!tokens)
 		{
 			printf("Tokenization failed.\n");
@@ -117,6 +115,10 @@ int	main(int argc, char *argv[])
 			continue ;
 		}
 		print_token(tokens);
+		if (last_is_redirection(tokens))
+			continue;
+		if (invalid_operands(tokens))
+			continue;
 		free_tokens(tokens);
 		free(line);
 	}

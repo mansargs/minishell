@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:23 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/21 18:34:29 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/06/21 19:38:05 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,8 @@ t_token	*create_token(const char *t_data, t_token_type t_type)
 		return (NULL);
 	token->token_data = ft_strdup(t_data);
 	token->token_type = t_type;
-	token->token_operator_type = -1;
-	token->token_redirect_type = -1;
+	// token->token_operator_type = -1;
+	// token->token_redirect_type = -1;
 	if (t_type == TOKEN_OPERATOR)
 		token->token_operator_type
 			= get_operator_type(t_data, ft_strlen(t_data));
