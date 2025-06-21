@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   defective_operator.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 00:51:12 by mansargs          #+#    #+#             */
-/*   Updated: 2025/06/18 00:55:47 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/06/21 13:19:48 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/lexer.h"
+#include "../includes/token.h"
 
 static char	*find_last_word(const char *line)
 {
@@ -31,7 +31,6 @@ static char	*find_last_word(const char *line)
 		--i;
 	start = i + 1;
 	last = ft_substr(line, start, end - start + 1);
-	// printf("last word %s\n", last);
 	return (last);
 }
 
@@ -41,7 +40,7 @@ static bool	should_I_wait(const char *last_word)
 
 	len = ft_strlen(last_word);
 	if ((len >= 2 && (!ft_strncmp(last_word + len - 2, "||", 2)
-		|| !ft_strncmp(last_word + len - 2, "&&", 2)))
+				|| !ft_strncmp(last_word + len - 2, "&&", 2)))
 		|| (len >= 1 && !ft_strncmp(last_word + len - 1, "|", 1)))
 		return (true);
 	return (false);
