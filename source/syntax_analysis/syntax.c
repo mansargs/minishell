@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 13:38:09 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/23 13:49:07 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/06/24 19:30:32 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ bool	syntax_analysis(t_token *tokens)
 	if (last_is_redirection(tokens))
 		return (true);
 	if (first_is_operator(tokens))
+		return (true);
+	if (operator_before_paren(tokens))
 		return (true);
 	if (empty_parens(tokens))
 		return (true);

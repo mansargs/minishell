@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:23 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/21 19:38:05 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/06/24 19:07:57 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static t_operator_type	get_operator_type(const char *token, int len)
 		if (*token == ')')
 			return (OPERATOR_PAREN_CLOSE);
 	}
-	return (-1);
+	return (0);
 }
 
 static t_redirection_type	get_redirection_type(const char *token, int len)
@@ -51,7 +51,7 @@ static t_redirection_type	get_redirection_type(const char *token, int len)
 		if (*token == '>')
 			return (REDIRECT_OUT);
 	}
-	return (-1);
+	return (0);
 }
 
 t_token_type	get_token_type(const char *token, int len)
@@ -83,8 +83,6 @@ t_token	*create_token(const char *t_data, t_token_type t_type)
 		return (NULL);
 	token->token_data = ft_strdup(t_data);
 	token->token_type = t_type;
-	// token->token_operator_type = -1;
-	// token->token_redirect_type = -1;
 	if (t_type == TOKEN_OPERATOR)
 		token->token_operator_type
 			= get_operator_type(t_data, ft_strlen(t_data));

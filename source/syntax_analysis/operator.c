@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 15:50:59 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/24 13:21:46 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/06/24 19:28:09 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,7 @@ bool	first_is_operator(t_token *head)
 		return (false);
 	if (head->token_type == TOKEN_OPERATOR
 		&& head->token_operator_type != OPERATOR_PAREN_OPEN)
-	{
-		printf("minishell: syntax error near unexpected token `%s'\n",
-			head->token_data);
-		return (true);
-	}
+		return (printf("%s `%s'\n", SYN_ERR, head->token_data), true);
 	return (false);
 }
 
@@ -37,11 +33,8 @@ bool	operator_after_operator(t_token *head)
 			&& tmp->next_token->token_type == TOKEN_OPERATOR
 			&& tmp->next_token->token_operator_type != OPERATOR_PAREN_OPEN
 			&& tmp->next_token->token_operator_type != OPERATOR_PAREN_CLOSE)
-		{
-			printf("minishell: syntax error near unexpected token `%s'\n",
-				tmp->next_token->token_data);
-			return (true);
-		}
+			return (printf("%s `%s'\n", SYN_ERR, tmp->next_token->token_data),
+				true);
 		tmp = tmp->next_token;
 	}
 	return (false);
@@ -56,11 +49,8 @@ bool	operator_after_redirection(t_token *head)
 	{
 		if (tmp->token_type == TOKEN_REDIRECT
 			&& tmp->next_token->token_type == TOKEN_OPERATOR)
-		{
-			printf("minishell: syntax error near unexpected token `%s'\n",
-				tmp->next_token->token_data);
-			return (true);
-		}
+			return (printf("%s `%s'\n", SYN_ERR,
+					tmp->next_token->token_data), true);
 		tmp = tmp->next_token;
 	}
 	return (false);
@@ -80,11 +70,8 @@ bool	operator_after_open_paren(t_token *head)
 				if (tmp->next_token->token_operator_type != OPERATOR_PAREN_OPEN
 					&& tmp->next_token->token_operator_type
 					!= OPERATOR_PAREN_CLOSE)
-				{
-					printf("minishell: syntax error near unexpected token `%s'\n",
-						tmp->next_token->token_data);
-					return (true);
-				}
+					return (printf("%s `%s'\n", SYN_ERR,
+							tmp->next_token->token_data), true);
 			}
 		}
 		tmp = tmp->next_token;
@@ -105,10 +92,7 @@ bool	operator_before_close_paren(t_token *head)
 		{
 			if (!prev || (prev->token_type == TOKEN_OPERATOR
 					&& prev->token_operator_type != OPERATOR_PAREN_CLOSE))
-			{
-				printf("minishell: syntax error near unexpected token `)'\n");
-				return (true);
-			}
+				return (printf("%s `%s'\n", SYN_ERR, "`)'"), true);
 		}
 		prev = tmp;
 		tmp = tmp->next_token;

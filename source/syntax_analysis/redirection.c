@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 16:26:16 by mansargs          #+#    #+#             */
-/*   Updated: 2025/06/24 13:20:42 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/06/24 19:32:28 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ bool	last_is_redirection(t_token *head)
 		if (curr->token_type == TOKEN_REDIRECT && (!curr->next_token
 				|| curr->next_token->token_type != TOKEN_WORD))
 		{
-			printf("minishell: syntax error near unexpected token `newline'\n");
+			printf("%s `%s'\n", SYN_ERR, "newline");
 			return (true);
 		}
 		curr = curr->next_token;
@@ -40,8 +40,7 @@ bool	redirection_after_redirection(t_token *head)
 		if (tmp->token_type == TOKEN_REDIRECT
 			&& tmp->next_token-> token_type == TOKEN_REDIRECT)
 		{
-			printf("minishell: syntax error near unexpected token `%s'\n",
-				tmp->next_token->token_data);
+			printf("%s `%s'\n", SYN_ERR, tmp->next_token->token_data);
 			return (true);
 		}
 		tmp = tmp->next_token;
