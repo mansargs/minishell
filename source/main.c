@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:25 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/23 14:45:20 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/06/24 20:26:33 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,12 +74,27 @@ void	print_token(t_token *token)
 	}
 }
 
+bool	only_spaces(const char *str)
+{
+	int	i;
+
+	i = -1;
+	while (str[++i])
+	{
+		if (!is_space(str[i]))
+			return (false);
+	}
+	return (true);
+}
+
+
 int	main(int argc, char *argv[])
 {
 	char	*line;
 	t_token	*tokens;
 
 	(void)argv;
+	tokens = NULL;
 	if (argc > 1)
 	{
 		printf("This program must be run without any arguments.\n");
@@ -90,20 +105,17 @@ int	main(int argc, char *argv[])
 		line = readline("minishell > ");
 		if (!line)
 			break ;
-		if (!*line)
+		tokens = tokenize(line);
+		if (!tokens || syntax_analysis(tokens))
 		{
+			add_history(line);
 			free(line);
 			continue ;
 		}
-		if (!wait_for_input_if_need(&line))
+		if (wait_for_input_if_need(tokens, line))
 		{
 			if (errno == ENOMEM)
-			{
-				free(line);
-				free_tokens(tokens);
-				return (ENOMEM);
-			}
-			free(line);
+				return (free_tokens(tokens), ENOMEM);
 			continue ;
 		}
 		add_history(line);

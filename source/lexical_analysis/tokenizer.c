@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 20:35:41 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/21 18:34:47 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/06/24 20:08:24 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,8 @@ t_token	*tokenize(char *line)
 
 	i = 0;
 	head = NULL;
+	if (!*line || only_spaces(line))
+		return (NULL);
 	while (line[i])
 	{
 		if (is_space(line[i]))

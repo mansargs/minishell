@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:21 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/24 16:35:31 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/06/24 19:38:58 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@
 //enum types
 typedef enum e_token_type
 {
-	TOKEN_WORD,					//  pxik (command/arg)
-	TOKEN_OPERATOR,				//  &&, ||, |
+	TOKEN_WORD,					//  command
+	TOKEN_OPERATOR,				//  &&, ||, |, (, )
 	TOKEN_REDIRECT,				//  <, >, >>, <<
 }	t_token_type;
 
@@ -46,7 +46,7 @@ typedef enum e_redirection_type
 {
 	REDIRECT_NONE,
 	REDIRECT_IN,				//    >"
-	REDIRECT_OUT,				//2  ">"
+	REDIRECT_OUT,				//2  "<"
 	REDIRECT_APPEND,			//3  ">>"
 	REDIRECT_HEREDOC,			//4  "<<"
 }	t_redirection_type;

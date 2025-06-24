@@ -10,10 +10,11 @@ OBJ_DIR = objects
 LIB_DIR = library
 
 LIBFT_DIR = $(LIB_DIR)/libft
-LEXICAL = $(SRC_DIR)/lexical_analysis
-SYNTAX = $(SRC_DIR)/syntax_analysis
+GNL_DIR   = $(LIB_DIR)/gnl
+LEXICAL   = $(SRC_DIR)/lexical_analysis
+SYNTAX    = $(SRC_DIR)/syntax_analysis
 
-INCLUDES = -Iincludes -I$(LIBFT_DIR)
+INCLUDES = -Iincludes -I$(LIBFT_DIR) -I$(GNL_DIR)
 
 SRCS = \
 	$(SRC_DIR)/main.c \
@@ -25,7 +26,9 @@ SRCS = \
 	$(SYNTAX)/redirection.c \
 	$(SYNTAX)/operator.c \
 	$(SYNTAX)/paren.c \
-	$(SYNTAX)/syntax.c
+	$(SYNTAX)/syntax.c \
+	$(GNL_DIR)/get_next_line.c \
+	$(GNL_DIR)/get_next_line_utils.c
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 
