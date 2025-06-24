@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:25 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/24 20:26:33 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/06/25 02:49:26 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,35 +106,36 @@ int	main(int argc, char *argv[])
 		if (!line)
 			break ;
 		tokens = tokenize(line);
-		if (!tokens || syntax_analysis(tokens))
-		{
-			add_history(line);
-			free(line);
-			continue ;
-		}
-		if (wait_for_input_if_need(tokens, line))
-		{
-			if (errno == ENOMEM)
-				return (free_tokens(tokens), ENOMEM);
-			continue ;
-		}
-		add_history(line);
-		tokens = tokenize(line);
-		if (!tokens)
-		{
-			printf("Tokenization failed.\n");
-			free(line);
-			continue ;
-		}
-		print_token(tokens);
-		if (syntax_analysis(tokens))
-		{
-			free_tokens(tokens);
-			free(line);
-			continue ;
-		}
-		free_tokens(tokens);
-		free(line);
+		heredoc(tokens);
+		// if (!tokens || syntax_analysis(tokens))
+		// {
+		// 	add_history(line);
+		// 	free(line);
+		// 	continue ;
+		// }
+		// if (wait_for_input_if_need(tokens, line))
+		// {
+		// 	if (errno == ENOMEM)
+		// 		return (free_tokens(tokens), ENOMEM);
+		// 	continue ;
+		// }
+		// add_history(line);
+		// tokens = tokenize(line);
+		// if (!tokens)
+		// {
+		// 	printf("Tokenization failed.\n");
+		// 	free(line);
+		// 	continue ;
+		// }
+		// print_token(tokens);
+		// if (syntax_analysis(tokens))
+		// {
+		// 	free_tokens(tokens);
+		// 	free(line);
+		// 	continue ;
+		// }
+		// free_tokens(tokens);
+		// free(line);
 	}
 	printf("exit\n");
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:21 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/24 19:38:58 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/06/25 02:33:04 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@
 # include <errno.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include "libft.h"
+# include "../library/libft/libft.h"
+# include "../library/gnl/get_next_line.h"
 
 # define SYN_ERR "minishell: syntax error near unexpected token"
 
@@ -64,6 +65,8 @@ typedef struct s_token
 }	t_token;
 
 //prototypes
+bool	only_spaces(const char *str);
+
 t_token			*tokenize(char *line);
 t_token			*create_token(const char *t_data, t_token_type t_type);
 t_token_type	get_token_type(const char *token, int len);

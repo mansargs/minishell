@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 16:24:51 by mansargs          #+#    #+#             */
-/*   Updated: 2025/06/24 17:43:08 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/06/25 02:32:47 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,10 @@
 # define SYNTAX_H
 
 # include "token.h"
+# include <fcntl.h>
+
+int	*heredoc(t_token *tokens);
+
 
 bool	syntax_analysis(t_token *tokens);
 bool	first_is_operator(t_token *head);

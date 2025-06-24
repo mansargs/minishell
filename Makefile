@@ -21,12 +21,12 @@ SRCS = \
 	$(LEXICAL)/tokenizer.c \
 	$(LEXICAL)/init.c \
 	$(LEXICAL)/tokenizer_utils.c \
-	$(LEXICAL)/defective_operator.c \
 	$(LEXICAL)/token_quoted.c \
 	$(SYNTAX)/redirection.c \
 	$(SYNTAX)/operator.c \
 	$(SYNTAX)/paren.c \
 	$(SYNTAX)/syntax.c \
+	$(SYNTAX)/heredoc.c \
 	$(GNL_DIR)/get_next_line.c \
 	$(GNL_DIR)/get_next_line_utils.c
 
