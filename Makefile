@@ -22,6 +22,9 @@ SRCS = \
 	$(LEXICAL)/tokenizer_utils.c \
 	$(LEXICAL)/defective_operator.c \
 	$(LEXICAL)/token_quoted.c \
+	$(SYNTAX)/redirection.c \
+	$(SYNTAX)/operator.c \
+	$(SYNTAX)/paren.c \
 	$(SYNTAX)/syntax.c
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)

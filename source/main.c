@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:25 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/21 19:53:52 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/06/23 14:45:20 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,10 +115,12 @@ int	main(int argc, char *argv[])
 			continue ;
 		}
 		print_token(tokens);
-		if (last_is_redirection(tokens))
-			continue;
-		if (invalid_operands(tokens))
-			continue;
+		if (syntax_analysis(tokens))
+		{
+			free_tokens(tokens);
+			free(line);
+			continue ;
+		}
 		free_tokens(tokens);
 		free(line);
 	}
