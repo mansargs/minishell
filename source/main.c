@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:25 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/26 01:42:18 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/06/26 01:53:32 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,8 +116,8 @@ bool	syntax_error_before_heredoc(t_token *tokens)
 
 bool	syntax_and_heredoc(t_token *tokens)
 {
-	t_token	*temp;
-	int		i;
+	t_token			*temp;
+	unsigned int	i;
 
 	if (!syntax_error_before_heredoc(tokens))
 		return (false);
@@ -154,7 +154,7 @@ int	main(int argc, char *argv[])
 		if (!line)
 			break ;
 		tokens = tokenize(line);
-		// print_tokens_with_neighbors(tokens);
+		print_tokens_with_neighbors(tokens);
 		if (!syntax_and_heredoc(tokens))
 			if (errno)
 				continue ;

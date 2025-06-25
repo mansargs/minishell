@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 13:38:09 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/24 19:30:32 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/06/26 01:50:54 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,7 @@
 
 bool	syntax_analysis(t_token *tokens)
 {
-	if (operator_after_operator(tokens))
-		return (true);
-	if (redirection_after_redirection(tokens))
-		return (true);
-	if (operator_after_redirection(tokens))
-		return (true);
 	if (last_is_redirection(tokens))
-		return (true);
-	if (first_is_operator(tokens))
 		return (true);
 	if (operator_before_paren(tokens))
 		return (true);
