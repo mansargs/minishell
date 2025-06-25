@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   paren.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 13:34:03 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/24 19:15:56 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/06/26 02:52:43 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "syntax.h"
 
-bool	close_paren_without_open(t_token *head)
+bool	close_paren_without_open(t_token *token)
 {
 	t_token	*tmp;
 	int		paren;
 
-	tmp = head;
+	tmp = token;
 	paren = 0;
 	while (tmp)
 	{
@@ -26,28 +26,19 @@ bool	close_paren_without_open(t_token *head)
 		else if (tmp->token_operator_type == OPERATOR_PAREN_CLOSE)
 			paren--;
 		if (paren < 0)
-			return (printf("%s `%s'\n", SYN_ERR, ")"), true);
-		tmp = tmp->next_token;
+			return (printf("%s `)'\n", SYN_ERR), true);
+		tmp = tmp->prev_token;
 	}
 	return (false);
 }
 
-bool	empty_parens(t_token *head)
+bool	empty_parens(t_token *token)
 {
 	t_token	*tmp;
 
-	tmp = head;
-	while (tmp)
-	{
-		if (tmp->token_operator_type == OPERATOR_PAREN_OPEN)
-		{
-			if (tmp->next_token
-				&& tmp->next_token->token_operator_type == OPERATOR_PAREN_CLOSE)
-				return (printf("%s `%s'\n", SYN_ERR,
-						tmp->next_token->token_data), true);
-		}
-		tmp = tmp->next_token;
-	}
+	if (token->next_token && token->token_operator_type == OPERATOR_PAREN_OPEN
+			&& token->token_operator_type == OPERATOR_PAREN_CLOSE)
+		return (printf("%s `)'\n", SYN_ERR), true);
 	return (false);
 }
 
@@ -70,7 +61,7 @@ bool	operator_after_word(t_token *head)
 	return (false);
 }
 
-bool	operator_before_paren(t_token *head)
+bool	operator_before_paren(t_token *token)
 {
 	t_token	*tmp;
 	t_token	*prev;

@@ -6,13 +6,13 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 02:47:43 by mansargs          #+#    #+#             */
-/*   Updated: 2025/06/26 01:01:46 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/06/26 01:58:06 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "syntax.h"
 
-static char	*get_file_name(int *number)
+static char	*get_file_name(unsigned int *number)
 {
 	char	*num_by_string;
 	char	*file_name;
@@ -59,7 +59,7 @@ static void read_from_stdin(const int fd, const char *delim)
 	}
 }
 
-char *open_heredoc(const t_token *tokens, int *index)
+char *open_heredoc(const t_token *tokens, unsigned int *index)
 {
 	int		fd;
 	char	*name;

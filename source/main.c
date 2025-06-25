@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:25 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/26 01:53:32 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/06/26 02:04:13 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,7 @@ bool	syntax_and_heredoc(t_token *tokens)
 			if (!temp->file_name)
 				return (false);
 		}
+		syntax_analysis()
 		temp = temp->next_token;
 	}
 	return (true);
