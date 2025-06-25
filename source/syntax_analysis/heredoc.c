@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 02:47:43 by mansargs          #+#    #+#             */
-/*   Updated: 2025/06/25 02:50:00 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/06/25 17:18:43 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,14 +96,12 @@ static bool	process_single_heredoc(t_token *token, int *fd, int index)
 	return (true);
 }
 
-int	*heredoc(t_token *tokens)
+int	*heredoc(t_token *tokens, int *index)
 {
-	int		*fd;
+	int		fd;
 	int		count;
-	int		index;
 	t_token	*move;
 
-	count = count_heredocs(tokens);
 	if (count == 0)
 		return (NULL);
 	fd = (int *)ft_calloc(count, sizeof(int));

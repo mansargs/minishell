@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 20:35:41 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/24 20:08:24 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/06/25 19:10:14 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,14 @@ void	add_token(t_token **head, t_token *new_token)
 	if (!*head)
 	{
 		*head = new_token;
+		new_token->prev_token = NULL;
 		return ;
 	}
 	tmp = *head;
 	while (tmp->next_token)
 		tmp = tmp->next_token;
 	tmp->next_token = new_token;
+	new_token->prev_token = tmp;
 }
 
 static int	get_word_len_with_quotes(const char *line)

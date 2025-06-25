@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 00:51:12 by mansargs          #+#    #+#             */
-/*   Updated: 2025/06/24 20:58:43 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/06/25 17:27:46 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@ static bool	should_I_wait(const t_token *last_token)
 	int	len;
 
 	len = ft_strlen(last_token->token_data);
-	if ((len >= 2 && (!ft_strncmp(last_token->token_data + len - 2, "||", 2)
-				|| !ft_strncmp(last_token->token_data + len - 2, "&&", 2)))
-		|| (len >= 1 && !ft_strncmp(last_token->token_data + len - 1, "|", 1)))
+	if ((len >= 2 && (!ft_strncmp(last_token->token_data, "||", 2)
+				|| !ft_strncmp(last_token->token_data, "&&", 2)))
+		|| (len >= 1 && !ft_strncmp(last_token->token_data, "|", 1)))
 		return (true);
 	return (false);
 }

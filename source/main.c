@@ -6,71 +6,75 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:25 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/25 02:49:26 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/06/25 19:30:26 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "syntax.h"
 
-static char	*token_type_str(int type)
-{
-	if (type == TOKEN_WORD)
-		return ("WORD");
-	if (type == TOKEN_OPERATOR)
-		return ("OPERATOR");
-	if (type == TOKEN_REDIRECT)
-		return ("REDIRECT");
-	return ("UNKNOWN");
-}
+// static char	*token_type_str(int type)
+// {
+// 	if (type == TOKEN_WORD)
+// 		return ("WORD");
+// 	if (type == TOKEN_OPERATOR)
+// 		return ("OPERATOR");
+// 	if (type == TOKEN_REDIRECT)
+// 		return ("REDIRECT");
+// 	return ("UNKNOWN");
+// }
 
-static char	*operator_type_str(int type)
-{
-	if (type == OPERATOR_PIPE)
-		return ("PIPE");
-	if (type == OPERATOR_OR)
-		return ("OR");
-	if (type == OPERATOR_AND)
-		return ("AND");
-	if (type == OPERATOR_AMP)
-		return ("AMP");
-	if (type == OPERATOR_PAREN_OPEN)
-		return ("PAREN_OPEN");
-	if (type == OPERATOR_PAREN_CLOSE)
-		return ("PAREN_CLOSE");
-	return ("NONE");
-}
+// static char	*operator_type_str(int type)
+// {
+// 	if (type == OPERATOR_PIPE)
+// 		return ("PIPE");
+// 	if (type == OPERATOR_OR)
+// 		return ("OR");
+// 	if (type == OPERATOR_AND)
+// 		return ("AND");
+// 	if (type == OPERATOR_AMP)
+// 		return ("AMP");
+// 	if (type == OPERATOR_PAREN_OPEN)
+// 		return ("PAREN_OPEN");
+// 	if (type == OPERATOR_PAREN_CLOSE)
+// 		return ("PAREN_CLOSE");
+// 	return ("NONE");
+// }
 
-static char	*redirection_type_str(int type)
-{
-	if (type == REDIRECT_IN)
-		return ("IN");
-	if (type == REDIRECT_OUT)
-		return ("OUT");
-	if (type == REDIRECT_APPEND)
-		return ("APPEND");
-	if (type == REDIRECT_HEREDOC)
-		return ("HEREDOC");
-	return ("NONE");
-}
+// static char	*redirection_type_str(int type)
+// {
+// 	if (type == REDIRECT_IN)
+// 		return ("IN");
+// 	if (type == REDIRECT_OUT)
+// 		return ("OUT");
+// 	if (type == REDIRECT_APPEND)
+// 		return ("APPEND");
+// 	if (type == REDIRECT_HEREDOC)
+// 		return ("HEREDOC");
+// 	return ("NONE");
+// }
 
-void	print_token(t_token *token)
+void print_tokens_with_neighbors(t_token *head)
 {
-	while (token)
+	t_token *curr = head;
+	int index = 0;
+
+	while (curr != NULL)
 	{
-		printf("Token: %-15s | Type: %-8s", token->token_data,
-			token_type_str(token->token_type));
-		if (token->token_type == TOKEN_OPERATOR)
-			printf(" | Operator: %-11s %d",
-				operator_type_str(token->token_operator_type),
-				token->token_operator_type);
-		else if (token->token_type == TOKEN_REDIRECT)
-			printf(" | Redirect: %-11s %d",
-				redirection_type_str(token->token_redirect_type),
-				token->token_redirect_type);
+		printf("Token[%d]:\n", index++);
+		printf("  token_data: %s\n", curr->token_data ? curr->token_data : "(null)");
+
+		if (curr->prev_token)
+			printf("  Prev token_data: %s\n", curr->prev_token->token_data ? curr->prev_token->token_data : "(null)");
 		else
-			printf(" | ------- : ----------- 0");
-		printf("\n");
-		token = token->next_token;
+			printf("  Prev token_data: (null)\n");
+
+		if (curr->next_token)
+			printf("  Next token_data: %s\n", curr->next_token->token_data ? curr->next_token->token_data : "(null)");
+		else
+			printf("  Next token_data: (null)\n");
+
+		printf("-----------------------------\n");
+		curr = curr->next_token;
 	}
 }
 
@@ -86,7 +90,21 @@ bool	only_spaces(const char *str)
 	}
 	return (true);
 }
+bool	syntax_error_before_heredoc(t_token *tokens)
+{
+	t_token *temp;
 
+	temp = tokens;
+	while (temp)
+	{
+		if (temp->token_operator_type == OPERATOR_AND || )
+	}
+}
+
+bool	syntax_and_heredoc(t_token *tokens)
+{
+	if ()
+}
 
 int	main(int argc, char *argv[])
 {
@@ -106,7 +124,8 @@ int	main(int argc, char *argv[])
 		if (!line)
 			break ;
 		tokens = tokenize(line);
-		heredoc(tokens);
+		// print_tokens_with_neighbors(tokens);
+		syntax_and_heredoc()
 		// if (!tokens || syntax_analysis(tokens))
 		// {
 		// 	add_history(line);

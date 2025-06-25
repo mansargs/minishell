@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:21 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/25 02:33:04 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/06/25 17:53:53 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ typedef enum e_redirection_type
 {
 	REDIRECT_NONE,
 	REDIRECT_IN,				//    >"
-	REDIRECT_OUT,				//2  "<"
-	REDIRECT_APPEND,			//3  ">>"
-	REDIRECT_HEREDOC,			//4  "<<"
+	REDIRECT_OUT,				//    "<"
+	REDIRECT_APPEND,			//    ">>"
+	REDIRECT_HEREDOC,			//    "<<"
 }	t_redirection_type;
 
 //main struct
@@ -62,6 +62,7 @@ typedef struct s_token
 	t_operator_type		token_operator_type;
 	t_redirection_type	token_redirect_type;
 	struct s_token		*next_token;
+	struct s_token		*prev_token;
 }	t_token;
 
 //prototypes
