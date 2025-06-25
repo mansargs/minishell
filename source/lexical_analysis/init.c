@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:23 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/24 19:07:57 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/06/26 00:58:47 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ static t_operator_type	get_operator_type(const char *token, int len)
 	{
 		if (*token == '|')
 			return (OPERATOR_PIPE);
-		if (*token == '&')
-			return (OPERATOR_AMP);
+		// if (*token == '&')
+		// 	return (OPERATOR_AMP);
 		if (*token == '(')
 			return (OPERATOR_PAREN_OPEN);
 		if (*token == ')')
@@ -78,7 +78,7 @@ t_token	*create_token(const char *t_data, t_token_type t_type)
 {
 	t_token	*token;
 
-	token = malloc(sizeof(t_token));
+	token = ft_calloc(1, sizeof(t_token));
 	if (!token)
 		return (NULL);
 	token->token_data = ft_strdup(t_data);

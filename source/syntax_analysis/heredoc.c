@@ -6,46 +6,39 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 02:47:43 by mansargs          #+#    #+#             */
-/*   Updated: 2025/06/25 21:13:46 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/06/26 01:01:46 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "syntax.h"
 
-static int	count_heredocs(t_token *tokens)
-{
-	int		count;
-	t_token	*temp;
-
-	temp = tokens;
-	count = 0;
-	while (temp)
-	{
-		if (!ft_strncmp(temp->token_data, "<<", 2))
-			if (temp->next_token)
-				++count;
-		temp = temp->next_token;
-	}
-	return (count);
-}
-
-static char	*get_file_name(const int number)
+static char	*get_file_name(int *number)
 {
 	char	*num_by_string;
 	char	*file_name;
+	int		restore_errno;
 
-	num_by_string = ft_itoa(number);
-	if (!num_by_string)
-		return (NULL);
-	file_name = ft_strjoin("heredoc_", num_by_string);
-	free(num_by_string);
+	restore_errno = errno;
+	while (1)
+	{
+		num_by_string = ft_itoa(*number);
+		if (!num_by_string)
+			return (NULL);
+		file_name = ft_strjoin("heredoc_", num_by_string);
+		free(num_by_string);
+		if (access(file_name, F_OK))
+			break ;
+		free(file_name);
+		++*number;
+	}
+	errno = restore_errno;
 	return (file_name);
 }
 
 static void read_from_stdin(const int fd, const char *delim)
 {
 	char	*line;
-	int		len;
+	size_t	len;
 
 	while (1)
 	{
@@ -54,9 +47,9 @@ static void read_from_stdin(const int fd, const char *delim)
 		if (!line)
 			return ;
 		len = ft_strlen(line);
-		if (line[len -1] == '\n')
-			line[len -1] = '\0';
-		if (!ft_strncmp(line, delim, len - 1))
+		if (len > 0 && line[len -1] == '\n')
+			line[--len] = '\0';
+		if (len == ft_strlen(delim) && ft_strncmp(line, delim, ft_strlen(delim)) == 0)
 		{
 			free(line);
 			return ;
@@ -66,56 +59,20 @@ static void read_from_stdin(const int fd, const char *delim)
 	}
 }
 
-static bool	open_heredoc_file(char *name, int *fd, int index)
-{
-	int	i;
-
-	fd[index] = open(name, O_CREAT | O_RDWR | O_TRUNC, 0644);
-	unlink(name);
-	if (fd[index] == -1)
-	{
-		i = -1;
-		while (++i < index)
-			close(fd[i]);
-		return (false);
-	}
-	return (true);
-}
-
-static bool	process_single_heredoc(t_token *token, int *fd, int index)
-{
-	char	*name;
-
-	name = get_file_name(index + 1);
-	if (!name)
-		return (false);
-	if (!open_heredoc_file(name, fd, index))
-		return (free(name), false);
-	free(name);
-	read_from_stdin(fd[index], token->next_token->token_data);
-	return (true);
-}
-
-char *heredoc(t_token *tokens)
+char *open_heredoc(const t_token *tokens, int *index)
 {
 	int		fd;
-	int		count;
-	t_token	*move;
+	char	*name;
 
-	fd = (int *)ft_calloc(count, sizeof(int));
-	if (!fd)
+	if (!tokens->next_token)
 		return (NULL);
-	index = 0;
-	move = tokens;
-	while (move)
-	{
-		if (!ft_strncmp(move->token_data, "<<", 2) && move->next_token)
-		{
-			if (!process_single_heredoc(move, fd, index))
-				return (free(fd), NULL);
-			++index;
-		}
-		move = move->next_token;
-	}
-	return (fd);
+	name = get_file_name(index);
+	if (!name)
+		return (NULL);
+	fd = open(name, O_CREAT | O_RDWR | O_TRUNC, 0644);
+	if (fd == -1)
+		return (free(name), NULL);
+	read_from_stdin(fd, tokens->next_token->token_data);
+	close(fd);
+	return (name);
 }

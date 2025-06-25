@@ -26,6 +26,7 @@ SRCS = \
 	$(SYNTAX)/operator.c \
 	$(SYNTAX)/paren.c \
 	$(SYNTAX)/syntax.c \
+	$(SYNTAX)/heredoc.c \
 	$(GNL_DIR)/get_next_line.c \
 	$(GNL_DIR)/get_next_line_utils.c
 

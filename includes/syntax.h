@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 16:24:51 by mansargs          #+#    #+#             */
-/*   Updated: 2025/06/25 02:32:47 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/06/26 00:59:27 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include "token.h"
 # include <fcntl.h>
 
-int	*heredoc(t_token *tokens);
+char *open_heredoc(const t_token *tokens, int *index);
 
 
 bool	syntax_analysis(t_token *tokens);

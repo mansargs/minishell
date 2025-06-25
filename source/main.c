@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:25 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/25 21:08:08 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/06/26 01:42:18 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,39 +94,46 @@ bool	only_spaces(const char *str)
 bool	syntax_error_before_heredoc(t_token *tokens)
 {
 	t_token	*temp;
-	int		parenthesis_count;
 
 	temp = tokens;
-	parenthesis_count = 0;
-	if (temp->token_type == TOKEN_OPERATOR && temp->token_operator_type != OPERATOR_PAREN_OPEN)
-		return (printf("%s `%s'", SYN_ERR, temp->token_data), false);
+	if (temp && temp->token_type == TOKEN_OPERATOR &&
+		temp->token_operator_type != OPERATOR_PAREN_OPEN)
+		return (printf("%s `%s'\n", SYN_ERR, temp->token_data), false);
 	while (temp)
 	{
-		if (temp->token_operator_type == OPERATOR_PAREN_OPEN)
-			++parenthesis_count;
-		else if (temp->token_operator_type == OPERATOR_PAREN_CLOSE)
-			--parenthesis_count;
-		else if (temp->token_operator_type == OPERATOR_AND || temp->token_type == OPERATOR_OR)
-			if (temp->next_token && (temp->next_token->token_operator_type == OPERATOR_OR || temp->next_token->token_operator_type == OPERATOR_AND))
-				return (printf("%s `%s'", SYN_ERR, temp->next_token->token_data), false);
-		if (parenthesis_count < 0)
-			return (printf("%s `)'", SYN_ERR), false);
+		if (temp->token_type == TOKEN_REDIRECT &&
+			temp->next_token && temp->next_token->token_type != TOKEN_WORD)
+			return (printf("%s `%s'\n", SYN_ERR, temp->next_token->token_data), false);
+		if ((temp->token_operator_type == OPERATOR_AND || temp->token_operator_type == OPERATOR_OR) &&
+			temp->next_token &&
+			(temp->next_token->token_operator_type == OPERATOR_AND || temp->next_token->token_operator_type == OPERATOR_OR))
+			return (printf("%s `%s'\n", SYN_ERR, temp->next_token->token_data), false);
 		temp = temp->next_token;
 	}
-	return (true);
+	return true;
 }
+
 
 bool	syntax_and_heredoc(t_token *tokens)
 {
 	t_token	*temp;
+	int		i;
 
-	syntax_error_before_heredoc(tokens);
+	if (!syntax_error_before_heredoc(tokens))
+		return (false);
 	temp = tokens;
 	while (temp)
 	{
+		++i;
 		if (temp->token_redirect_type == REDIRECT_HEREDOC)
-			open_heredoc()
+		{
+			temp->file_name = open_heredoc(tokens, &i);
+			if (!temp->file_name)
+				return (false);
+		}
+		temp = temp->next_token;
 	}
+	return (true);
 }
 
 int	main(int argc, char *argv[])
@@ -147,8 +154,11 @@ int	main(int argc, char *argv[])
 		if (!line)
 			break ;
 		tokens = tokenize(line);
-		print_tokens_with_neighbors(tokens);
-		// syntax_and_heredoc()
+		// print_tokens_with_neighbors(tokens);
+		if (!syntax_and_heredoc(tokens))
+			if (errno)
+				continue ;
+
 		// if (!tokens || syntax_analysis(tokens))
 		// {
 		// 	add_history(line);

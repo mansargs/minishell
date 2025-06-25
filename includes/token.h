@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:21 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/25 19:47:03 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/06/25 23:58:52 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ typedef enum e_redirection_type
 typedef struct s_token
 {
 	char				*token_data;
-	char				*input_name;
+	char				*file_name;
 	int					is_temp;
 	t_token_type		token_type;
 	t_operator_type		token_operator_type;
