@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:21 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/25 17:53:53 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/06/25 19:47:03 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ typedef enum e_operator_type
 	OPERATOR_PIPE,				//  "|"
 	OPERATOR_OR,				//  "||"
 	OPERATOR_AND,				//  "&&"
-	OPERATOR_AMP,				//  "&"
+	// OPERATOR_AMP,				//  "&"
 	OPERATOR_PAREN_OPEN,		//  "("
 	OPERATOR_PAREN_CLOSE,		//  ")"
 }	t_operator_type;

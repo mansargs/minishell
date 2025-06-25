@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:25 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/25 19:30:26 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/06/25 21:08:08 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,20 +90,43 @@ bool	only_spaces(const char *str)
 	}
 	return (true);
 }
+
 bool	syntax_error_before_heredoc(t_token *tokens)
 {
-	t_token *temp;
+	t_token	*temp;
+	int		parenthesis_count;
 
 	temp = tokens;
+	parenthesis_count = 0;
+	if (temp->token_type == TOKEN_OPERATOR && temp->token_operator_type != OPERATOR_PAREN_OPEN)
+		return (printf("%s `%s'", SYN_ERR, temp->token_data), false);
 	while (temp)
 	{
-		if (temp->token_operator_type == OPERATOR_AND || )
+		if (temp->token_operator_type == OPERATOR_PAREN_OPEN)
+			++parenthesis_count;
+		else if (temp->token_operator_type == OPERATOR_PAREN_CLOSE)
+			--parenthesis_count;
+		else if (temp->token_operator_type == OPERATOR_AND || temp->token_type == OPERATOR_OR)
+			if (temp->next_token && (temp->next_token->token_operator_type == OPERATOR_OR || temp->next_token->token_operator_type == OPERATOR_AND))
+				return (printf("%s `%s'", SYN_ERR, temp->next_token->token_data), false);
+		if (parenthesis_count < 0)
+			return (printf("%s `)'", SYN_ERR), false);
+		temp = temp->next_token;
 	}
+	return (true);
 }
 
 bool	syntax_and_heredoc(t_token *tokens)
 {
-	if ()
+	t_token	*temp;
+
+	syntax_error_before_heredoc(tokens);
+	temp = tokens;
+	while (temp)
+	{
+		if (temp->token_redirect_type == REDIRECT_HEREDOC)
+			open_heredoc()
+	}
 }
 
 int	main(int argc, char *argv[])
@@ -124,8 +147,8 @@ int	main(int argc, char *argv[])
 		if (!line)
 			break ;
 		tokens = tokenize(line);
-		// print_tokens_with_neighbors(tokens);
-		syntax_and_heredoc()
+		print_tokens_with_neighbors(tokens);
+		// syntax_and_heredoc()
 		// if (!tokens || syntax_analysis(tokens))
 		// {
 		// 	add_history(line);
