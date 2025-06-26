@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 15:50:59 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/26 02:51:15 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/06/27 03:41:50 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,22 @@
 // 	return (false);
 // }
 
-bool	operator_after_open_paren(t_token *token)
+bool operator_after_open_paren(t_token *token)
 {
-	if (token->token_operator_type == OPERATOR_PAREN_OPEN
-		&& token->next_token->token_operator_type != OPERATOR_PAREN_OPEN
-		&& token->token_type == TOKEN_OPERATOR)
-		return (printf("%s `%s'\n", SYN_ERR, token->next_token->token_data), true);
-	return (false);
+	if (!token || !token->next_token)
+		return false;
+
+	if (token->token_type == TOKEN_OPERATOR
+		&& token->token_operator_type == OPERATOR_PAREN_OPEN
+		&& token->next_token->token_operator_type != OPERATOR_PAREN_OPEN)
+	{
+		printf("%s `%s'\n", SYN_ERR, token->next_token->token_data);
+		return true;
+	}
+
+	return false;
 }
+
 
 bool	operator_before_close_paren(t_token *token)
 {

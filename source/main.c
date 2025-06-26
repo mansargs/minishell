@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:25 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/27 02:41:43 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/06/27 03:30:07 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,14 +114,14 @@ bool	syntax_error_before_heredoc(t_token *tokens)
 }
 
 
-bool	syntax_and_heredoc(t_token *tokens)
+bool	syntax_and_heredoc(t_token *tokens, char **line)
 {
-	t_token			*temp;
-	unsigned int	i;
+	t_token			*temp = tokens;
+	unsigned int	i = 0;
 
 	if (!syntax_error_before_heredoc(tokens))
 		return (false);
-	temp = tokens;
+
 	while (temp)
 	{
 		++i;
@@ -132,7 +132,17 @@ bool	syntax_and_heredoc(t_token *tokens)
 				return (false);
 		}
 		if (syntax_analysis(temp))
-			return (free(tokens), false);
+		{
+			free_tokens(tokens);
+			return (false);
+		}
+		if (!temp->next_token && should_I_wait(temp))
+		{
+			printf("yes");
+			if (!wait_for_input(temp, line))  // 🧠 Recursion begins here
+				return (false);
+			return syntax_and_heredoc(tokens, line);  // 🔁 recursive re-analyze
+		}
 		temp = temp->next_token;
 	}
 	return (true);
@@ -157,41 +167,12 @@ int	main(int argc, char *argv[])
 			break ;
 		tokens = tokenize(line);
 		// print_tokens_with_neighbors(tokens);
-		if (!syntax_and_heredoc(tokens))
+		if (!syntax_and_heredoc(tokens, &line))
 		{
 			if (errno)
 				break;
 		}
 		continue;
-		// if (!tokens || syntax_analysis(tokens))
-		// {
-		// 	add_history(line);
-		// 	free(line);
-		// 	continue ;
-		// }
-		// if (wait_for_input_if_need(tokens, line))
-		// {
-		// 	if (errno == ENOMEM)
-		// 		return (free_tokens(tokens), ENOMEM);
-		// 	continue ;
-		// }
-		// add_history(line);
-		// tokens = tokenize(line);
-		// if (!tokens)
-		// {
-		// 	printf("Tokenization failed.\n");
-		// 	free(line);
-		// 	continue ;
-		// }
-		// print_token(tokens);
-		// if (syntax_analysis(tokens))
-		// {
-		// 	free_tokens(tokens);
-		// 	free(line);
-		// 	continue ;
-		// }
-		// free_tokens(tokens);
-		// free(line);
 	}
 	printf("exit\n");
 	return (0);

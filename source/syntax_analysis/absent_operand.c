@@ -1,69 +1,51 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   defective_operator.c                               :+:      :+:    :+:   */
+/*   absent_operand.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 00:51:12 by mansargs          #+#    #+#             */
-/*   Updated: 2025/06/25 17:27:46 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/06/27 03:34:09 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "token.h"
+#include "syntax.h"
 
-static t_token	*find_last_token(const t_token *tokens)
+bool	should_I_wait(const t_token *last_token)
 {
-	t_token	*last_token;
-
-	last_token = tokens;
-	if (!last_token)
-		return (NULL);
-	while (last_token->next_token)
-		last_token = last_token->next_token;
-	return (last_token);
-}
-
-static bool	should_I_wait(const t_token *last_token)
-{
-	int	len;
-
-	len = ft_strlen(last_token->token_data);
-	if ((len >= 2 && (!ft_strncmp(last_token->token_data, "||", 2)
-				|| !ft_strncmp(last_token->token_data, "&&", 2)))
-		|| (len >= 1 && !ft_strncmp(last_token->token_data, "|", 1)))
+	if (last_token->token_type == TOKEN_OPERATOR && last_token->token_operator_type != OPERATOR_PAREN_CLOSE)
 		return (true);
 	return (false);
 }
 
-bool	wait_for_input_if_need(t_token **head, char *line)
+bool	wait_for_input(t_token *last, char **line)
 {
-	t_token	*last_token;
+	char	*extra_line;
+	char	*temp_str;
 	t_token	*new_tokens;
 	int		len;
-	char	*extra_line;
-	char	*temp;
 
-	while (1)
-	{
-		last_token = find_last_word(&head);
-		if (!should_I_wait(last_token))
-			break ;
-		printf(" > \n");
-		extra_line = get_next_line(STDIN_FILENO);
-		if (!extra_line)
-			return (false);
-		len = ft_strlen(extra_line);
-		if (extra_line[len - 1] == '\n')
-			extra_line[len - 1] = '\0';
-		new_tokens = tokenize(extra_line);
-		if ()
-		temp = *line;
-		*line = ft_strjoin(*line, extra_line);
-		free(extra_line);
-		free(temp);
-		if (!*line)
-			return (false);
-	}
-	return (free( true);
+	ft_putstr_fd("> ", STDOUT_FILENO);
+	extra_line = get_next_line(STDIN_FILENO);
+	if (!extra_line)
+		return (false);
+
+	len = ft_strlen(extra_line);
+	if (len > 0 && extra_line[len - 1] == '\n')
+		extra_line[len - 1] = '\0';
+
+	// Append new line to old input
+	temp_str = *line;
+	*line = ft_strjoin(*line, extra_line);
+	free(temp_str);
+	free(extra_line);
+	if (!*line)
+		return (false);
+
+	// Tokenize and add to list
+	new_tokens = tokenize(*line); // or only tokenize new input, depending on design
+	add_token(&last, new_tokens);
+
+	return (true); // Let `syntax_and_heredoc` handle analysis
 }

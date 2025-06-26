@@ -3,7 +3,7 @@ MAKEFLAGS += --no-print-directory
 NAME = minishell
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address
 
 SRC_DIR = source
 OBJ_DIR = objects
@@ -27,6 +27,7 @@ SRCS = \
 	$(SYNTAX)/paren.c \
 	$(SYNTAX)/syntax.c \
 	$(SYNTAX)/heredoc.c \
+	$(SYNTAX)/absent_operand.c \
 	$(GNL_DIR)/get_next_line.c \
 	$(GNL_DIR)/get_next_line_utils.c
 
