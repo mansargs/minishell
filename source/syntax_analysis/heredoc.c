@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 02:47:43 by mansargs          #+#    #+#             */
-/*   Updated: 2025/06/26 01:58:06 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/06/27 02:29:08 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ char *open_heredoc(const t_token *tokens, unsigned int *index)
 	char	*name;
 
 	if (!tokens->next_token)
-		return (NULL);
+		return (printf("%s `newline'\n", SYN_ERR), NULL);
 	name = get_file_name(index);
 	if (!name)
 		return (NULL);

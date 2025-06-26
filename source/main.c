@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:25 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/26 02:04:13 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/06/27 02:41:43 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,8 @@ bool	syntax_and_heredoc(t_token *tokens)
 			if (!temp->file_name)
 				return (false);
 		}
-		syntax_analysis()
+		if (syntax_analysis(temp))
+			return (free(tokens), false);
 		temp = temp->next_token;
 	}
 	return (true);
@@ -155,11 +156,13 @@ int	main(int argc, char *argv[])
 		if (!line)
 			break ;
 		tokens = tokenize(line);
-		print_tokens_with_neighbors(tokens);
+		// print_tokens_with_neighbors(tokens);
 		if (!syntax_and_heredoc(tokens))
+		{
 			if (errno)
-				continue ;
-
+				break;
+		}
+		continue;
 		// if (!tokens || syntax_analysis(tokens))
 		// {
 		// 	add_history(line);

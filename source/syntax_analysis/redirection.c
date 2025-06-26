@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 16:26:16 by mansargs          #+#    #+#             */
-/*   Updated: 2025/06/26 02:20:52 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/06/27 02:31:03 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 bool	last_is_redirection(t_token *token)
 {
-	if (token->token_type == TOKEN_REDIRECT)
+	if (!token->next_token && token->token_type == TOKEN_REDIRECT)
 	{
 		printf("%s `newline'\n", SYN_ERR);
 		return (true);
