@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 02:47:43 by mansargs          #+#    #+#             */
-/*   Updated: 2025/06/27 03:05:27 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/06/27 16:54:45 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,7 @@ static char	*get_file_name(unsigned int *number)
 {
 	char	*num_by_string;
 	char	*file_name;
-	int		restore_errno;
 
-	restore_errno = errno;
 	while (1)
 	{
 		num_by_string = ft_itoa(*number);
@@ -31,7 +29,6 @@ static char	*get_file_name(unsigned int *number)
 		free(file_name);
 		++*number;
 	}
-	errno = restore_errno;
 	return (file_name);
 }
 

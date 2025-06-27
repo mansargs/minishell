@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:25 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/27 03:30:07 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/06/27 17:04:59 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,50 +98,47 @@ bool	syntax_error_before_heredoc(t_token *tokens)
 	temp = tokens;
 	if (temp && temp->token_type == TOKEN_OPERATOR &&
 		temp->token_operator_type != OPERATOR_PAREN_OPEN)
-		return (printf("%s `%s'\n", SYN_ERR, temp->token_data), false);
+		return (printf("%s `%s'\n", SYN_ERR, temp->token_data), true);
 	while (temp)
 	{
 		if (temp->token_type == TOKEN_REDIRECT &&
 			temp->next_token && temp->next_token->token_type != TOKEN_WORD)
-			return (printf("%s `%s'\n", SYN_ERR, temp->next_token->token_data), false);
+			return (printf("%s `%s'\n", SYN_ERR, temp->next_token->token_data), true);
 		if ((temp->token_operator_type == OPERATOR_AND || temp->token_operator_type == OPERATOR_OR) &&
 			temp->next_token &&
 			(temp->next_token->token_operator_type == OPERATOR_AND || temp->next_token->token_operator_type == OPERATOR_OR))
-			return (printf("%s `%s'\n", SYN_ERR, temp->next_token->token_data), false);
+			return (printf("%s `%s'\n", SYN_ERR, temp->next_token->token_data), true);
 		temp = temp->next_token;
 	}
-	return true;
+	return (false);
 }
 
 
 bool	syntax_and_heredoc(t_token *tokens, char **line)
 {
-	t_token			*temp = tokens;
-	unsigned int	i = 0;
+	t_token			*temp;
+	unsigned int	i;
 
-	if (!syntax_error_before_heredoc(tokens))
+	if (syntax_error_before_heredoc(tokens))
 		return (false);
-
+	temp = tokens;
 	while (temp)
 	{
 		++i;
 		if (temp->token_redirect_type == REDIRECT_HEREDOC)
 		{
-			temp->file_name = open_heredoc(tokens, &i);
+			if (!temp->file_name)
+				temp->file_name = open_heredoc(temp, &i);
 			if (!temp->file_name)
 				return (false);
 		}
 		if (syntax_analysis(temp))
-		{
-			free_tokens(tokens);
-			return (false);
-		}
+			return (free_tokens(tokens), false);
 		if (!temp->next_token && should_I_wait(temp))
 		{
-			printf("yes");
-			if (!wait_for_input(temp, line))  // 🧠 Recursion begins here
+			if (!wait_for_input(temp, line))
 				return (false);
-			return syntax_and_heredoc(tokens, line);  // 🔁 recursive re-analyze
+			return syntax_and_heredoc(tokens, line);
 		}
 		temp = temp->next_token;
 	}
@@ -162,7 +159,7 @@ int	main(int argc, char *argv[])
 	}
 	while (1)
 	{
-		line = readline("minishell > ");
+		line = readline("minishell$ ");
 		if (!line)
 			break ;
 		tokens = tokenize(line);
