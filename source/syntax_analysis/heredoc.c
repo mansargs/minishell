@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 02:47:43 by mansargs          #+#    #+#             */
-/*   Updated: 2025/06/27 16:54:45 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/06/28 15:08:39 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static char	*get_file_name(unsigned int *number)
 	return (file_name);
 }
 
-static void read_from_stdin(const int fd, const char *delim)
+static void	read_from_stdin(const int fd, const char *delim)
 {
 	char	*line;
 	size_t	len;
@@ -46,7 +46,8 @@ static void read_from_stdin(const int fd, const char *delim)
 		len = ft_strlen(line);
 		if (len > 0 && line[len -1] == '\n')
 			line[--len] = '\0';
-		if (len == ft_strlen(delim) && ft_strncmp(line, delim, ft_strlen(delim)) == 0)
+		if (len == ft_strlen(delim)
+			&& ft_strncmp(line, delim, ft_strlen(delim)) == 0)
 		{
 			free(line);
 			return ;
@@ -56,7 +57,7 @@ static void read_from_stdin(const int fd, const char *delim)
 	}
 }
 
-char *open_heredoc(const t_token *token, unsigned int *index)
+char	*open_heredoc(const t_token *token, unsigned int *index)
 {
 	int		fd;
 	char	*name;
