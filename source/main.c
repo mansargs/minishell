@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:25 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/28 15:01:32 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/06/29 12:29:34 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,9 @@ bool	syntax_error_before_heredoc(t_token *tokens)
 			&& temp->next_token && temp->next_token->token_type != TOKEN_WORD)
 			return (printf("%s `%s'\n", SYN_ERR,
 					temp->next_token->token_data), true);
-		if ((temp->token_operator_type == OPERATOR_AND
-				|| temp->token_operator_type == OPERATOR_OR) && temp->next_token
-			&& (temp->next_token->token_operator_type == OPERATOR_AND
-				|| temp->next_token->token_operator_type == OPERATOR_OR))
+		if (temp->token_type == TOKEN_OPERATOR && temp->next_token
+				&& temp->next_token->token_type == TOKEN_OPERATOR
+				&& temp->next_token->token_operator_type != OPERATOR_PAREN_OPEN)
 			return (printf("%s `%s'\n", SYN_ERR,
 					temp->next_token->token_data), true);
 		temp = temp->next_token;
@@ -126,11 +125,7 @@ int	main(int argc, char *argv[])
 			break ;
 		tokens = tokenize(line);
 		if (!syntax_and_heredoc(tokens, &line))
-		{
-			if (errno)
-				break;
-		}
-		continue;
+			continue;
 	}
 	printf("exit\n");
 	return (0);
