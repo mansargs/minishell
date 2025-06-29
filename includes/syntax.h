@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 16:24:51 by mansargs          #+#    #+#             */
-/*   Updated: 2025/06/29 13:05:00 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/06/30 02:03:15 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ bool	should_I_wait(const t_token *last_token);
 bool	syntax_and_heredoc(t_token *tokens, char **line);
 bool	wait_for_input(t_token *last, char **line);
 bool	invalid_open_parenthesis(const t_token *token);
+bool	invalid_redirect(const t_token *token);
+bool	invalid_operator(const t_token *token);
 
 bool	syntax_analysis(t_token *tokens);
 bool	first_is_operator(t_token *head);
