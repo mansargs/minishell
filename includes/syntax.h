@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 16:24:51 by mansargs          #+#    #+#             */
-/*   Updated: 2025/06/30 12:56:45 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/06/30 14:06:38 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ bool	invalid_open_parenthesis(const t_token *token);
 bool	invalid_redirect(const t_token *token);
 bool	invalid_operator(const t_token *token);
 bool	strict_syntax_errors(t_token *tokens);
+
+bool	secondary_syntax_errors(const t_token *token, const t_token *head);
 
 
 #endif
