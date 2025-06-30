@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 03:03:48 by mansargs          #+#    #+#             */
-/*   Updated: 2025/06/30 14:12:56 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/06/30 16:04:00 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,30 +28,33 @@ static bool	redirection_secondary_errors(const t_token *token)
 	return (false);
 }
 
-static int	count_parenthesis(const t_token *head)
+static int	count_parenthesis(t_token *token)
 {
-	int	count = 0;
+	int		count;
+	t_token	*temp;
 
-	while (head)
+	count = 0;
+	temp = token;
+	while (temp)
 	{
-		if (head->token_operator_type == OPERATOR_PAREN_OPEN)
+		if (temp->token_operator_type == OPERATOR_PAREN_OPEN)
 			++count;
-		else if (head->token_operator_type == OPERATOR_PAREN_CLOSE)
+		else if (temp->token_operator_type == OPERATOR_PAREN_CLOSE)
 			--count;
-		head = head->next_token;
+		temp = temp->prev_token;
 	}
 	return (count);
 }
 
-bool	secondary_syntax_errors(const t_token *token, const t_token *head)
+bool	secondary_syntax_errors(const t_token *token)
 {
 	if (token->token_type == TOKEN_REDIRECT && redirection_secondary_errors(token))
 			return (true);
 	if (token->token_type == TOKEN_WORD && invalid_word(token))
 			return (true);
-	if (token->token_operator_type == OPERATOR_PAREN_CLOSE && count_parenthesis(head) < 0)
+	if (token->token_operator_type == OPERATOR_PAREN_CLOSE && count_parenthesis((t_token *) token) < 0)
 			return (printf("%s `)'\n", SYN_ERR), true);
-	if (token->token_type == TOKEN_OPERATOR && invalid_operator(token))
+	if (token->token_type == TOKEN_OPERATOR && invalid_operator(token, NOT_STRICT))
 		return (true);
 	return (false);
 }

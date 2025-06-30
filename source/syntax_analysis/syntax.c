@@ -6,13 +6,11 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 13:38:09 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/30 14:47:32 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/06/30 16:05:24 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "syntax.h"
-
-
 
 bool	syntax_and_heredoc(t_token *tokens, char **line)
 {
@@ -32,7 +30,7 @@ bool	syntax_and_heredoc(t_token *tokens, char **line)
 			if (!temp->file_name)
 				return (false);
 		}
-		else if (secondary_syntax_errors(temp, tokens))
+		else if (secondary_syntax_errors(temp))
 			return (free_tokens(tokens), false);
 		temp = temp->next_token;
 	}

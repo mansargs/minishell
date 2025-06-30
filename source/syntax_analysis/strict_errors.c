@@ -6,39 +6,38 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 02:55:20 by mansargs          #+#    #+#             */
-/*   Updated: 2025/06/30 14:51:22 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/06/30 16:02:27 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "syntax.h"
 
-static bool	is_there_open_parenthesis(t_token *token)
-{
-	t_token	*temp;
+// static bool	is_there_open_parenthesis(t_token *token)
+// {
+// 	t_token	*temp;
 
-	temp = token;
-	while(temp)
-	{
-		if (temp->token_operator_type == OPERATOR_PAREN_OPEN)
-			break ;
-		temp = temp->prev_token;
-	}
-	if (!temp)
-		return (false);
-	if (temp && (temp->prev_token || temp->prev_token->token_operator_type == OPERATOR_PIPE))
-		return (false);
-	while(temp)
-	{
-		if (temp->token_redirect_type == REDIRECT_HEREDOC)
-			return (true);
-		temp = temp->prev_token;
-	}
-	return (false);
-}
+// 	temp = token;
+// 	while(temp)
+// 	{
+// 		if (temp->token_operator_type == OPERATOR_PAREN_OPEN)
+// 			break ;
+// 		temp = temp->prev_token;
+// 	}
+// 	if (!temp)
+// 		return (false);
+// 	if (temp && (temp->prev_token || temp->prev_token->token_operator_type == OPERATOR_PIPE))
+// 		return (false);
+// 	while(temp)
+// 	{
+// 		if (temp->token_redirect_type == REDIRECT_HEREDOC)
+// 			return (true);
+// 		temp = temp->prev_token;
+// 	}
+// 	return (false);
+// }
 
 bool	invalid_redirect(const t_token *token)
 {
-
 	if (token->next_token && token->next_token->token_type == TOKEN_REDIRECT)
 		return (printf("%s `%s'\n", SYN_ERR, token->next_token->token_data), true);
 	if (token->next_token->token_type == TOKEN_OPERATOR)
@@ -46,10 +45,17 @@ bool	invalid_redirect(const t_token *token)
 	return (false);
 }
 
-bool	invalid_operator(const t_token *token)
+bool	invalid_operator(const t_token *token, const int strict_flag)
 {
 	if (!token->prev_token && token->token_operator_type != OPERATOR_PAREN_OPEN)
 		return (printf("%s `%s'\n", SYN_ERR, token->token_data), true);
+	if (strict_flag)
+	{
+		if (token->next_token
+			&& (token->next_token->token_operator_type == OPERATOR_PAREN_OPEN
+			|| token->next_token->token_operator_type == OPERATOR_PAREN_CLOSE))
+			return (false);
+	}
 	if (token->next_token && token->next_token->token_type == TOKEN_OPERATOR
 		&& token->next_token->token_operator_type != OPERATOR_PAREN_OPEN)
 		return (printf("%s `%s'\n", SYN_ERR, token->next_token->token_data), true);
@@ -64,11 +70,11 @@ bool	strict_syntax_errors(t_token *tokens)
 	temp = tokens;
 	while (temp)
 	{
-		if (temp->token_type == TOKEN_REDIRECT && !is_there_open_parenthesis(temp))
+		if (temp->token_type == TOKEN_REDIRECT)
 			if (invalid_redirect(temp))
 				return (true);
-		if (temp->token_type == TOKEN_OPERATOR && !is_there_open_parenthesis(temp))
-			if (invalid_operator(temp))
+		if (temp->token_type == TOKEN_OPERATOR)
+			if (invalid_operator(temp, STRICT))
 				return (true);
 		temp = temp->next_token;
 	}
