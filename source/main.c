@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:25 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/30 02:56:59 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/01 18:11:05 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "syntax.h"
 
-void print_tokens_with_neighbors(t_token *head)
+void	print_tokens_with_neighbors(t_token *head)
 {
 	t_token *curr = head;
 	int index = 0;
@@ -69,7 +69,7 @@ int	main(int argc, char *argv[])
 			break ;
 		tokens = tokenize(line);
 		if (!syntax_and_heredoc(tokens, &line))
-			continue;
+			continue ;
 	}
 	printf("exit\n");
 	return (0);
