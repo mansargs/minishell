@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 03:03:48 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/01 13:29:07 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/01 14:00:58 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,17 @@
 // 	return (count);
 // }
 
-bool	secondary_syntax_errors(const t_token *token, int	*opened_parenthesis)
+void	manage_parenthesis(const t_token *token, int *opened_parenthesis)
 {
 	if (token->token_operator_type == OPERATOR_PAREN_OPEN)
 		++*opened_parenthesis;
 	if (token->token_operator_type == OPERATOR_PAREN_CLOSE)
 		--*opened_parenthesis;
+}
+
+bool	secondary_syntax_errors(const t_token *token, int	*opened_parenthesis)
+{
+	manage_parenthesis(token, )
 	if (token->token_type == TOKEN_REDIRECT && invalid_redirect(token, NOT_STRICT))
 			return (true);
 	if (token->token_operator_type == OPERATOR_PAREN_CLOSE && *opened_parenthesis < 0)
