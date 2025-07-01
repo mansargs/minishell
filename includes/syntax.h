@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 16:24:51 by mansargs          #+#    #+#             */
-/*   Updated: 2025/06/30 16:04:14 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/01 13:20:06 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ bool	syntax_and_heredoc(t_token *tokens, char **line);
 bool	wait_for_input(t_token *last, char **line);
 bool	invalid_open_parenthesis(const t_token *token);
 
-bool	invalid_redirect(const t_token *token);
-bool	invalid_operator(const t_token *token, const int flag);
+bool	invalid_redirect(const t_token *token, const int strict_flag);
+bool	invalid_operator(const t_token *token, const int strict_flag);
 bool	strict_syntax_errors(t_token *tokens);
 
-bool	secondary_syntax_errors(const t_token *token);
+bool	secondary_syntax_errors(const t_token *token, int *opened_parenthesis);
 
 #define STRICT 1
 #define NOT_STRICT 0
