@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   absent_operand.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 00:51:12 by mansargs          #+#    #+#             */
-/*   Updated: 2025/06/27 16:57:17 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/01 22:49:22 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 bool	should_I_wait(const t_token *last_token)
 {
-	if (last_token->token_type == TOKEN_OPERATOR && last_token->token_operator_type != OPERATOR_PAREN_CLOSE)
+	if (last_token->token_type == TOKEN_OPERATOR
+		&& last_token->token_operator_type != OPERATOR_PAREN_CLOSE)
 		return (true);
 	return (false);
 }

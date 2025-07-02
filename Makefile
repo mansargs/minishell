@@ -3,7 +3,7 @@ MAKEFLAGS += --no-print-directory
 NAME = minishell
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
 
 SRC_DIR = source
 OBJ_DIR = objects
@@ -17,19 +17,19 @@ SYNTAX    = $(SRC_DIR)/syntax_analysis
 INCLUDES = -Iincludes -I$(LIBFT_DIR) -I$(GNL_DIR)
 
 SRCS = \
+	$(GNL_DIR)/get_next_line.c \
+	$(GNL_DIR)/get_next_line_utils.c \
 	$(SRC_DIR)/main.c \
 	$(LEXICAL)/tokenizer.c \
 	$(LEXICAL)/init.c \
 	$(LEXICAL)/tokenizer_utils.c \
 	$(LEXICAL)/token_quoted.c \
-	$(SYNTAX)/redirection.c \
-	$(SYNTAX)/operator.c \
-	$(SYNTAX)/paren.c \
+	$(SYNTAX)/strict_errors.c \
+	$(SYNTAX)/secondary_errors.c \
 	$(SYNTAX)/syntax.c \
 	$(SYNTAX)/heredoc.c \
 	$(SYNTAX)/absent_operand.c \
-	$(GNL_DIR)/get_next_line.c \
-	$(GNL_DIR)/get_next_line_utils.c
+	$(SYNTAX)/quotes_handle.c
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 

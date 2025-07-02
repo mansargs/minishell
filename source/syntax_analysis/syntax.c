@@ -3,28 +3,46 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 13:38:09 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/26 02:51:36 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/02 20:28:53 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "syntax.h"
 
-bool	syntax_analysis(t_token *token)
+bool	syntax_and_heredoc(t_token *tokens, char **line)
 {
-	if (last_is_redirection(token))
-		return (true);
-	// if (operator_before_paren(token))
-	// 	return (true);
-	if (empty_parens(token))
-		return (true);
-	if (operator_after_open_paren(token))
-		return (true);
-	if (operator_before_close_paren(token))
-		return (true);
-	if (close_paren_without_open(token))
-		return (true);
-	return (false);
+	t_token			*temp;
+	int				opened_parenthesis;
+	unsigned int	i;
+
+	if (strict_syntax_errors(tokens))
+		return (free_tokens(tokens), false);
+	temp = tokens;
+	opened_parenthesis = 0;
+	while (temp)
+	{
+		++i;
+		if (temp->token_redirect_type == REDIRECT_HEREDOC)
+		{
+			if (!temp->file_name)
+				temp->file_name = open_heredoc(temp, &i);
+			if (!temp->file_name)
+				return (false);
+		}
+		else if (secondary_syntax_errors(temp, &opened_parenthesis))
+			return (free_tokens(tokens), false);
+		if (!temp->next_token && should_I_wait(temp))
+		{
+			if (!wait_for_input(temp, line))
+				return (false);
+			return (syntax_and_heredoc(tokens, line));
+		}
+		temp = temp->next_token;
+	}
+	if (opened_parenthesis > 0)// (ete avel bac ( qcum em error
+		return (printf("%s `('\n", SYN_ERR), true);
+	return (true);
 }

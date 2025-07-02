@@ -6,13 +6,13 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:25 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/28 15:01:32 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/02 21:46:42 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "syntax.h"
 
-void print_tokens_with_neighbors(t_token *head)
+void	print_tokens_with_neighbors(t_token *head)
 {
 	t_token *curr = head;
 	int index = 0;
@@ -50,63 +50,6 @@ bool	only_spaces(const char *str)
 	return (true);
 }
 
-bool	syntax_error_before_heredoc(t_token *tokens)
-{
-	t_token	*temp;
-
-	temp = tokens;
-	if (temp && temp->token_type == TOKEN_OPERATOR
-		&& temp->token_operator_type != OPERATOR_PAREN_OPEN)
-		return (printf("%s `%s'\n", SYN_ERR, temp->token_data), true);
-	while (temp)
-	{
-		if (temp->token_type == TOKEN_REDIRECT
-			&& temp->next_token && temp->next_token->token_type != TOKEN_WORD)
-			return (printf("%s `%s'\n", SYN_ERR,
-					temp->next_token->token_data), true);
-		if ((temp->token_operator_type == OPERATOR_AND
-				|| temp->token_operator_type == OPERATOR_OR) && temp->next_token
-			&& (temp->next_token->token_operator_type == OPERATOR_AND
-				|| temp->next_token->token_operator_type == OPERATOR_OR))
-			return (printf("%s `%s'\n", SYN_ERR,
-					temp->next_token->token_data), true);
-		temp = temp->next_token;
-	}
-	return (false);
-}
-
-
-bool	syntax_and_heredoc(t_token *tokens, char **line)
-{
-	t_token			*temp;
-	unsigned int	i;
-
-	if (syntax_error_before_heredoc(tokens))
-		return (false);
-	temp = tokens;
-	while (temp)
-	{
-		++i;
-		if (temp->token_redirect_type == REDIRECT_HEREDOC)
-		{
-			if (!temp->file_name)
-				temp->file_name = open_heredoc(temp, &i);
-			if (!temp->file_name)
-				return (false);
-		}
-		if (syntax_analysis(temp))
-			return (free_tokens(tokens), false);
-		if (!temp->next_token && should_I_wait(temp))
-		{
-			if (!wait_for_input(temp, line))
-				return (false);
-			return (syntax_and_heredoc(tokens, line));
-		}
-		temp = temp->next_token;
-	}
-	return (true);
-}
-
 int	main(int argc, char *argv[])
 {
 	char	*line;
@@ -125,12 +68,9 @@ int	main(int argc, char *argv[])
 		if (!line)
 			break ;
 		tokens = tokenize(line);
+		add_history(line);
 		if (!syntax_and_heredoc(tokens, &line))
-		{
-			if (errno)
-				break;
-		}
-		continue;
+			continue ;
 	}
 	printf("exit\n");
 	return (0);
