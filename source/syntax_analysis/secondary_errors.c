@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 03:03:48 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/01 22:17:21 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/02 20:28:09 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@ bool	secondary_syntax_errors(const t_token *token, int	*opened_parenthesis)
 	if (token->token_operator_type == OPERATOR_PAREN_CLOSE
 		&& *opened_parenthesis < 0)// )ete avel pak ) qcum em error
 		return (printf("%s `)'\n", SYN_ERR), true);
-	if (*opened_parenthesis > 0)// (ete avel bac ( qcum em error
-		return (printf("%s `('\n", SYN_ERR), true);
 	if (token->token_operator_type == OPERATOR_PAREN_OPEN
 		&& token->prev_token && token->prev_token->token_type == TOKEN_WORD)
 		return (printf("%s `('\n", SYN_ERR), true);

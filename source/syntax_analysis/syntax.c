@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 13:38:09 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/01 13:31:23 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/02 20:28:53 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,7 @@ bool	syntax_and_heredoc(t_token *tokens, char **line)
 		}
 		temp = temp->next_token;
 	}
+	if (opened_parenthesis > 0)// (ete avel bac ( qcum em error
+		return (printf("%s `('\n", SYN_ERR), true);
 	return (true);
 }

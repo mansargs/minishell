@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 22:40:43 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/02 14:59:36 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/02 20:09:33 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ int	handle_quoted(t_token *token)
 	str = strip_quotes(token->token_data);
 	if (!str)
 		return (-1);
-	printf("%s\n", str);
 	free(str);
 	return (0);
 }
