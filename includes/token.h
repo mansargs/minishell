@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:21 by alisharu          #+#    #+#             */
-/*   Updated: 2025/06/25 23:58:52 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/03 02:28:25 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,9 @@
 typedef enum e_token_type
 {
 	TOKEN_WORD,					//  command
-	TOKEN_OPERATOR,				//  &&, ||, |, (, )
-	TOKEN_REDIRECT,				//  <, >, >>, <<
+	TOKEN_OPERATOR,				//  &&, ||, |
+	TOKEN_PAREN,				// (, )
+	TOKEN_REDIRECT				//  <, >, >>, <<
 }	t_token_type;
 
 typedef enum e_operator_type
@@ -37,10 +38,7 @@ typedef enum e_operator_type
 	OPERATOR_NONE,
 	OPERATOR_PIPE,				//  "|"
 	OPERATOR_OR,				//  "||"
-	OPERATOR_AND,				//  "&&"
-	// OPERATOR_AMP,				//  "&"
-	OPERATOR_PAREN_OPEN,		//  "("
-	OPERATOR_PAREN_CLOSE,		//  ")"
+	OPERATOR_AND				//  "&&"
 }	t_operator_type;
 
 typedef enum e_redirection_type
@@ -49,8 +47,15 @@ typedef enum e_redirection_type
 	REDIRECT_IN,				//    >"
 	REDIRECT_OUT,				//    "<"
 	REDIRECT_APPEND,			//    ">>"
-	REDIRECT_HEREDOC,			//    "<<"
+	REDIRECT_HEREDOC			//    "<<"
 }	t_redirection_type;
+
+typedef enum e_paren_type
+{
+	PAREN_NONE,
+	PAREN_OPEN,
+	PAREN_CLOSE
+}	t_paren_type;
 
 //main struct
 typedef struct s_token
@@ -61,6 +66,7 @@ typedef struct s_token
 	t_token_type		token_type;
 	t_operator_type		token_operator_type;
 	t_redirection_type	token_redirect_type;
+	t_paren_type		token_paren_type;
 	struct s_token		*next_token;
 	struct s_token		*prev_token;
 }	t_token;

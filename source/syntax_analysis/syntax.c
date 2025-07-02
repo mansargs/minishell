@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 13:38:09 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/02 20:28:53 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/03 02:37:57 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ bool	syntax_and_heredoc(t_token *tokens, char **line)
 {
 	t_token			*temp;
 	int				opened_parenthesis;
-	unsigned int	i;
 
 	if (strict_syntax_errors(tokens))
 		return (free_tokens(tokens), false);
