@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 02:55:20 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/02 20:18:39 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/02 21:45:15 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,8 @@ bool	invalid_redirect(const t_token *token, const int strict_flag)
 			return (printf("%s `%s'\n", SYN_ERR,
 					token->next_token->token_data), true);
 	}
-	else
-	{
-		if (!token->next_token)
-			return (printf("%s `newline'\n", SYN_ERR), true);// ls <<
-	}
+	if (!token->next_token)
+		return (printf("%s `newline'\n", SYN_ERR), true);// ls <<
 	if (token->next_token->token_type != TOKEN_WORD)// >> (n
 		return (printf("%s `%s'\n", SYN_ERR,
 				token->next_token->token_data), true);
