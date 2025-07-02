@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 02:55:20 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/01 22:15:46 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/02 14:53:06 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,16 @@ bool	strict_syntax_errors(t_token *tokens)
 		if (temp->token_type == TOKEN_REDIRECT)
 			if (invalid_redirect(temp, STRICT))
 				return (true);
-		if (temp->token_type == TOKEN_OPERATOR)
+		if (temp->token_type == TOKEN_OPERATOR) 
 			if (invalid_operator(temp, STRICT))
 				return (true);
-		if (temp->token_type == TOKEN_WORD)// es masy
+		if (temp->token_type == TOKEN_WORD)
+		{// es masy
 			if (invalid_word(temp))
 				return (true);
+			if (handle_quoted(temp) == -1)
+				return (true);
+		}
 		temp = temp->next_token;
 	}
 	return (false);

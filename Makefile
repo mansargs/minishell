@@ -28,7 +28,8 @@ SRCS = \
 	$(SYNTAX)/secondary_errors.c \
 	$(SYNTAX)/syntax.c \
 	$(SYNTAX)/heredoc.c \
-	$(SYNTAX)/absent_operand.c
+	$(SYNTAX)/absent_operand.c \
+	$(SYNTAX)/quotes_handle.c
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 
