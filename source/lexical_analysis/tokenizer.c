@@ -6,32 +6,40 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 20:35:41 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/03 14:49:03 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/03 16:40:32 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "token.h"
 
-t_token	*add_token(t_token *head, t_token *new_token)
+t_token	*last_token(t_token *head)
 {
 	t_token	*last;
 
-	if (!head || !new_token)
-		return ;
 	if (!head)
-	{
-		head = new_token;
-		new_token->prev_token = NULL;
-		return ;
-	}
+		return (NULL);
 	last = head;
 	while (last->next_token)
 		last = last->next_token;
+	return (last);
+}
+
+t_token	*add_token(t_token **head, t_token *new_token)
+{
+	t_token	*last;
+
+	if (!new_token)
+		return (last_token(*head));
+	if (!*head)
+	{
+		*head = new_token;
+		new_token->prev_token = NULL;
+		return (new_token);
+	}
+	last = last_token(*head);
 	last->next_token = new_token;
 	new_token->prev_token = last;
-	while (last->next_token)
-		last = last->next_token;
-	return (last);
+	return (last_token(last));
 }
 
 static int	get_word_len_with_quotes(const char *line)

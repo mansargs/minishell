@@ -6,21 +6,11 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 00:51:12 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/03 14:51:05 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/03 16:53:15 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "syntax.h"
-
-t_token	*last_token(t_token *head)
-{
-	t_token	*last;
-
-	last = head;
-	while (last->next_token)
-		last = last->next_token;
-	return (last);
-}
 
 bool	wait_for_input(t_token *last, char **line)
 {
@@ -52,9 +42,9 @@ bool	wait_for_input(t_token *last, char **line)
 		free(extra_line);
 		if (!new_tokens)
 			return (false);
-		last = add_token(last, new_tokens);
 		if (!syntax_and_heredoc(new_tokens))
 			return (false);
+		last = add_token(&last, new_tokens);
 		if (last->token_type != TOKEN_OPERATOR)
 			break ;
 	}

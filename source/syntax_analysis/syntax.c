@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 13:38:09 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/03 14:27:57 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/03 16:11:39 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ bool	valid_line(t_token *tokens, char **line)
 		return (false);
 	last = last_token(tokens);
 	if (last->token_type == TOKEN_OPERATOR)
-	{
-
-	}
+		if (!wait_for_input(last, line))
+			return (false);
+	return (true);
 }
