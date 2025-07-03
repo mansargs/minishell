@@ -3,25 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   absent_operand.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 00:51:12 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/01 22:49:22 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/03 14:07:58 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "syntax.h"
 
-bool	should_I_wait(const t_token *last_token)
+t_token	*last_token(t_token *head)
 {
-	if (last_token->token_type == TOKEN_OPERATOR
-		&& last_token->token_operator_type != OPERATOR_PAREN_CLOSE)
-		return (true);
-	return (false);
+	t_token	*last;
+
+	last = head;
+	while (last->next_token)
+		last = last->next_token;
+	return (last);
 }
 
 bool	wait_for_input(t_token *last, char **line)
 {
+	char	*last;
 	char	*extra_line;
 	char	*temp_str;
 	t_token	*new_tokens;
@@ -42,5 +45,8 @@ bool	wait_for_input(t_token *last, char **line)
 	new_tokens = tokenize(extra_line);
 	free(extra_line);
 	add_token(&last, new_tokens);
+	last = last_token(new_tokens);
+	if (!syntax_and_heredoc(new_tokens, line))
+		return (false);
 	return (true);
 }

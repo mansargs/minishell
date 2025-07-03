@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 20:35:41 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/03 02:34:47 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/03 12:05:20 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static int	handle_operator_token(const char *line, int i, t_token **head)
 		|| (line[i] == '<' && line[i + 1] == '<')
 		|| (line[i] == '>' && line[i + 1] == '>'))
 		len = 2;
-	type = _type(&line[i], len);
+	type = get_token_type(&line[i], len);
 	substr = ft_substr(&line[i], 0, len);
 	if (!substr)
 		return (-1);

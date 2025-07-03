@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:25 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/02 21:46:42 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/03 12:04:22 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,10 @@ int	main(int argc, char *argv[])
 		if (!line)
 			break ;
 		tokens = tokenize(line);
-		add_history(line);
-		if (!syntax_and_heredoc(tokens, &line))
-			continue ;
+		// add_history(line);
+		// if (!syntax_and_heredoc(tokens, &line))
+		// 	continue ;
+		print_tokens_with_neighbors(tokens);
 	}
 	printf("exit\n");
 	return (0);

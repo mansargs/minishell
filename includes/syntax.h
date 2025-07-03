@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 16:24:51 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/02 14:40:32 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/03 14:13:45 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@
 #define STRICT 1
 #define NOT_STRICT 0
 
-char	*open_heredoc(const t_token *tokens, unsigned int *index);
+char	*open_heredoc(const t_token *tokens);
+t_token	*last_token(t_token *head);
 bool	should_I_wait(const t_token *last_token);
 bool	syntax_and_heredoc(t_token *tokens, char **line);
 bool	wait_for_input(t_token *last, char **line);
