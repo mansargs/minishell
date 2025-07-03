@@ -6,13 +6,13 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 13:38:09 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/03 14:12:47 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/03 14:27:57 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "syntax.h"
 
-bool	syntax_and_heredoc(t_token *tokens, char **line)
+bool	syntax_and_heredoc(t_token *tokens)
 {
 	t_token	*temp;
 	int		opened_parenthesis;
@@ -41,5 +41,11 @@ bool	valid_line(t_token *tokens, char **line)
 {
 	t_token	*last;
 
-	last = 
+	if (!syntax_and_heredoc(tokens))
+		return (false);
+	last = last_token(tokens);
+	if (last->token_type == TOKEN_OPERATOR)
+	{
+
+	}
 }

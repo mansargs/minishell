@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 02:55:20 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/03 13:47:15 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/03 14:16:19 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,6 @@ bool	strict_syntax_errors(t_token *tokens)
 				return (true);
 		if (temp->token_type == TOKEN_WORD)
 		{// es masy
-			if (invalid_word(temp))
-				return (true);
 			if (handle_quoted(temp) == -1)
 				return (true);
 		}
