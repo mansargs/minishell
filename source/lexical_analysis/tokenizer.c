@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 20:35:41 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/03 16:40:32 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/04 13:56:17 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ t_token	*tokenize(char *line)
 		else if (is_special_char(line[i]))
 			len = handle_operator_token(line, i, &head);
 		else if (line[i] == '\'' || line[i] == '"')
-			len = handle_quoted_token(line, i, &head);
+			len = handle_quots_token(line, i, &head);
 		else
 			len = handle_word_token(line, i, &head);
 		if (len < 0)

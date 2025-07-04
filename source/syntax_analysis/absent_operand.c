@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   absent_operand.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 00:51:12 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/03 16:53:15 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/04 14:01:36 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ bool	wait_for_input(t_token *last, char **line)
 		if (only_spaces(extra_line))
 		{
 			free(extra_line);
-			continue;
+			continue ;
 		}
 		if (len > 0 && extra_line[len - 1] == '\n')
 			extra_line[len - 1] = '\0';

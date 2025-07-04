@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 13:38:09 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/03 16:11:39 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/04 13:25:56 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "syntax.h"
 
-bool	syntax_and_heredoc(t_token *tokens)
+bool	syntax_and_heredoc(t_shell *shell)
 {
 	t_token	*temp;
 	int		opened_parenthesis;
 
-	if (strict_syntax_errors(tokens))
-		return (free_tokens(tokens), false);
-	temp = tokens;
+	if (strict_syntax_errors(shell))
+		return (free_tokens(shell->tokens), false);
+	temp = shell->tokens;
 	opened_parenthesis = 0;
 	while (temp)
 	{
@@ -31,19 +31,19 @@ bool	syntax_and_heredoc(t_token *tokens)
 				return (false);
 		}
 		else if (secondary_syntax_errors(temp, &opened_parenthesis))
-			return (free_tokens(tokens), false);
+			return (free_tokens(shell->tokens), false);
 		temp = temp->next_token;
 	}
 	return (true);
 }
 
-bool	valid_line(t_token *tokens, char **line)
+bool	valid_line(t_shell *shell, char **line)
 {
 	t_token	*last;
 
-	if (!syntax_and_heredoc(tokens))
+	if (!syntax_and_heredoc(shell))
 		return (false);
-	last = last_token(tokens);
+	last = last_token(shell->tokens);
 	if (last->token_type == TOKEN_OPERATOR)
 		if (!wait_for_input(last, line))
 			return (false);

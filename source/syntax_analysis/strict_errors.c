@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   strict_errors.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 02:55:20 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/03 16:47:40 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/04 13:56:17 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,11 @@ bool	invalid_operator(const t_token *token, const int strict_flag)
 	return (false);
 }
 
-bool	strict_syntax_errors(t_token *tokens)
+bool	strict_syntax_errors(t_shell *shell)
 {
 	t_token	*temp;
 
-	temp = tokens;
+	temp = shell->tokens;
 	while (temp)
 	{
 		if (temp->token_type == TOKEN_REDIRECT)
@@ -80,7 +80,7 @@ bool	strict_syntax_errors(t_token *tokens)
 				return (true);
 		if (temp->token_type == TOKEN_WORD)
 		{// es masy
-			if (handle_quoted(temp) == -1)
+			if (handle_quots(shell->envp, temp) == -1)
 				return (true);
 		}
 		temp = temp->next_token;
