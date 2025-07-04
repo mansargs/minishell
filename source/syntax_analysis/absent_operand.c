@@ -6,17 +6,19 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 00:51:12 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/04 14:01:36 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/04 14:23:36 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "syntax.h"
 
-bool	wait_for_input(t_token *last, char **line)
+bool	wait_for_input(t_shell *shell, char **line)
 {
 	char	*extra_line;
 	char	*temp_str;
 	t_token	*new_tokens;
+	t_token	*prev;
+	t_token	*last;
 	int		len;
 
 	while (1)
@@ -29,7 +31,7 @@ bool	wait_for_input(t_token *last, char **line)
 		if (only_spaces(extra_line))
 		{
 			free(extra_line);
-			continue ;
+			continue;
 		}
 		if (len > 0 && extra_line[len - 1] == '\n')
 			extra_line[len - 1] = '\0';
@@ -42,9 +44,12 @@ bool	wait_for_input(t_token *last, char **line)
 		free(extra_line);
 		if (!new_tokens)
 			return (false);
-		if (!syntax_and_heredoc(new_tokens))
+		prev = shell->tokens;
+		shell->tokens = new_tokens;
+		if (!syntax_and_heredoc(shell))
 			return (false);
-		last = add_token(&last, new_tokens);
+		last = add_token(&prev, shell->tokens);
+		shell->tokens = prev;
 		if (last->token_type != TOKEN_OPERATOR)
 			break ;
 	}

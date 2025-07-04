@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 02:55:20 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/04 13:56:17 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/04 14:30:57 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ bool	strict_syntax_errors(t_shell *shell)
 				return (true);
 		if (temp->token_type == TOKEN_WORD)
 		{// es masy
+		
 			if (handle_quots(shell->envp, temp) == -1)
 				return (true);
 		}

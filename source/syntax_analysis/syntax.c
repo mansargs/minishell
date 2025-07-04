@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 13:38:09 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/04 13:25:56 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/04 14:24:21 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ bool	valid_line(t_shell *shell, char **line)
 		return (false);
 	last = last_token(shell->tokens);
 	if (last->token_type == TOKEN_OPERATOR)
-		if (!wait_for_input(last, line))
+		if (!wait_for_input(shell, line))
 			return (false);
 	return (true);
 }
