@@ -3,7 +3,7 @@ MAKEFLAGS += --no-print-directory
 NAME = minishell
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror #-fsanitize=address -g
 
 SRC_DIR = source
 OBJ_DIR = objects
@@ -24,12 +24,15 @@ SRCS = \
 	$(LEXICAL)/init.c \
 	$(LEXICAL)/tokenizer_utils.c \
 	$(LEXICAL)/token_quoted.c \
+	$(LEXICAL)/utils.c \
 	$(SYNTAX)/strict_errors.c \
 	$(SYNTAX)/secondary_errors.c \
 	$(SYNTAX)/syntax.c \
-	$(SYNTAX)/heredoc.c \
 	$(SYNTAX)/absent_operand.c \
-	$(SYNTAX)/quotes_handle.c
+	$(SYNTAX)/quotes_handle.c \
+	$(SYNTAX)/heredoc_utils.c \
+	$(SYNTAX)/heredoc.c \
+	$(SYNTAX)/utils.c 
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 

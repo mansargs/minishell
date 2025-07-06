@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 19:18:52 by mansargs          #+#    #+#             */
-/*   Updated: 2025/06/25 02:38:58 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/07 01:44:04 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ char	*ft_gnl_strjoin(char *line, const char *buf)
 	if (!res)
 		return (clear(&line), NULL);
 	while ((size_t)++i < len1)
-			res[i] = line[i];
+		res[i] = line[i];
 	i = -1;
 	while ((size_t)++i < len2)
 		res[len1 + i] = buf[i];

@@ -6,43 +6,13 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 22:40:43 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/04 14:34:05 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/07 01:38:46 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "syntax.h"
 
-int	is_env_char(char c)
-{
-	return (ft_isalnum(c) || c == '_');
-}
-
-char	*get_env_value(char **envp, const char *str)
-{
-	int		i;
-	int		len;
-
-	i = 0;
-	len = ft_strlen(str);
-	while (envp[i])
-	{
-		if (!ft_strncmp(envp[i], str, len) && envp[i][len] == '=')
-			return (envp[i] + len + 1);
-		i++;
-	}
-	return (NULL);
-}
-
-char	*ft_strjoin_free(char *s1, const char *s2)
-{
-	char	*res;
-
-	res = ft_strjoin(s1, s2);
-	free(s1);
-	return (res);
-}
-
-static void	append_char(char **res, char c)
+void	append_char(char **res, char c)
 {
 	char	tmp[2];
 	char	*new;
@@ -54,7 +24,7 @@ static void	append_char(char **res, char c)
 	*res = new;
 }
 
-static void	append_var(char **res, char **envp, const char *str, int *i)
+void	append_var(char **res, char **envp, const char *str, int *i)
 {
 	int		start;
 	int		len;
@@ -81,7 +51,7 @@ static void	append_var(char **res, char **envp, const char *str, int *i)
 	*i = start + len;
 }
 
-int check_is_open_quote(int quote, char *res)
+int	check_is_open_quote(int quote, char *res)
 {
 	if (quote)
 	{
@@ -130,6 +100,7 @@ int	handle_quots(char **envp, t_token *token)
 	str = open_quotes(envp, token->token_data, &open_flag);
 	if (!str)
 		return (-1);
-	printf("%s\n", str);
+	free(token->token_data);
+	token->token_data = str;
 	return (0);
 }

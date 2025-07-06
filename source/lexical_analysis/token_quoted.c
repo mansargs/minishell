@@ -6,11 +6,40 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 01:28:36 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/04 13:56:17 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/07 01:19:49 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "token.h"
+
+int	get_word_len_with_quotes(const char *line)
+{
+	int	i;
+	int	single_quotes;
+	int	double_quotes;
+
+	i = 0;
+	single_quotes = 0;
+	double_quotes = 0;
+	while (line[i])
+	{
+		if (!single_quotes && !double_quotes && is_space(line[i]))
+			break ;
+		if (!single_quotes && !double_quotes && is_special_char(line[i]))
+			break ;
+		if (line[i] == '\'' && !double_quotes)
+			single_quotes = !single_quotes;
+		else if (line[i] == '"' && !single_quotes)
+			double_quotes = !double_quotes;
+		if (line[i] == '$' && !single_quotes)
+		{
+			i = skip_variable(line, i);
+			continue ;
+		}
+		i++;
+	}
+	return (i);
+}
 
 static int	add_quoted_token(char *line, int start, t_token **head, int j)
 {
@@ -66,17 +95,4 @@ t_shell	*init_shell(char **envp)
 	shell->envp = envp;
 	shell->tokens = NULL;
 	return (shell);
-}
-
-void	free_tokens(t_token *head)
-{
-	t_token	*tmp;
-
-	while (head)
-	{
-		tmp = head;
-		head = head->next_token;
-		free(tmp->token_data);
-		free(tmp);
-	}
 }

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 02:47:43 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/03 13:16:54 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/07 01:40:44 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "syntax.h"
 
-static	int get_random_number()
+static int	get_random_number(void)
 {
 	int	fd;
 	int	number;
@@ -27,7 +27,7 @@ static	int get_random_number()
 	return (number);
 }
 
-static char	*get_file_name()
+static char	*get_file_name(void)
 {
 	char	*num_by_string;
 	char	*file_name;
@@ -55,7 +55,7 @@ static void	read_from_stdin(const int fd, const char *delim)
 
 	while (1)
 	{
-		ft_putstr_fd(" > ", STDOUT_FILENO);
+		ft_putstr_fd("> ", STDOUT_FILENO);
 		line = get_next_line(STDIN_FILENO);
 		if (!line)
 			return ;

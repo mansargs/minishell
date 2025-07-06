@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:23 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/03 02:47:07 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/06 22:15:05 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ static t_operator_type	get_operator_type(const char *token, const int len)
 	return (OPERATOR_NONE);
 }
 
-static t_redirection_type	get_redirection_type(const char *token, const int len)
+static t_redirection_type	get_redirection_type(const char *token,
+	const int len)
 {
 	if (len == 2)
 	{
@@ -50,33 +51,11 @@ static t_redirection_type	get_redirection_type(const char *token, const int len)
 
 static t_paren_type	get_paren_type(const char *token)
 {
-
 	if (*token == '(')
 		return (PAREN_OPEN);
 	if (*token == ')')
 		return (PAREN_CLOSE);
 	return (PAREN_NONE);
-}
-
-t_token_type	get_token_type(const char *token, int len)
-{
-	if (len == 1)
-	{
-		if (*token == '|' || *token == '&')
-			return (TOKEN_OPERATOR);
-		if (*token == '(' || *token == ')')
-			return (TOKEN_PAREN);
-		if (*token == '<' || *token == '>')
-			return (TOKEN_REDIRECT);
-	}
-	else if (len == 2)
-	{
-		if (!ft_strncmp(token, "&&", 2) || !ft_strncmp(token, "||", 2))
-			return (TOKEN_OPERATOR);
-		if (!ft_strncmp(token, ">>", 2) || !ft_strncmp(token, "<<", 2))
-			return (TOKEN_REDIRECT);
-	}
-	return (TOKEN_WORD);
 }
 
 t_token	*create_token(const char *t_data, t_token_type type)

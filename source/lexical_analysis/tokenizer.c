@@ -6,69 +6,31 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 20:35:41 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/04 13:56:17 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/06 22:13:45 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "token.h"
 
-t_token	*last_token(t_token *head)
+t_token_type	get_token_type(const char *token, int len)
 {
-	t_token	*last;
-
-	if (!head)
-		return (NULL);
-	last = head;
-	while (last->next_token)
-		last = last->next_token;
-	return (last);
-}
-
-t_token	*add_token(t_token **head, t_token *new_token)
-{
-	t_token	*last;
-
-	if (!new_token)
-		return (last_token(*head));
-	if (!*head)
+	if (len == 1)
 	{
-		*head = new_token;
-		new_token->prev_token = NULL;
-		return (new_token);
+		if (*token == '|' || *token == '&')
+			return (TOKEN_OPERATOR);
+		if (*token == '(' || *token == ')')
+			return (TOKEN_PAREN);
+		if (*token == '<' || *token == '>')
+			return (TOKEN_REDIRECT);
 	}
-	last = last_token(*head);
-	last->next_token = new_token;
-	new_token->prev_token = last;
-	return (last_token(last));
-}
-
-static int	get_word_len_with_quotes(const char *line)
-{
-	int	i;
-	int	single_quotes;
-	int	double_quotes;
-
-	i = 0;
-	single_quotes = 0;
-	double_quotes = 0;
-	while (line[i])
+	else if (len == 2)
 	{
-		if (!single_quotes && !double_quotes && is_space(line[i]))
-			break ;
-		if (!single_quotes && !double_quotes && is_special_char(line[i]))
-			break ;
-		if (line[i] == '\'' && !double_quotes)
-			single_quotes = !single_quotes;
-		else if (line[i] == '"' && !single_quotes)
-			double_quotes = !double_quotes;
-		if (line[i] == '$' && !single_quotes)
-		{
-			i = skip_variable(line, i);
-			continue ;
-		}
-		i++;
+		if (!ft_strncmp(token, "&&", 2) || !ft_strncmp(token, "||", 2))
+			return (TOKEN_OPERATOR);
+		if (!ft_strncmp(token, ">>", 2) || !ft_strncmp(token, "<<", 2))
+			return (TOKEN_REDIRECT);
 	}
-	return (i);
+	return (TOKEN_WORD);
 }
 
 static int	handle_operator_token(const char *line, int i, t_token **head)
@@ -114,16 +76,12 @@ static int	handle_word_token(const char *line, int i, t_token **head)
 	return (len);
 }
 
-t_token	*tokenize(char *line)
+static t_token	*tokenize_loop(char *line, t_token *head)
 {
-	t_token	*head;
-	int		len;
-	int		i;
+	int	i;
+	int	len;
 
 	i = 0;
-	head = NULL;
-	if (!*line || only_spaces(line))
-		return (NULL);
 	while (line[i])
 	{
 		if (is_space(line[i]))
@@ -142,4 +100,14 @@ t_token	*tokenize(char *line)
 		i += len;
 	}
 	return (head);
+}
+
+t_token	*tokenize(char *line)
+{
+	t_token	*head;
+
+	head = NULL;
+	if (!*line || only_spaces(line))
+		return (NULL);
+	return (tokenize_loop(line, head));
 }
