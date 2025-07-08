@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 02:47:43 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/07 01:40:44 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/08 16:12:28 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 static int	get_random_number(void)
 {
-	int	fd;
-	int	number;
-	int	result;
+	int				fd;
+	unsigned int	number;
+	int				result;
 
 	fd = open("/dev/urandom", O_RDONLY);
 	if (fd == -1)

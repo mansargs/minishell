@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:25 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/09 00:50:13 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/09 02:35:32 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,9 @@ int	main(int argc, char *argv[], char **envp)
 		free_tokens(shell->tokens);
 		shell->tokens = NULL;
 	}
+	if (shell)
+		free(shell);
+	shell = NULL;
 	printf("exit\n");
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 22:09:46 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/09 01:52:01 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/09 02:34:24 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,18 @@ void	free_tokens(t_token *head)
 	{
 		tmp = head;
 		head = head->next_token;
-		free(tmp->token_data);
+		if (tmp->token_data)
+		{
+			free(tmp->token_data);
+			tmp->token_data = NULL;
+		}
+		if (tmp->file_name)
+		{
+			free(tmp->file_name);
+			tmp->file_name = NULL;
+		}
 		free(tmp);
+		tmp = NULL;
 	}
 }
 
