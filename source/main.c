@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:25 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/07 02:00:44 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/08 15:57:33 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,14 @@ int	main(int argc, char *argv[], char **envp)
 			free(line);
 			continue ;
 		}
+		//print_list(shell);
 		free(line);
 		free_tokens(shell->tokens);
 		shell->tokens = NULL;
 	}
+	if (shell)
+		free(shell);
+	shell = NULL;
 	printf("exit\n");
 	return (0);
 }
