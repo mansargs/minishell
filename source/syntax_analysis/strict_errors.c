@@ -3,21 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   strict_errors.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 02:55:20 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/07 01:38:34 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/08 14:11:08 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "syntax.h"
-
-bool	invalid_word(const t_token *token)
-{
-	if (token->next_token && token->next_token->token_paren_type == PAREN_OPEN)
-		return (printf("%s `('\n", SYN_ERR), true);
-	return (false);
-}
 
 bool	invalid_redirect(const t_token *token, const int strict_flag)
 {

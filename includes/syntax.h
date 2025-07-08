@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 16:24:51 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/07 00:50:44 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/08 14:10:58 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ t_token	*last_token(t_token *head);
 bool	should_I_wait(const t_token *last_token);
 bool	syntax_and_heredoc(t_shell *shell);
 bool	wait_for_input(t_shell *shell, char **line);
-bool	invalid_open_parenthesis(const t_token *token);
-bool	invalid_word(const t_token *token);
 bool	invalid_redirect(const t_token *token, const int strict_flag);
 bool	invalid_operator(const t_token *token, const int strict_flag);
 bool	strict_syntax_errors(t_shell *shell);
