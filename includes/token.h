@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:21 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/07 01:19:38 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/09 01:52:49 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ typedef struct s_token
 {
 	char				*token_data;
 	char				*file_name;
-	int					is_temp;
 	t_token_type		token_type;
 	t_operator_type		token_operator_type;
 	t_redirection_type	token_redirect_type;
@@ -93,5 +92,6 @@ int				extract_quoted_string(char *line, int i, char *str);
 int				handle_quots_token(char *line, int i, t_token **head);
 int				skip_variable(const char *line, int i);
 int				get_word_len_with_quotes(const char *line);
+void			free_token(t_token *token);
 
 #endif

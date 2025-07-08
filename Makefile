@@ -3,7 +3,7 @@ MAKEFLAGS += --no-print-directory
 NAME = minishell
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror #-fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
 
 SRC_DIR = source
 OBJ_DIR = objects
@@ -13,6 +13,7 @@ LIBFT_DIR = $(LIB_DIR)/libft
 GNL_DIR   = $(LIB_DIR)/gnl
 LEXICAL   = $(SRC_DIR)/lexical_analysis
 SYNTAX    = $(SRC_DIR)/syntax_analysis
+PARSER    = $(SRC_DIR)/parser
 
 INCLUDES = -Iincludes -I$(LIBFT_DIR) -I$(GNL_DIR)
 
@@ -32,7 +33,8 @@ SRCS = \
 	$(SYNTAX)/quotes_handle.c \
 	$(SYNTAX)/heredoc_utils.c \
 	$(SYNTAX)/heredoc.c \
-	$(SYNTAX)/utils.c 
+	$(SYNTAX)/utils.c \
+	$(PARSER)/build_ast.c
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 

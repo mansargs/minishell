@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 22:09:46 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/06 22:12:01 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/09 01:52:01 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,5 +52,14 @@ void	free_tokens(t_token *head)
 		head = head->next_token;
 		free(tmp->token_data);
 		free(tmp);
+	}
+}
+
+void	free_token(t_token *token)
+{
+	if (token->token_data)
+	{
+		free(token->token_data);
+		token->token_data = NULL;
 	}
 }

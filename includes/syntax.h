@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 16:24:51 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/08 14:10:58 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/08 16:00:33 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # define NOT_STRICT 0
 
 t_token	*last_token(t_token *head);
+void	manage_parenthesis(const t_token *token, int *opened_parenthesis);
 bool	should_I_wait(const t_token *last_token);
 bool	syntax_and_heredoc(t_shell *shell);
 bool	wait_for_input(t_shell *shell, char **line);
