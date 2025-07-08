@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 15:30:46 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/09 02:27:49 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/09 02:35:56 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,19 +57,19 @@ bool	division_into_parenthesis(t_ast **branch, t_token *head)
 	return (true);
 }
 
-bool	command_redirection_division(t_ast *branch)
-{
-	t_token	*temp;
+// bool	command_redirection_division(t_ast *branch)
+// {
+// 	t_token	*temp;
 
-	temp = branch->command;
-	while (temp)
-	{
-		if (temp->token_type == TOKEN_REDIRECT)
-		{
-			branch
-		}
-	}
-}
+// 	temp = branch->command;
+// 	while (temp)
+// 	{
+// 		if (temp->token_type == TOKEN_REDIRECT)
+// 		{
+// 			branch
+// 		}
+// 	}
+// }
 
 bool	logic_division(t_ast **branch, t_token *head)
 {
@@ -95,11 +95,11 @@ bool	logic_division(t_ast **branch, t_token *head)
 		if (head->token_paren_type == PAREN_OPEN)
 			if (!division_into_parenthesis(branch, head))
 				return (false);
-		else
-		{
-			(*branch)->command = head;
-			command_redirection_division(*branch);
-		}
+		// else
+		// {
+		// 	(*branch)->command = head;
+		// 	command_redirection_division(*branch);
+		// }
 
 	}
 	return (true);
