@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:22:46 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/09 13:50:09 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/09 17:04:53 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ typedef struct ast
 }					t_ast;
 
 t_ast	*builing_ast(t_token	*head);
+bool	logic_division(t_ast **branch, t_token *head);
+bool	command_redirection_division(t_ast *branch);
+bool	division_into_parenthesis(t_ast **branch, t_token *head);
 
 #endif
-
-

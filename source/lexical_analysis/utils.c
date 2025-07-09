@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 22:09:46 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/09 13:20:23 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/09 16:51:10 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ t_token	*last_token(t_token *head)
 
 void	free_tokens(t_token *head)
 {
-	t_token *temp;
+	t_token	*temp;
 
 	while (head)
 	{
