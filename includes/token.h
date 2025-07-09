@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:21 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/09 01:52:49 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/09 13:14:04 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,6 @@ int				extract_quoted_string(char *line, int i, char *str);
 int				handle_quots_token(char *line, int i, t_token **head);
 int				skip_variable(const char *line, int i);
 int				get_word_len_with_quotes(const char *line);
-void			free_token(t_token *token);
+void			free_token(t_token **token);
 
 #endif

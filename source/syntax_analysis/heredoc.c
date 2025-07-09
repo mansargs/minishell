@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 02:47:43 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/08 16:12:28 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/09 14:23:37 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static int	get_random_number(void)
 	if (fd == -1)
 		return (-1);
 	result = read(fd, &number, sizeof number);
+	close(fd);
 	if (result == -1)
 		return (-1);
 	return (number);
@@ -29,9 +30,9 @@ static int	get_random_number(void)
 
 static char	*get_file_name(void)
 {
-	char	*num_by_string;
-	char	*file_name;
-	int		number;
+	char			*num_by_string;
+	char			*file_name;
+	unsigned int	number;
 
 	while (1)
 	{

@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:25 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/09 02:35:32 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/09 13:48:52 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,16 @@ void print_ast(t_ast *node, int level)
 	printf("● ");
 	print_token_list(node->command);
 
+	t_redirection *redir = node->redirect;
+	while (redir)
+	{
+		print_indent(level + 1);
+		printf("↳ Redirect: %s\n", redir->token->token_data);
+		print_indent(level + 1);
+		printf("↳ Target:   %s\n", redir->filename);
+		redir = redir->next;
+	}
+
 	if (node->left_side)
 	{
 		print_indent(level + 1);
@@ -77,6 +87,7 @@ void print_ast(t_ast *node, int level)
 		print_ast(node->right_side, level + 2);
 	}
 }
+
 
 
 

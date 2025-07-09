@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:22:46 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/09 00:43:40 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/09 13:50:09 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@
 
 typedef struct redirection
 {
-	t_token	*redirect;
-	char	*filename;
-	t_token	*next;
+	t_token				*token;
+	char				*filename;
+	struct redirection	*next;
 }			t_redirection;
 
 typedef struct ast
