@@ -34,29 +34,27 @@ SRCS = \
 	$(SYNTAX)/heredoc_utils.c \
 	$(SYNTAX)/heredoc.c \
 	$(SYNTAX)/utils.c \
-	$(PARSER)/ast_logic.c \
-	$(PARSER)/ast_redirection.c
+	$(PARSER)/env_init.c \
+	$(PARSER)/env_init_utils.c \
+	$(PARSER)/builtin_commands.c \
+	$(PARSER)/export_builtin.c
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 
 LIBS = -lreadline
 
-# Target rule
 $(NAME): $(OBJS) $(LIBFT_DIR)/libft.a
 	@echo Linking $(NAME)
 	@$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) $(LIBFT_DIR)/libft.a $(LIBS) -o $(NAME)
 
-# Rule to build .o files
 $(OBJ_DIR)/%.o: %.c | $(OBJ_DIR)
 	@mkdir -p $(dir $@)
 	@echo Compiling $<
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-# Create object directory if it doesn't exist
 $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
 
-# Build libft
 $(LIBFT_DIR)/libft.a:
 	@$(MAKE) -C $(LIBFT_DIR)
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:25 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/09 17:05:51 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/10 22:20:55 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,45 +54,75 @@ void print_token_list(t_token *token)
 	printf("\n");
 }
 
-void print_ast(t_ast *node, int level)
+// void print_ast(t_ast *node, int level)
+// {
+// 	if (!node)
+// 		return;
+
+// 	print_indent(level);
+// 	printf("● ");
+// 	print_token_list(node->command);
+
+// 	t_redirection *redir = node->redirect;
+// 	while (redir)
+// 	{
+// 		print_indent(level + 1);
+// 		printf("↳ Redirect: %s\n", redir->token->token_data);
+// 		print_indent(level + 1);
+// 		printf("↳ Target:   %s\n", redir->filename);
+// 		redir = redir->next;
+// 	}
+
+// 	if (node->left_side)
+// 	{
+// 		print_indent(level + 1);
+// 		printf("├─ Left:\n");
+// 		print_ast(node->left_side, level + 2);
+// 	}
+
+// 	if (node->right_side)
+// 	{
+// 		print_indent(level + 1);
+// 		printf("└─ Right:\n");
+// 		print_ast(node->right_side, level + 2);
+// 	}
+// }
+
+////
+
+void	print_env_table(t_env *env)
 {
-	if (!node)
-		return;
+	int				i;
+	t_env_node		*node;
 
-	print_indent(level);
-	printf("● ");
-	print_token_list(node->command);
-
-	t_redirection *redir = node->redirect;
-	while (redir)
+	i = 0;
+	while (i < HASH_SIZE)
 	{
-		print_indent(level + 1);
-		printf("↳ Redirect: %s\n", redir->token->token_data);
-		print_indent(level + 1);
-		printf("↳ Target:   %s\n", redir->filename);
-		redir = redir->next;
-	}
-
-	if (node->left_side)
-	{
-		print_indent(level + 1);
-		printf("├─ Left:\n");
-		print_ast(node->left_side, level + 2);
-	}
-
-	if (node->right_side)
-	{
-		print_indent(level + 1);
-		printf("└─ Right:\n");
-		print_ast(node->right_side, level + 2);
+		node = env->env[i];
+		// if (node)
+		// 	printf("Index %d:\n", i);
+		while (node)
+		{
+			printf("  \033[34m%s\033[0m", node->key);
+			if (node->is_equal)
+			{
+				printf("\033[37m=\033[0m");
+				if (node->value)
+					printf("\033[32m%s\033[0m", node->value);
+			}
+			printf("\n");
+			node = node->next;
+		}
+		i++;
 	}
 }
+
 
 int	main(int argc, char *argv[], char **envp)
 {
 	char	*line;
 	t_shell	*shell;
-	t_ast	*tree;
+	t_env	*my_env;
 
 	(void)argv;
 	if (argc > 1)
@@ -101,6 +131,23 @@ int	main(int argc, char *argv[], char **envp)
 		return (EXIT_FAILURE);
 	}
 	shell = init_shell(envp);
+	my_env = init_env(envp);
+	if (!my_env)
+	{
+		printf("Failed to initialize env table.\n");
+		return (1);
+	}
+	printf("=== Environment Table ===\n\n\n\n\n");
+	print_env_table(my_env);
+	printf("=========================\n");
+	env_set(my_env, "HELLO", "WORLD", 1);
+	env_set(my_env, "USER", "zasdfghj", 1);
+	env_set(my_env, "PATH", "/usr/pxik", 1);
+	env_set(my_env, "ALICEEEE", "", 1);
+	printf("=== After Manual Additions ===\n\n\n\n\n");
+
+	print_env_table(my_env);
+	printf("==============================\n");
 	while (1)
 	{
 		line = readline("minishell$ ");
@@ -113,14 +160,12 @@ int	main(int argc, char *argv[], char **envp)
 			free(line);
 			continue ;
 		}
-		if (!(tree = builing_ast(shell->tokens)))
-			return (EXIT_FAILURE);
-		else
-			print_ast(tree, 0);
+		handle_builtin_commands(shell, my_env);
 		free(line);
 		free_tokens(shell->tokens);
 		shell->tokens = NULL;
 	}
+	free_env_table(my_env);
 	if (shell)
 		free(shell);
 	shell = NULL;
