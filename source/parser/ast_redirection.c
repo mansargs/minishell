@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 16:57:34 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/09 17:03:41 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/10 12:52:26 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,15 +92,22 @@ bool	command_redirection_division(t_ast *branch)
 
 bool	division_into_parenthesis(t_ast **branch, t_token *head)
 {
+	t_token	*lparen_next;
+	t_token	*rparen_prev;
 	t_token	*temp;
 
 	temp = head;
-	head = head->next_token;
-	free_token(&temp);
-	temp = last_token(head);
-	temp->prev_token->next_token = NULL;
-	free_token(&temp);
-	if (!logic_division(branch, head))
+	lparen_next = head->next_token;
+	while (temp)
+	{
+		if (temp->token_paren_type == PAREN_CLOSE)
+			rparen_prev = temp->prev_token;
+		temp = temp->next_token;
+	}
+	head->next_token = rparen_prev->next_token;
+	rparen_prev->next_token = NULL;
+	lparen_next->prev_token = NULL;
+	if (!logic_division(branch, lparen_next))
 		return (false);
 	return (true);
 }

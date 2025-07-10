@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 15:30:46 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/09 17:10:34 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/10 12:51:05 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ bool	logic_division(t_ast **branch, t_token *head)
 	return (true);
 }
 
-t_ast	*builing_ast(t_token *head)
+t_ast	*building_ast(t_token *head)
 {
 	t_ast	*tree;
 
