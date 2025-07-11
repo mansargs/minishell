@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:25 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/11 17:04:22 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/12 01:42:46 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,6 @@ static void print_redir_chain(t_token *redir)
 
 void print_ast_full(t_ast *node, int level)
 {
-	if (!node)
-		return;
-
 	print_indent(level);
 	if (node->cmd && node->cmd->token_paren_type == PAREN_OPEN)
 	{
@@ -113,10 +110,39 @@ void print_ast_full(t_ast *node, int level)
 	}
 }
 
+
+void	print_env_table(t_env *env)
+{
+	int				i;
+	t_env_node		*node;
+
+	i = 0;
+	while (i < HASH_SIZE)
+	{
+		node = env->env[i];
+		// if (node)
+		// 	printf("Index %d:\n", i);
+		while (node)
+		{
+			printf("  \033[34m%s\033[0m", node->key);
+			if (node->is_equal)
+			{
+				printf("\033[37m=\033[0m");
+				if (node->value)
+					printf("\033[32m%s\033[0m", node->value);
+			}
+			printf("\n");
+			node = node->next;
+		}
+		i++;
+	}
+}
+
 int	main(int argc, char *argv[], char **envp)
 {
 	char	*line;
 	t_shell	*shell;
+	t_env	*my_env;
 	t_ast	*tree;
 
 	(void)argv;
@@ -126,6 +152,24 @@ int	main(int argc, char *argv[], char **envp)
 		return (EXIT_FAILURE);
 	}
 	shell = init_shell(envp);
+	my_env = init_env(envp);
+	if (!my_env)
+	{
+		printf("Failed to initialize env table.\n");
+		return (1);
+	}
+
+	printf("=== Environment Table ===\n\n\n\n\n");
+	print_env_table(my_env);
+	printf("=========================\n");
+	env_set(my_env, "HELLO", "WORLD", 1);
+	env_set(my_env, "USER", "zasdfghj", 1);
+	env_set(my_env, "PATH", "/usr/pxik", 1);
+	env_set(my_env, "ALICEEEE", "", 1);
+	printf("=== After Manual Additions ===\n\n\n\n\n");
+
+	print_env_table(my_env);
+	printf("==============================\n");
 	while (1)
 	{
 		line = readline("minishell$ ");
@@ -148,6 +192,7 @@ int	main(int argc, char *argv[], char **envp)
 		free_tokens(shell->tokens);
 		shell->tokens = NULL;
 	}
+	free_env_table(my_env);
 	if (shell)
 		free(shell);
 	shell = NULL;

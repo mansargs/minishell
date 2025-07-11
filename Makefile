@@ -14,6 +14,7 @@ GNL_DIR   = $(LIB_DIR)/gnl
 LEXICAL   = $(SRC_DIR)/lexical_analysis
 SYNTAX    = $(SRC_DIR)/syntax_analysis
 PARSER    = $(SRC_DIR)/parser
+BUILTIN   = $(SRC_DIR)/builtin
 
 INCLUDES = -Iincludes -I$(LIBFT_DIR) -I$(GNL_DIR)
 
@@ -36,28 +37,35 @@ SRCS = \
 	$(SYNTAX)/utils.c \
 	$(PARSER)/ast_logic.c \
 	$(PARSER)/ast_redirection.c \
-	$(PARSER)/ast_parenthesis.c
+	$(PARSER)/ast_parenthesis.c \
+	$(PARSER)/env_init.c \
+	$(PARSER)/env_init_utils.c \
+	$(PARSER)/print.c \
+	$(PARSER)/utils.c \
+	$(BUILTIN)/builtins.c \
+	$(BUILTIN)/export_builtin.c \
+	$(BUILTIN)/unset_builtin.c \
+	$(BUILTIN)/env_builtin.c \
+	$(BUILTIN)/pwd_builtin.c \
+	$(BUILTIN)/cd_builtin.c
+
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 
 LIBS = -lreadline
 
-# Target rule
 $(NAME): $(OBJS) $(LIBFT_DIR)/libft.a
 	@echo Linking $(NAME)
 	@$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) $(LIBFT_DIR)/libft.a $(LIBS) -o $(NAME)
 
-# Rule to build .o files
 $(OBJ_DIR)/%.o: %.c | $(OBJ_DIR)
 	@mkdir -p $(dir $@)
 	@echo Compiling $<
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-# Create object directory if it doesn't exist
 $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
 
-# Build libft
 $(LIBFT_DIR)/libft.a:
 	@$(MAKE) -C $(LIBFT_DIR) bonus
 
