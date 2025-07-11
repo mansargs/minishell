@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:25 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/11 13:56:03 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/11 13:58:28 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,6 @@ bool	only_spaces(const char *str)
 			return (false);
 	}
 	return (true);
-}
-
-void print_indent(int level)
-{
-	for (int i = 0; i < level; i++)
-		printf("│   ");
 }
 
 void print_token_list(t_token *token)
