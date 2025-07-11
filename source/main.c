@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:25 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/11 13:39:33 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/11 17:04:22 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,6 @@ bool	only_spaces(const char *str)
 	}
 	return (true);
 }
-
-#include <stdio.h>
-#include "parser.h"
 
 static void print_indent(int level)
 {
@@ -115,10 +112,6 @@ void print_ast_full(t_ast *node, int level)
 		print_ast_full(node->right_side, level + 2);
 	}
 }
-
-
-
-
 
 int	main(int argc, char *argv[], char **envp)
 {

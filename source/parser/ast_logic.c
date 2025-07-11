@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 15:30:46 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/11 03:24:37 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/11 16:31:00 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,11 @@ static t_token	*find_lowest_operator(t_token *head)
 	return (lowest);
 }
 
-static bool	handle_leaf_branch(t_ast **branch)
+static bool	handle_leaf_branch(t_ast *branch)
 {
-	if ((*branch)->tokens->token_paren_type == PAREN_OPEN)
+	if (branch->tokens->token_paren_type == PAREN_OPEN)
 		return (division_into_parenthesis(branch));
-	if (!command_redirection_division(*branch))
+	if (!command_redirection_division(branch))
 		return (false);
 	return (true);
 }
@@ -73,7 +73,7 @@ bool	logic_division(t_ast **branch, t_token *head)
 			|| !logic_division(&(*branch)->right_side, right_head))
 			return (false);
 	}
-	else if (!handle_leaf_branch(branch))
+	else if (!handle_leaf_branch(*branch))
 		return (false);
 	return (true);
 }

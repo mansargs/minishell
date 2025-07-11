@@ -35,7 +35,8 @@ SRCS = \
 	$(SYNTAX)/heredoc.c \
 	$(SYNTAX)/utils.c \
 	$(PARSER)/ast_logic.c \
-	$(PARSER)/ast_redirection.c
+	$(PARSER)/ast_redirection.c \
+	$(PARSER)/ast_parenthesis.c
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 
