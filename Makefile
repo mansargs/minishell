@@ -14,6 +14,7 @@ GNL_DIR   = $(LIB_DIR)/gnl
 LEXICAL   = $(SRC_DIR)/lexical_analysis
 SYNTAX    = $(SRC_DIR)/syntax_analysis
 PARSER    = $(SRC_DIR)/parser
+BUILTIN   = $(SRC_DIR)/builtin
 
 INCLUDES = -Iincludes -I$(LIBFT_DIR) -I$(GNL_DIR)
 
@@ -36,10 +37,14 @@ SRCS = \
 	$(SYNTAX)/utils.c \
 	$(PARSER)/env_init.c \
 	$(PARSER)/env_init_utils.c \
-	$(PARSER)/builtin_commands.c \
-	$(PARSER)/export_builtin.c \
 	$(PARSER)/print.c \
-	$(PARSER)/utils.c 
+	$(PARSER)/utils.c \
+	$(BUILTIN)/builtins.c \
+	$(BUILTIN)/export_builtin.c \
+	$(BUILTIN)/unset_builtin.c \
+	$(BUILTIN)/env_builtin.c \
+	$(BUILTIN)/pwd_builtin.c \
+	$(BUILTIN)/cd_builtin.c 
 
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)

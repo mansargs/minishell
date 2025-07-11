@@ -6,20 +6,36 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 21:17:08 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/11 12:58:24 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/11 18:21:33 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-unsigned int	hash_key(const char *key)
+void	print_sorted_export(t_env *env)
 {
-	unsigned int	hash;
+	t_env_node	**all_vars;
+	int			count;
+	int			i;
 
-	hash = 0;
-	while (*key)
-		hash = (hash * 31) + *key++;
-	return (hash % HASH_SIZE);
+	all_vars = get_all_env(env, &count);
+	sort_env_nodes(all_vars, count);
+	i = 0;
+	while (i < count)
+	{
+		if (all_vars[i]->is_equal)
+		{
+			if (all_vars[i]->value)
+				printf("declare -x %s=\"%s\"\n", all_vars[i]->key,
+					all_vars[i]->value);
+			else
+				printf("declare -x %s=\"\"\n", all_vars[i]->key);
+		}
+		else
+			printf("declare -x %s\n", all_vars[i]->key);
+		i++;
+	}
+	free(all_vars);
 }
 
 void	sort_env_nodes(t_env_node **list, int count)
@@ -44,6 +60,35 @@ void	sort_env_nodes(t_env_node **list, int count)
 		}
 		i++;
 	}
+}
+
+void	handle_export_argument(char *arg, t_env *env)
+{
+	char	*key;
+	char	*value;
+	int		is_equal;
+
+	is_equal = 0;
+	value = NULL;
+	if (ft_strchr(arg, '=') != NULL)
+		is_equal = 1;
+	key = get_key_data(arg);
+	if (!is_valid_identifier(key))
+	{
+		printf("minishell: export: `%s': not a valid identifier\n", key);
+		free(key);
+		return ;
+	}
+	if (is_equal)
+	{
+		value = get_value_data(arg);
+		env_set(env, key, value, 1);
+	}
+	else if (!env_get(env, key))
+		env_set(env, key, NULL, 0);
+	free(key);
+	if (is_equal && value)
+		free(value);
 }
 
 t_env_node	**get_all_env(t_env *env, int *count)
@@ -74,48 +119,14 @@ t_env_node	**get_all_env(t_env *env, int *count)
 	return (list);
 }
 
-void	handle_export_argument(char *arg, t_env *env)
-{
-	char	*key;
-	char	*value;
-	int		is_equal;
-
-	is_equal = 0;
-	value = NULL;
-	if (ft_strchr(arg, '=') != NULL)
-		is_equal = 1;
-	key = get_key_data(arg);
-	if (!is_valid_identifier(key))
-	{
-		free(key);
-		return ;
-	}
-	if (is_equal)
-	{
-		value = get_value_data(arg);
-		env_set(env, key, value, 1);
-	}
-	else if (!env_get(env, key))
-		env_set(env, key, NULL, 0);
-	free(key);
-	if (is_equal && value)
-		free(value);
-}
-
 int	export_builtin(char **args, t_env *env)
 {
 	int	i;
 
 	if (!args[1])
-	{
-		print_sorted_export(env);
-		return (0);
-	}
+		return (print_sorted_export(env), 0);
 	i = 1;
 	while (args[i])
-	{
-		handle_export_argument(args[i], env);
-		i++;
-	}
+		handle_export_argument(args[i++], env);
 	return (0);
 }

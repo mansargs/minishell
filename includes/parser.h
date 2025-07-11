@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:22:46 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/11 13:54:22 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/11 21:26:15 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,9 @@ void			print_sorted_export(t_env *env);
 int				is_valid_identifier(const char *str);
 int				export_builtin(char **args, t_env *env);
 void			handle_builtin_commands(t_shell *shell, t_env *env);
+void			unset_builtin(char **arg, t_env *env);
+void			env_builtin(char **args, t_env *env);
+void			pwd_builtin(t_shell *shell);
+void			cd_builtin(char **args, t_env *env);
+
 #endif
