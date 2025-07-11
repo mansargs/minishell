@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:22:46 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/10 21:52:16 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/11 13:54:22 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,24 +40,27 @@ typedef struct s_env
 
 
 t_ast			*building_ast(t_token	*head);
-t_env			*init_env(char **envp);
 bool			logic_division(t_ast **branch, t_token *head);
 bool			command_redirection_division(t_ast *branch);
 bool			division_into_parenthesis(t_ast **branch, t_token *head);
-void			free_env_table(t_env *env);
-void			env_set(t_env *env, char *key, char *value, int is_equal);
+//keyvalue
 char			*get_value_data(char *env_line);
 char			*get_key_data(char *env_line);
 unsigned int	hash_key(const char *key);
-
-void			free_string_array(char **arr);
-char			**token_list_to_array(t_token *token);
-void			handle_builtin_commands(t_shell *shell, t_env *env);
-int				is_valid_identifier(const char *str);
+//frees
+void			free_array(char **arr);
 void			free_env_table(t_env *env);
-void			handle_export_argument(char *arg, t_env *env);
+//env
+int				env_size(t_env *env);
+void			env_set(t_env *env, char *key, char *value, int is_equal);
+void			sort_env_nodes(t_env_node **list, int count);
+t_env			*init_env(char **envp);
+t_env_node		*env_get(t_env *env, const char *key);
+t_env_node		**get_all_env(t_env *env, int *count);
+//prin
 void			print_sorted_export(t_env *env);
+//builtin
+int				is_valid_identifier(const char *str);
 int				export_builtin(char **args, t_env *env);
-t_env_node		**gather_all_env(t_env *env, int *count);
-
+void			handle_builtin_commands(t_shell *shell, t_env *env);
 #endif

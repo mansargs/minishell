@@ -6,20 +6,47 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 16:49:09 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/10 21:28:59 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/11 12:59:01 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-unsigned int	hash_key(const char *key)
+int	env_size(t_env *env)
 {
-	unsigned int	hash;
+	int			i;
+	int			total;
+	t_env_node	*node;
 
-	hash = 0;
-	while (*key)
-		hash = (hash * 31) + *key++;
-	return (hash % HASH_SIZE);
+	total = 0;
+	i = 0;
+	while (i < HASH_SIZE)
+	{
+		node = env->env[i];
+		while (node)
+		{
+			total++;
+			node = node->next;
+		}
+		i++;
+	}
+	return (total);
+}
+
+t_env_node	*env_get(t_env *env, const char *key)
+{
+	t_env_node	*node;
+	int			index;
+
+	index = hash_key(key);
+	node = env->env[index];
+	while (node)
+	{
+		if (ft_strcmp(node->key, key) == 0)
+			return (node);
+		node = node->next;
+	}
+	return (NULL);
 }
 
 char	*get_value_data(char *env_line)
@@ -58,28 +85,4 @@ int	is_valid_identifier(const char *str)
 		i++;
 	}
 	return (1);
-}
-
-void	free_env_table(t_env *env)
-{
-	t_env_node	*current;
-	t_env_node	*next;
-	int			i;
-
-	i = 0;
-	while (i < HASH_SIZE)
-	{
-		current = env->env[i];
-		while (current)
-		{
-			next = current->next;
-			free(current->key);
-			if (current->value)
-				free(current->value);
-			free(current);
-			current = next;
-		}
-		i++;
-	}
-	free(env);
 }

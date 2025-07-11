@@ -37,7 +37,10 @@ SRCS = \
 	$(PARSER)/env_init.c \
 	$(PARSER)/env_init_utils.c \
 	$(PARSER)/builtin_commands.c \
-	$(PARSER)/export_builtin.c
+	$(PARSER)/export_builtin.c \
+	$(PARSER)/print.c \
+	$(PARSER)/utils.c 
+
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 

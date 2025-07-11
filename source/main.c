@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:25 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/10 22:20:55 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/11 13:56:03 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,7 @@ int	main(int argc, char *argv[], char **envp)
 		printf("Failed to initialize env table.\n");
 		return (1);
 	}
+
 	printf("=== Environment Table ===\n\n\n\n\n");
 	print_env_table(my_env);
 	printf("=========================\n");
