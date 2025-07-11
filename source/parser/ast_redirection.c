@@ -6,108 +6,95 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 16:57:34 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/10 12:52:26 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/11 13:00:12 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-static bool	handle_redir_filename(t_token *token, t_redirection *redir)
+void	append_back_list(t_token **list, t_token *token)
 {
-	if (token->token_redirect_type == REDIRECT_HEREDOC)
-		redir->filename = token->file_name;
+	t_token *last;
+
+	if (!*list)
+		*list = token;
 	else
 	{
-		redir->filename = ft_strdup(token->next_token->token_data);
-		if (!redir->filename)
-			return (false);
-	}
-	return (true);
-}
-
-static bool	remove_redirection(t_ast *branch, t_token *token,
-								t_redirection *redir)
-{
-	t_token	*pre_redir;
-	t_token	*next_next;
-
-	pre_redir = token->prev_token;
-	next_next = token->next_token->next_token;
-	redir->token = token;
-	if (!handle_redir_filename(token, redir))
-		return (false);
-	free_token(&token->next_token);
-	token->next_token = NULL;
-	if (pre_redir)
-	{
-		pre_redir->next_token = next_next;
-		if (next_next)
-			next_next->prev_token = pre_redir;
-	}
-	else
-	{
-		branch->command = next_next;
-		if (next_next)
-			next_next->prev_token = NULL;
-	}
-	return (true);
-}
-
-static void	append_redirection(t_redirection **head, t_redirection *new)
-{
-	t_redirection	*last;
-
-	if (!*head)
-		*head = new;
-	else
-	{
-		last = *head;
-		while (last->next)
-			last = last->next;
-		last->next = new;
+		last = last_token(*list);
+		last->next_token = token;
+		token->prev_token = last;
 	}
 }
 
 bool	command_redirection_division(t_ast *branch)
 {
-	t_token			*temp;
-	t_redirection	*new_redir;
+	t_token	*temp;
 
-	temp = branch->command;
+	temp = branch->tokens;
 	while (temp)
 	{
 		if (temp->token_type == TOKEN_REDIRECT)
 		{
-			new_redir = ft_calloc(1, sizeof(t_redirection));
-			if (!new_redir || !remove_redirection(branch, temp, new_redir))
-				return (false);
-			append_redirection(&branch->redirect, new_redir);
-			temp = branch->command;
-			continue ;
+			if (!temp->file_name)
+			{
+				temp->file_name = ft_strdup(temp->next_token->token_data);
+				if (!temp->file_name)
+					return (false);
+			}
+			branch->tokens = temp->next_token->next_token;
+			free_token(&temp->next_token);
+			temp->next_token = NULL;
+			append_back_list(&branch->redir, temp);
+			temp = branch->tokens;
 		}
-		temp = temp->next_token;
+		else
+		{
+			branch->tokens = temp->next_token;
+			temp->next_token = NULL;
+			temp->prev_token = NULL;
+			append_back_list(&branch->cmd, temp);
+			temp = branch->tokens;
+		}
 	}
 	return (true);
 }
 
-bool	division_into_parenthesis(t_ast **branch, t_token *head)
+bool	division_into_parenthesis(t_ast **branch)
 {
-	t_token	*lparen_next;
-	t_token	*rparen_prev;
+	t_token	*lparen;
+	t_token	*rparen;
+	t_token	*paren_content;
+	t_token	*after_close;
 	t_token	*temp;
 
-	temp = head;
-	lparen_next = head->next_token;
-	while (temp)
+	lparen = (*branch)->tokens;
+	temp = (*branch)->tokens;
+
+	while(temp)
 	{
 		if (temp->token_paren_type == PAREN_CLOSE)
-			rparen_prev = temp->prev_token;
+			rparen = temp;
 		temp = temp->next_token;
 	}
-	head->next_token = rparen_prev->next_token;
-	rparen_prev->next_token = NULL;
-	lparen_next->prev_token = NULL;
-	if (!logic_division(branch, lparen_next))
+	paren_content = lparen->next_token;
+	after_close = rparen->next_token;
+
+	lparen->next_token = rparen;
+	rparen->next_token = NULL;
+
+	if (after_close)
+	{
+		after_close->prev_token = NULL;
+		(*branch)->tokens = after_close;
+		if (!command_redirection_division(*branch))
+			return (false);
+	}
+	paren_content->prev_token = NULL;
+	rparen->prev_token->next_token = NULL;
+	(*branch)->cmd = lparen;
+	if (!logic_division(&(*branch)->left_side, paren_content))
 		return (false);
 	return (true);
 }
+
+

@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:22:46 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/10 14:21:09 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/11 02:45:08 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,16 @@
 
 typedef struct s_ast
 {
-	t_token			*token;
+	t_token			*tokens;
 	struct s_ast	*left_side;
 	struct s_ast	*right_side;
-	t_list			*cmd;
-	t_list			*redir;
+	t_token			*cmd;
+	t_token			*redir;
 }					t_ast;
 
 t_ast	*building_ast(t_token	*head);
 bool	logic_division(t_ast **branch, t_token *head);
 bool	command_redirection_division(t_ast *branch);
-bool	division_into_parenthesis(t_ast **branch, t_token *head);
+bool	division_into_parenthesis(t_ast **branch);
 
 #endif

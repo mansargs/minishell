@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:25 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/09 17:05:51 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/11 13:39:33 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,55 +38,87 @@ bool	only_spaces(const char *str)
 	return (true);
 }
 
-void print_indent(int level)
+#include <stdio.h>
+#include "parser.h"
+
+static void print_indent(int level)
 {
-	for (int i = 0; i < level; i++)
+	for (int i = 0; i < level; ++i)
 		printf("│   ");
 }
 
-void print_token_list(t_token *token)
+static void print_token_chain(t_token *tok)
 {
-	while (token)
+	while (tok)
 	{
-		printf("%s ", token->token_data);
-		token = token->next_token;
+		printf("%s", tok->token_data);
+        if (tok->file_name)
+            printf("%s", tok->file_name);
+		if (tok->next_token)
+			printf(" ");
+		tok = tok->next_token;
 	}
-	printf("\n");
 }
 
-void print_ast(t_ast *node, int level)
+static void print_redir_chain(t_token *redir)
+{
+	if (!redir)
+		return;
+	printf(" [ ");
+	print_token_chain(redir);
+	printf(" ]");
+}
+
+void print_ast_full(t_ast *node, int level)
 {
 	if (!node)
 		return;
 
 	print_indent(level);
-	printf("● ");
-	print_token_list(node->command);
-
-	t_redirection *redir = node->redirect;
-	while (redir)
+	if (node->cmd && node->cmd->token_paren_type == PAREN_OPEN)
 	{
+		// Subshell detected
+		printf("● Subshell: ( ) ");
+		print_redir_chain(node->redir);
+		printf("\n");
+
 		print_indent(level + 1);
-		printf("↳ Redirect: %s\n", redir->token->token_data);
-		print_indent(level + 1);
-		printf("↳ Target:   %s\n", redir->filename);
-		redir = redir->next;
+		printf("└─ Subshell Body:\n");
+		print_ast_full(node->left_side, level + 2);
+
+		// ❌ DO NOT print left_side and right_side again
+		return;
 	}
+
+	if (node->cmd && node->cmd->token_type == TOKEN_OPERATOR)
+	{
+		printf("● Operator: %s ", node->cmd->token_data);
+	}
+	else
+	{
+		printf("● Command: ");
+		print_token_chain(node->cmd);
+		print_redir_chain(node->redir);
+	}
+	printf("\n");
 
 	if (node->left_side)
 	{
 		print_indent(level + 1);
 		printf("├─ Left:\n");
-		print_ast(node->left_side, level + 2);
+		print_ast_full(node->left_side, level + 2);
 	}
-
 	if (node->right_side)
 	{
 		print_indent(level + 1);
 		printf("└─ Right:\n");
-		print_ast(node->right_side, level + 2);
+		print_ast_full(node->right_side, level + 2);
 	}
 }
+
+
+
+
 
 int	main(int argc, char *argv[], char **envp)
 {
@@ -107,16 +139,18 @@ int	main(int argc, char *argv[], char **envp)
 		if (!line)
 			break ;
 		shell->tokens = tokenize(line);
+		if (!shell->tokens)
+			continue ;
 		add_history(line);
-		if (!valid_line(shell, &line))
+		if (shell->tokens && !valid_line(shell, &line))
 		{
 			free(line);
 			continue ;
 		}
-		if (!(tree = builing_ast(shell->tokens)))
+		if (!(tree = building_ast(shell->tokens)))
 			return (EXIT_FAILURE);
 		else
-			print_ast(tree, 0);
+			print_ast_full(tree,0);
 		free(line);
 		free_tokens(shell->tokens);
 		shell->tokens = NULL;

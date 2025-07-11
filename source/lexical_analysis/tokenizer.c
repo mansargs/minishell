@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 20:35:41 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/08 15:44:27 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/11 13:28:01 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_token_type	get_token_type(const char *token, int len)
 {
 	if (len == 1)
 	{
-		if (*token == '|' || *token == '&')
+		if (*token == '|')
 			return (TOKEN_OPERATOR);
 		if (*token == '(' || *token == ')')
 			return (TOKEN_PAREN);

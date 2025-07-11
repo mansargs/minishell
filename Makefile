@@ -58,7 +58,7 @@ $(OBJ_DIR):
 
 # Build libft
 $(LIBFT_DIR)/libft.a:
-	@$(MAKE) -C $(LIBFT_DIR)
+	@$(MAKE) -C $(LIBFT_DIR) bonus
 
 all: $(NAME)
 

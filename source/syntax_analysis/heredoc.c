@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 02:47:43 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/09 14:23:37 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/11 13:23:49 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,12 @@ static char	*get_file_name(void)
 
 	while (1)
 	{
-		number = get_random_number();
+		while (1)
+		{
+			number = get_random_number();
+			if (number < INT_MAX)
+				break ;
+		}
 		num_by_string = ft_itoa(number);
 		if (!num_by_string)
 			return (NULL);
