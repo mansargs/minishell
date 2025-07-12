@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 16:49:09 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/11 12:59:01 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/11 23:58:03 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,20 +69,18 @@ char	*get_key_data(char *env_line)
 	return (ft_substr(env_line, 0, equal_pos - env_line));
 }
 
-int	is_valid_identifier(const char *str)
+bool	is_valid_identifier(const char *str)
 {
 	int	i;
 
-	if (!str || !str[0])
-		return (0);
-	if (!(ft_isalpha(str[0]) || str[0] == '_'))
-		return (0);
+	if (!str || (!ft_isalpha(str[0]) && str[0] != '_'))
+		return (false);
 	i = 1;
 	while (str[i])
 	{
-		if (!(ft_isalnum(str[i]) || str[i] == '_'))
-			return (0);
+		if (!ft_isalnum(str[i]) && str[i] != '_')
+			return (false);
 		i++;
 	}
-	return (1);
+	return (true);
 }
