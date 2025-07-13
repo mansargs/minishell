@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:22:46 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/12 01:32:02 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/12 19:23:45 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ t_env_node		**get_all_env(t_env *env, int *count);
 void			print_sorted_export(t_env *env);
 
 //builtin
-int				is_valid_identifier(const char *str);
+bool			is_valid_identifier(const char *s);
 int				export_builtin(char **args, t_env *env);
 void			handle_builtin_commands(t_shell *shell, t_env *env);
 void			unset_builtin(char **arg, t_env *env);

@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 02:55:20 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/11 16:18:45 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/12 20:34:58 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,7 @@ bool	invalid_redirect(const t_token *token, const int strict_flag)
 	{
 		if (!token->next_token)
 			return (printf("%s `newline'\n", SYN_ERR), true);
-		if (token->prev_token && token->prev_token->token_paren_type
-			== PAREN_CLOSE && token->next_token->next_token
+		if (token->next_token->next_token
 			&& token->next_token->next_token->token_type == TOKEN_WORD)
 			return (printf("%s `%s'\n", SYN_ERR,
 					token->next_token->next_token->token_data), true);
