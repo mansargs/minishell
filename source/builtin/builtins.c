@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 21:32:20 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/11 21:28:07 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/13 13:00:53 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,12 @@ void	handle_builtin_commands(t_shell *shell, t_env *env)
 	{
 		args = token_list_to_array(cmd);
 		cd_builtin(args, env);
+		free_array(args);
+	}
+	if (ft_strncmp(cmd->token_data, "echo", ft_strlen("echo")) == 0)
+	{
+		args = token_list_to_array(cmd);
+		echo_builtin(args, env);
 		free_array(args);
 	}
 }

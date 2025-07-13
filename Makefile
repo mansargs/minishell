@@ -44,7 +44,9 @@ SRCS = \
 	$(BUILTIN)/unset_builtin.c \
 	$(BUILTIN)/env_builtin.c \
 	$(BUILTIN)/pwd_builtin.c \
-	$(BUILTIN)/cd_builtin.c 
+	$(BUILTIN)/cd_builtin.c \
+	$(BUILTIN)/echo_builtin.c \
+	$(BUILTIN)/exit_builtin.c 
 
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)

@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:22:46 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/11 23:54:55 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/13 13:42:11 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # include "syntax.h"
 # define HASH_SIZE 128
+# define PATH_MAX 4096
+
 
 typedef struct s_ast
 {
@@ -67,5 +69,5 @@ void			unset_builtin(char **arg, t_env *env);
 void			env_builtin(char **args, t_env *env);
 void			pwd_builtin(t_shell *shell);
 void			cd_builtin(char **args, t_env *env);
-
+void			echo_builtin(char **args, t_env *env);
 #endif
