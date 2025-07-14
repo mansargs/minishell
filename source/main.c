@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:25 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/12 01:42:46 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/14 14:50:16 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,12 +162,7 @@ int	main(int argc, char *argv[], char **envp)
 	printf("=== Environment Table ===\n\n\n\n\n");
 	print_env_table(my_env);
 	printf("=========================\n");
-	env_set(my_env, "HELLO", "WORLD", 1);
-	env_set(my_env, "USER", "zasdfghj", 1);
-	env_set(my_env, "PATH", "/usr/pxik", 1);
-	env_set(my_env, "ALICEEEE", "", 1);
 	printf("=== After Manual Additions ===\n\n\n\n\n");
-
 	print_env_table(my_env);
 	printf("==============================\n");
 	while (1)

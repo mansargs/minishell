@@ -3,7 +3,7 @@ MAKEFLAGS += --no-print-directory
 NAME = minishell
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror #-fsanitize=address -g
 
 SRC_DIR = source
 OBJ_DIR = objects
@@ -15,6 +15,7 @@ LEXICAL   = $(SRC_DIR)/lexical_analysis
 SYNTAX    = $(SRC_DIR)/syntax_analysis
 PARSER    = $(SRC_DIR)/parser
 BUILTIN   = $(SRC_DIR)/builtin
+ENV       = $(SRC_DIR)/environment
 
 INCLUDES = -Iincludes -I$(LIBFT_DIR) -I$(GNL_DIR)
 
@@ -38,16 +39,16 @@ SRCS = \
 	$(PARSER)/ast_logic.c \
 	$(PARSER)/ast_redirection.c \
 	$(PARSER)/ast_parenthesis.c \
-	$(PARSER)/env_init.c \
-	$(PARSER)/env_init_utils.c \
-	$(PARSER)/print.c \
-	$(PARSER)/utils.c \
 	$(BUILTIN)/builtins.c \
 	$(BUILTIN)/export_builtin.c \
 	$(BUILTIN)/unset_builtin.c \
 	$(BUILTIN)/env_builtin.c \
 	$(BUILTIN)/pwd_builtin.c \
-	$(BUILTIN)/cd_builtin.c
+	$(BUILTIN)/cd_builtin.c \
+	$(ENV)/env_init.c \
+	$(ENV)/env_init_utils.c \
+	$(ENV)/print.c \
+	$(ENV)/utils.c
 
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
