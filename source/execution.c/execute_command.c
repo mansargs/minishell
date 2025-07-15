@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 15:08:42 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/15 15:24:42 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/15 15:46:45 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,29 @@ int	count_args(t_token *cmd)
 	return (count);
 }
 
+bool	fill_arguments(t_token *cmd, char **argv, int argc)
+{
+	const t_token	*temp;
+	int				i;
+
+	temp = cmd;
+	i = -1;
+	while (temp)
+	{
+		++i;
+		argv[i] = ft_strdup(temp->token_data);
+		if (!argv[i])
+		{
+			while (--i >= 0)
+				free(argv[i]);
+			return (false);
+		}
+		temp =temp->next_token;
+	}
+	argv[argc] = NULL;
+	return (true);
+}
+
 char	**get_args(t_ast *node)
 {
 	char	**arguments;
@@ -34,19 +57,17 @@ char	**get_args(t_ast *node)
 
 	argc = count_args(node->cmd);
 	arguments = ft_calloc(argc + 1, sizeof(char *));
-	if (!arguments)
+	if (!arguments || !fill_arguments(node->cmd, arguments, argc))
 		return (NULL);
-	fill_arguments()
-
-
+	return (arguments);
 }
 
-int	execute_command(t_ast *node, t_env *env, bool has_forked)
-{
-	pid_t	cmd;
+// int	execute_command(t_ast *node, t_env *env, bool has_forked)
+// {
+// 	pid_t	cmd;
 
-	if (!has_forked)
-	{
-		is_builtin()
-	}
-}
+// 	if (!has_forked)
+// 	{
+// 		is_builtin()
+// 	}
+// }
