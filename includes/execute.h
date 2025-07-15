@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 19:50:18 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/13 19:51:03 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/15 12:58:07 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define EXECUTE_H
 
 # include "parser.h"
-
-
+# include <sys/wait.h>
 
 #endif

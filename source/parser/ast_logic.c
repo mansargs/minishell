@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 15:30:46 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/11 16:31:00 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/15 13:57:12 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,12 @@ static bool	is_better_operator(t_token *temp, t_token *lowest)
 	if (!lowest)
 		return (true);
 	if (temp->token_operator_type == OPERATOR_PIPE)
-		return (false);
+	{
+		if (lowest->token_operator_type == OPERATOR_PIPE)
+			return (true);
+		else
+			return (false);
+	}
 	return (true);
 }
 
