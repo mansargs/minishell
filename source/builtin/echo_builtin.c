@@ -1,26 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd_builtin.c                                      :+:      :+:    :+:   */
+/*   echo_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/11 18:29:32 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/13 12:46:49 by alisharu         ###   ########.fr       */
+/*   Created: 2025/07/13 12:53:47 by alisharu          #+#    #+#             */
+/*   Updated: 2025/07/13 13:03:07 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-void	pwd_builtin(t_shell *shell)
+void	echo_builtin(char **args, t_env *env)
 {
-	char	*pwd;
+	int		i;
+	bool	newline;
 
-	(void)shell;
-	pwd = getcwd(NULL, 0);
-	if (pwd)
+	(void)env;
+
+	i = 1;
+	newline = true;
+	while (args[i] && ft_strcmp(args[i], "-n") == 0)
 	{
-		printf("%s\n", pwd);
-		free(pwd);
+		newline = false;
+		i++;
 	}
+	while (args[i])
+	{
+		printf("%s", args[i]);
+		if (args[i + 1])
+			printf(" ");
+		i++;
+	}
+	if (newline)
+		printf("\n");
 }

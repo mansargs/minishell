@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 14:36:43 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/11 17:49:24 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/12 15:54:55 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ void	unset_builtin(char **args, t_env *env)
 	{
 		if (!is_valid_identifier(args[i]))
 		{
-			printf("minishell: unset: `%s': not a valid identifier\n", args[i]);
 			i++;
 			continue ;
 		}

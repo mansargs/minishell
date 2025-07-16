@@ -1,26 +1,13 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd_builtin.c                                      :+:      :+:    :+:   */
+/*   exit_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/11 18:29:32 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/13 12:46:49 by alisharu         ###   ########.fr       */
+/*   Created: 2025/07/13 12:54:15 by alisharu          #+#    #+#             */
+/*   Updated: 2025/07/13 12:54:23 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
-
-void	pwd_builtin(t_shell *shell)
-{
-	char	*pwd;
-
-	(void)shell;
-	pwd = getcwd(NULL, 0);
-	if (pwd)
-	{
-		printf("%s\n", pwd);
-		free(pwd);
-	}
-}
