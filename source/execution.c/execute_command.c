@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 15:08:42 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/16 02:05:49 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/16 14:13:20 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,23 @@ int	count_args(t_token *cmd)
 	}
 	return (count);
 }
+
+void	free_matrix(char ***matrix)
+{
+	int i;
+
+	if (!matrix || !*matrix)
+		return;
+	i = 0;
+	while ((*matrix)[i])
+	{
+		free((*matrix)[i]);
+		i++;
+	}
+	free(*matrix);
+	*matrix = NULL;
+}
+
 
 bool	fill_arguments(t_token *cmd, char **argv, int argc)
 {
@@ -81,16 +98,60 @@ bool	execute_builtin(char **argv, t_env *env)
 	return (false);
 }
 
-bool	find_command_path(const char *cmd, t_env *env)
+bool	add_cmd_to_path(char **path, const char *cmd)
+{
+	int		i;
+	char	*new_cmd;
+	char	*joined;
+
+	new_cmd = ft_strjoin("/", cmd);
+	if (!new_cmd)
+		return (false);
+	i = -1;
+	while (path[++i])
+	{
+		joined = ft_strjoin(path[i], new_cmd);
+		if (!joined)
+			return (free(new_cmd), false);
+		free(path[i]);
+		path[i] = joined;
+	}
+	return (free(new_cmd), true);
+}
+
+char	*command_search(char	**path)
+{
+	int		i;
+
+	i = -1;
+	while (path[++i])
+	{
+		if (access(path[i], F_OK) == 0)
+			return (path[i]);
+	}
+	return (NULL);
+}
+
+int	find_command_path(const char *cmd, t_env *env, const char **argv)
 {
 	t_env_node	*path;
-	
+	char		**bin;
+	char		*cmd_path;
 
 	path = env_get(env, "PATH");
+	printf("%s\n", path->value);
 	if (!path)
 		return (-1);
-
-
+	bin = ft_split(path->value, ':');
+	if (!bin)
+		return (-1);
+	if (!add_cmd_to_path(bin, cmd))
+		return (-1);
+	cmd_path = command_search(path);
+	if (!cmd_path)
+		return (1);
+	execve(cmd_path, argv, );
+	return (0);
 }
 
 
@@ -104,9 +165,7 @@ int	execute_command(t_ast *node, t_env *env, bool has_forked)
 	if (!argv)
 		return (-1);
 	if (execute_builtin(argv, env))
-	{
-		free_argv()
-	}
+		return (free_matrix(&argv), 0);
 	if (!execute_builtin(argv, env))
 	{
 		if (!has_forked)
