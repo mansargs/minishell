@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 15:08:42 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/16 14:13:20 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/17 16:18:35 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,11 +132,90 @@ char	*command_search(char	**path)
 	return (NULL);
 }
 
+
+int	count_env_lines(t_env_node *env)
+{
+	const t_env_node	*temp;
+	int					count;
+
+	count = 0;
+	temp = env;
+	while (temp)
+	{
+		++count;
+		temp = temp->next;
+	}
+	return (count);
+}
+
+bool	merge_key_and_value(const t_env_node *node, char **line)
+{
+	char	*key_equal;
+	char	*full;
+
+	if (node->is_equal)
+	{
+		key_equal = ft_strjoin(node->key, "=");
+		if (!key_equal)
+			return (false);
+	full = ft_strjoin(key_equal, node->value);
+	if (!full)
+		return (free(key_equal), false);
+	}
+	else
+	{
+		full = ft_strdup(node->key);
+		if (!full)
+			return (false);
+	}
+	return (*line = full, true);
+}
+
+bool	fill_env_table(t_env_node *node, char **env_table)
+{
+	const t_env_node	*temp;
+	int					i;
+
+	temp = node;
+	i = -1;
+	while (temp)
+	{
+		++i;
+		if (!merge_key_and_value(temp, env_table + i))
+		{
+			while (--i >= 0)
+				free(env_table[i]);
+			return (false);
+		}
+		temp = temp->next;
+	}
+	return (true);
+}
+
+char	**env_to_char_matrix(const t_env *env)
+{
+	char		**env_table;
+	t_env_node	*move;
+	int			lines;
+
+	lines = count_env_lines(env->env);
+	if (!lines)
+		return (NULL);
+	env_table = ft_calloc(lines + 1, sizeof(char *));
+	if (!env_table)
+		return (NULL);
+	if (!fill_env_table(env->env, env_table))
+		return (free_matrix(&env_table), NULL);
+	env_table[lines] = NULL;
+	return (env_table);
+}
+
 int	find_command_path(const char *cmd, t_env *env, const char **argv)
 {
 	t_env_node	*path;
 	char		**bin;
 	char		*cmd_path;
+	char		**env_table;
 
 	path = env_get(env, "PATH");
 	printf("%s\n", path->value);
