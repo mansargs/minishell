@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 19:50:18 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/18 08:50:41 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/18 13:16:53 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,14 @@ typedef struct s_env t_env;
 
 typedef void (*t_builtin_func)(); 
 
-int	execute_ast(t_ast *node, t_env *env, bool has_forked);
-int	execute_command(t_ast *node, t_env *env, bool has_forked);
+int		execute_ast(t_ast *node, t_env *env, bool has_forked);
+int		execute_command(t_ast *node, t_env *env, bool has_forked);
 char	*ft_strcpy(char *dst, const char *src);
 char	*ft_strcat(char *dest, const char *src);
 void	free_matrix(char ***matrix);
+char	*join(char *str1, char *str2, char *str3);
+int		count_args(t_token *cmd);
+char	**convert_env_to_matrix(t_env *env);
+bool	execute_builtin(char **argv, t_env *env);
 
 #endif

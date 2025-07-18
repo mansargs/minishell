@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 21:32:20 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/13 13:00:53 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/18 13:16:27 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,4 +93,24 @@ void	handle_builtin_commands(t_shell *shell, t_env *env)
 		echo_builtin(args, env);
 		free_array(args);
 	}
+}
+
+
+bool	execute_builtin(char **argv, t_env *env)
+{
+	if (!ft_strcmp("cd", argv[0]))
+		return (cd_builtin(argv, env), true);
+	if (!ft_strcmp("pwd", argv[0]))
+		return (pwd_builtin(NULL), true);
+	if (!ft_strcmp("unset", argv[0]))
+		return (unset_builtin(argv, env), true);
+	if (!ft_strcmp("export", argv[0]))
+		return (export_builtin(argv, env), true);
+	if (!ft_strcmp("env", argv[0]))
+		return (env_builtin(argv, env), true);
+	// if (!ft_strcmp("echo", argv[0]))
+	// 	return (echo_builtin(), true);
+	// if (!ft_strcmp("exit", argv[0]))
+	// 	return (exit_builtin(), true);
+	return (false);
 }
