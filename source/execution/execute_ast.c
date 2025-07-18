@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_ast.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 19:49:43 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/18 14:51:28 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/18 16:09:38 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,29 +59,37 @@ bool	open_redirects(t_ast *node)
 
 int	execute_logic_and(t_ast *node, t_env *env)
 {
-	if (execute_ast(node->left_side, env, false))
-		return (1);
+	int	left_return;
+
+	left_return = execute_ast(node->left_side, env, false);
+	if (left_return != 0)
+		return (left_return);
 	return (execute_ast(node->right_side, env, false));
 }
 
 int	execute_logic_or(t_ast *node, t_env *env)
 {
-	if (execute_ast(node->left_side, env, false))
-		return (true);
+	int	left_return;
+
+	left_return = execute_ast(node->left_side, env, false);
+	if (left_return == 0)
+		return (0);
 	return (execute_ast(node->right_side, env, false));
 }
 
-int	execute_subshell(t_ast *node, t_env *env)
+int	execute_subshell(t_ast *node, t_env *env, bool has_forked)
 {
 	pid_t	pid;
 	int		result;
 
+	if (has_forked)
+		return (execute_ast(node->left_side, env, true));
 	pid = fork();
 	if (pid < 0)
 		return (perror("fork failed"), 1);
 	if (!pid)
 	{
-		result = execute_ast(node, env, false);
+		result = execute_ast(node->left_side, env, true);
 		exit(result);
 	}
 	if (waitpid(pid, &result, 0) == -1)
@@ -90,10 +98,9 @@ int	execute_subshell(t_ast *node, t_env *env)
 		return (WEXITSTATUS(result));
 	else
 		return (1);
-
 }
 
-bool execute_pipe(t_ast *node, t_env *env)
+int	execute_pipe(t_ast *node, t_env *env)
 {
 	int		pipe_fds[2];
 	pid_t	left;
@@ -102,39 +109,38 @@ bool execute_pipe(t_ast *node, t_env *env)
 	int		right_status;
 
 	if (pipe(pipe_fds) == -1)
-		return (false);
-
+		return (1);
 	left = fork();
 	if (left < 0)
-		return (perror("fork failed"), false);
+		return (perror("fork failed"), 1);
 	if (left == 0)
 	{
 		dup2(pipe_fds[1], STDOUT_FILENO);
 		close(pipe_fds[0]);
 		close(pipe_fds[1]);
-		exit(!execute_ast(node->left_side, env, true));
+		exit(execute_ast(node->left_side, env, true));
 	}
 
 	right = fork();
 	if (right < 0)
-		return (perror("fork failed"), false);
+		return (perror("fork failed"), 1);
 	if (right == 0)
 	{
 		dup2(pipe_fds[0], STDIN_FILENO);
 		close(pipe_fds[0]);
 		close(pipe_fds[1]);
-		exit(!execute_ast(node->right_side, env, true));
+		exit(execute_ast(node->right_side, env, true));
 	}
 	close(pipe_fds[0]);
 	close(pipe_fds[1]);
 
 	if (waitpid(left, &left_status, 0) == -1
 		|| waitpid(right, &right_status, 0) == -1)
-		return (perror("waiting failed"), false);
+		return (perror("waiting failed"), 1);
 
 	if (WIFEXITED(right_status))
 		return (WEXITSTATUS(right_status));
-	return (1);
+	return (0);
 }
 
 
@@ -157,13 +163,12 @@ int execute_ast(t_ast *node, t_env *env, bool has_forked)
 	else if (node->cmd->token_operator_type == OPERATOR_PIPE)
 		result = execute_pipe(node, env);
 	else if (node->cmd->token_paren_type == PAREN_OPEN)
-		result = execute_subshell(node, env);
+		result = execute_subshell(node, env, has_forked);
 	else
-		result = execute_command(node, env, 0);// stex 0 em tvel chgitem vonc handle anem
+		result = execute_command(node, env, has_forked);// stex 0 em tvel chgitem vonc handle anem
 	restore_standard_fd(old_stdin, old_stdout);
 	if (result == -1)
 		return (-1);
-	(void)has_forked;
 	return (result);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 21:53:17 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/18 14:49:44 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/18 16:20:49 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,10 @@ int	execute_command(t_ast *node, t_env *env, bool has_forked)
 	if (execute_builtin(argv, env))
 		return (free_matrix(&argv), 0);
 	if (has_forked)
-		return (free_matrix(&argv), 0);
-
+	{
+		child_execute(argv, env);
+		exit(EXIT_FAILURE);
+	}
 	pid = fork();
 	if (pid < 0)
 		return (perror("fork failed"), free_matrix(&argv), -1);
@@ -96,6 +98,6 @@ int	execute_command(t_ast *node, t_env *env, bool has_forked)
 	free_matrix(&argv);
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
-	return (-1);
+	return (1);
 }
 
