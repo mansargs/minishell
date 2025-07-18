@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 19:50:18 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/18 13:16:53 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/18 14:51:59 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,7 @@ char	*join(char *str1, char *str2, char *str3);
 int		count_args(t_token *cmd);
 char	**convert_env_to_matrix(t_env *env);
 bool	execute_builtin(char **argv, t_env *env);
+char	*command_search(char **paths);
+char	**get_arguments(t_token *cmd);
 
 #endif

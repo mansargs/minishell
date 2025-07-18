@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 19:49:43 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/18 09:37:07 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/18 14:51:28 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,7 @@ int execute_ast(t_ast *node, t_env *env, bool has_forked)
 	else if (node->cmd->token_paren_type == PAREN_OPEN)
 		result = execute_subshell(node, env);
 	else
-		result = execute_command(node, env, 0);
+		result = execute_command(node, env, 0);// stex 0 em tvel chgitem vonc handle anem
 	restore_standard_fd(old_stdin, old_stdout);
 	if (result == -1)
 		return (-1);
