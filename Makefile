@@ -3,7 +3,7 @@ MAKEFLAGS += --no-print-directory
 NAME = minishell
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror #-fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
 
 SRC_DIR = source
 OBJ_DIR = objects
@@ -16,6 +16,7 @@ SYNTAX    = $(SRC_DIR)/syntax_analysis
 PARSER    = $(SRC_DIR)/parser
 BUILTIN   = $(SRC_DIR)/builtin
 ENV       = $(SRC_DIR)/environment
+EXECUTION       = $(SRC_DIR)/execution
 
 INCLUDES = -Iincludes -I$(LIBFT_DIR) -I$(GNL_DIR)
 
@@ -49,13 +50,16 @@ SRCS = \
 	$(BUILTIN)/exit_builtin.c \
 	$(ENV)/env_init_utils.c \
 	$(ENV)/env_init.c \
-	$(ENV)/utils.c
+	$(ENV)/utils.c \
+	$(EXECUTION)/execute_ast.c \
+	$(EXECUTION)/execute_command.c \
+	$(EXECUTION)/execute_utils.c \
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 
 LIBS = -lreadline
 
-$(NAME): $(OBJS) $(LIBFT_DIR)/libft.a
+$(NAME): $(OBJS) $(LIBFT_DIR)/libft.a Makefile
 	@echo Linking $(NAME)
 	@$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) $(LIBFT_DIR)/libft.a $(LIBS) -o $(NAME)
 

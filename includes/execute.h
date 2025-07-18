@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 19:50:18 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/16 01:29:34 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/18 08:50:41 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,15 @@
 # include "parser.h"
 # include <sys/wait.h>
 
+typedef struct s_ast t_ast;
+typedef struct s_env t_env;
+
 typedef void (*t_builtin_func)(); 
+
+int	execute_ast(t_ast *node, t_env *env, bool has_forked);
+int	execute_command(t_ast *node, t_env *env, bool has_forked);
+char	*ft_strcpy(char *dst, const char *src);
+char	*ft_strcat(char *dest, const char *src);
+void	free_matrix(char ***matrix);
 
 #endif

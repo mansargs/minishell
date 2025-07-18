@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:22:46 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/16 14:21:30 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/17 23:39:53 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 # define PARSER_H
 
 # include "syntax.h"
+# include "execute.h"
 # define HASH_SIZE 128
 # define PATH_MAX 4096
+# define ENV_TABLE_SIZE 128
 
 
 typedef struct s_ast
@@ -26,7 +28,6 @@ typedef struct s_ast
 	t_token			*cmd;
 	t_token			*redir;
 }					t_ast;
-
 
 
 typedef struct s_env_node

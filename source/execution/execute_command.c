@@ -3,14 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/15 15:08:42 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/17 16:18:35 by mansargs         ###   ########.fr       */
+/*   Created: 2025/07/17 21:53:17 by alisharu          #+#    #+#             */
+/*   Updated: 2025/07/18 08:51:58 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
+
+char	*command_search(char	**path)
+{
+	int		i;
+
+	i = -1;
+	while (path[++i])
+	{
+		if (access(path[i], F_OK) == 0)
+			return (path[i]);
+	}
+	return (NULL);
+}
 
 int	count_args(t_token *cmd)
 {
@@ -26,23 +39,6 @@ int	count_args(t_token *cmd)
 	}
 	return (count);
 }
-
-void	free_matrix(char ***matrix)
-{
-	int i;
-
-	if (!matrix || !*matrix)
-		return;
-	i = 0;
-	while ((*matrix)[i])
-	{
-		free((*matrix)[i]);
-		i++;
-	}
-	free(*matrix);
-	*matrix = NULL;
-}
-
 
 bool	fill_arguments(t_token *cmd, char **argv, int argc)
 {
@@ -61,7 +57,7 @@ bool	fill_arguments(t_token *cmd, char **argv, int argc)
 				free(argv[i]);
 			return (false);
 		}
-		temp =temp->next_token;
+		temp = temp->next_token;
 	}
 	argv[argc] = NULL;
 	return (true);
@@ -72,10 +68,16 @@ char	**get_arguments(t_token *cmd)
 	char	**arguments;
 	int		argc;
 
+	if (!cmd)
+		return (NULL);
+
 	argc = count_args(cmd);
 	arguments = ft_calloc(argc + 1, sizeof(char *));
 	if (!arguments || !fill_arguments(cmd, arguments, argc))
+	{
+		free(arguments);
 		return (NULL);
+	}
 	return (arguments);
 }
 
@@ -98,6 +100,21 @@ bool	execute_builtin(char **argv, t_env *env)
 	return (false);
 }
 
+char	*join(char *str1, char *str2, char *str3)
+{
+	char	*joined;
+	size_t	len;
+
+	len = ft_strlen(str1) + ft_strlen(str2) + ft_strlen(str3) + 1;
+	joined = malloc(len);
+	if (!joined)
+		return (NULL);
+	ft_strcpy(joined, str1);
+	ft_strcat(joined, str2);
+	ft_strcat(joined, str3);
+	return (joined);
+}
+
 bool	add_cmd_to_path(char **path, const char *cmd)
 {
 	int		i;
@@ -115,110 +132,73 @@ bool	add_cmd_to_path(char **path, const char *cmd)
 			return (free(new_cmd), false);
 		free(path[i]);
 		path[i] = joined;
+		//printf("%s\n", path[i]);
 	}
 	return (free(new_cmd), true);
 }
 
-char	*command_search(char	**path)
+char	**convert_env_to_matrix(t_env *env)
 {
-	int		i;
-
-	i = -1;
-	while (path[++i])
-	{
-		if (access(path[i], F_OK) == 0)
-			return (path[i]);
-	}
-	return (NULL);
-}
-
-
-int	count_env_lines(t_env_node *env)
-{
-	const t_env_node	*temp;
-	int					count;
+	char		**envp;
+	int			i;
+	int			index;
+	int			count;
+	t_env_node	*node;
 
 	count = 0;
-	temp = env;
-	while (temp)
+	i = 0;
+	while (i < ENV_TABLE_SIZE)
 	{
-		++count;
-		temp = temp->next;
-	}
-	return (count);
-}
-
-bool	merge_key_and_value(const t_env_node *node, char **line)
-{
-	char	*key_equal;
-	char	*full;
-
-	if (node->is_equal)
-	{
-		key_equal = ft_strjoin(node->key, "=");
-		if (!key_equal)
-			return (false);
-	full = ft_strjoin(key_equal, node->value);
-	if (!full)
-		return (free(key_equal), false);
-	}
-	else
-	{
-		full = ft_strdup(node->key);
-		if (!full)
-			return (false);
-	}
-	return (*line = full, true);
-}
-
-bool	fill_env_table(t_env_node *node, char **env_table)
-{
-	const t_env_node	*temp;
-	int					i;
-
-	temp = node;
-	i = -1;
-	while (temp)
-	{
-		++i;
-		if (!merge_key_and_value(temp, env_table + i))
+		node = env->env[i];
+		while (node)
 		{
-			while (--i >= 0)
-				free(env_table[i]);
-			return (false);
+			count++;
+			node = node->next;
 		}
-		temp = temp->next;
+		i++;
 	}
-	return (true);
+	envp = malloc(sizeof(char *) * (count + 1));
+	if (!envp)
+		return (NULL);
+	index = 0;
+	i = 0;
+	while (i < ENV_TABLE_SIZE)
+	{
+		node = env->env[i];
+		while (node)
+		{
+			envp[index++] = join(node->key, "=", node->value);
+			node = node->next;
+		}
+		i++;
+	}
+	envp[index] = NULL;
+	return (envp);
 }
 
-char	**env_to_char_matrix(const t_env *env)
+
+void print_matrix(char **matrix)
 {
-	char		**env_table;
-	t_env_node	*move;
-	int			lines;
+	int	i;
 
-	lines = count_env_lines(env->env);
-	if (!lines)
-		return (NULL);
-	env_table = ft_calloc(lines + 1, sizeof(char *));
-	if (!env_table)
-		return (NULL);
-	if (!fill_env_table(env->env, env_table))
-		return (free_matrix(&env_table), NULL);
-	env_table[lines] = NULL;
-	return (env_table);
+	i = 0;
+	while (matrix && matrix[i])
+	{
+		printf("[%d]: %s\n", i, matrix[i]);
+		i++;
+	}
 }
 
-int	find_command_path(const char *cmd, t_env *env, const char **argv)
+int	find_command_path(const char *cmd, t_env *env, char *const *argv)
 {
 	t_env_node	*path;
 	char		**bin;
 	char		*cmd_path;
-	char		**env_table;
+	char		**new_envp;
 
+	//(void)argv;
 	path = env_get(env, "PATH");
-	printf("%s\n", path->value);
+	//printf("%s\n", path->value);
 	if (!path)
 		return (-1);
 	bin = ft_split(path->value, ':');
@@ -226,33 +206,46 @@ int	find_command_path(const char *cmd, t_env *env, const char **argv)
 		return (-1);
 	if (!add_cmd_to_path(bin, cmd))
 		return (-1);
-	cmd_path = command_search(path);
+	cmd_path = command_search(bin);
 	if (!cmd_path)
 		return (1);
-	execve(cmd_path, argv, );
+	new_envp = convert_env_to_matrix(env);
+	//print_matrix(new_envp);
+	execve(cmd_path, argv, new_envp);
 	return (0);
 }
 
-
 int	execute_command(t_ast *node, t_env *env, bool has_forked)
 {
-	pid_t	cmd_pid;
-	int		exit_code;
+	pid_t	pid;
 	char	**argv;
+	int		status;
 
 	argv = get_arguments(node->cmd);
 	if (!argv)
 		return (-1);
 	if (execute_builtin(argv, env))
 		return (free_matrix(&argv), 0);
-	if (!execute_builtin(argv, env))
+	if (!has_forked)
 	{
-		if (!has_forked)
+		pid = fork();
+		if (pid < 0)
+			return (perror("fork failed"), free_matrix(&argv), -1);
+		else if (pid == 0)
 		{
-			cmd_pid = fork();
-			if (cmd_pid < 0)
-				return (perror("fork failed"), -1);
-
+			if (find_command_path(argv[0], env, argv) != 0)
+			{
+				printf("%s: command not found\n", argv[0]);
+				exit(127);
+			}
+		}
+		else
+		{
+			waitpid(pid, &status, 0);
+			free_matrix(&argv);
+			return (WEXITSTATUS(status));
 		}
 	}
+	free_matrix(&argv);
+	return (0);
 }
