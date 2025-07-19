@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 13:38:09 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/20 02:06:03 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/20 02:15:00 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ bool	valid_line(t_shell *shell, char **line)
 	if (last && last->token_type == TOKEN_OPERATOR)
 		if (!wait_for_input(shell, line))
 			return (free(*line), *line = NULL, false);
-	ft_putendl_fd(*line, shell->history.fd);
+	if (*line)
+		ft_putendl_fd(*line, shell->history.fd);
 	return (true);
 }

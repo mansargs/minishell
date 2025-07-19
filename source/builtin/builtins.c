@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 21:32:20 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/19 11:10:25 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/20 02:50:28 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,5 +111,7 @@ bool	execute_builtin(char **argv, t_env *env)
 		return (echo_builtin(argv, env), true);
 	if (!ft_strcmp("exit", argv[0]))
 		return (exit_builtin(env->shell, argv), true);
+	if (!ft_strcmp("history", argv[0]))
+		return (history_builtin(), true);
 	return (false);
 }

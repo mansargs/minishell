@@ -3,7 +3,7 @@ MAKEFLAGS += --no-print-directory
 NAME = minishell
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror #-fsanitize=address -g
 
 SRC_DIR = source
 OBJ_DIR = objects
@@ -48,6 +48,7 @@ SRCS = \
 	$(BUILTIN)/cd_builtin.c \
 	$(BUILTIN)/echo_builtin.c \
 	$(BUILTIN)/exit_builtin.c \
+	$(BUILTIN)/history.c \
 	$(ENV)/env_init_utils.c \
 	$(ENV)/env_init.c \
 	$(ENV)/utils.c \
