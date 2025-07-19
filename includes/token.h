@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:21 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/19 11:37:12 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/19 15:59:33 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <stdbool.h>
+# include <fcntl.h>
 # include <errno.h>
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -68,9 +69,16 @@ typedef struct s_token
 	struct s_token		*prev_token;
 }	t_token;
 
-typedef struct s_shell
+typedef struct	s_history
+{
+	int		fd;
+	bool	is_there_heredoc;
+}				t_history;
+
+typedef struct	s_shell
 {
 	int			exit_code;
+	t_history	history;
 	char		**envp;
 	t_token		*tokens;
 }	t_shell;
