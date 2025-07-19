@@ -6,11 +6,10 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 21:53:17 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/18 16:20:49 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/18 16:30:29 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execute.h"
 #include "execute.h"
 
 bool	add_cmd_to_path(char **paths, const char *cmd)
