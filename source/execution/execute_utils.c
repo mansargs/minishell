@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 00:19:38 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/18 13:13:06 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/18 22:00:46 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ char	*ft_strcat(char *dest, const char *src)
 		i++;
 	while (src[j])
 		dest[i++] = src[j++];
-
 	dest[i] = '\0';
 	return (dest);
 }

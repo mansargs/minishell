@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 14:37:31 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/13 12:40:03 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/19 09:22:04 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,10 @@ void	env_set(t_env *env, char *key, char *value, int is_equal)
 	while (current)
 	{
 		if (ft_strcmp(current->key, key) == 0)
-	{
-		compair_key(current, key, value, is_equal);
-		return ;
-	}
+		{
+			compair_key(current, key, value, is_equal);
+			return ;
+		}
 		current = current->next;
 	}
 	new_node = create_env_node(key, value, is_equal);

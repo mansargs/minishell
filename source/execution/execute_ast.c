@@ -6,13 +6,13 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 19:49:43 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/18 14:51:28 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/19 09:37:58 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
 
-static	void restore_standard_fd(int std_in, int std_out)
+static void	restore_standard_fd(int std_in, int std_out)
 {
 	dup2(std_in, STDIN_FILENO);
 	dup2(std_out, STDOUT_FILENO);
@@ -90,7 +90,6 @@ int	execute_subshell(t_ast *node, t_env *env)
 		return (WEXITSTATUS(result));
 	else
 		return (1);
-
 }
 
 bool execute_pipe(t_ast *node, t_env *env)
@@ -114,7 +113,6 @@ bool execute_pipe(t_ast *node, t_env *env)
 		close(pipe_fds[1]);
 		exit(!execute_ast(node->left_side, env, true));
 	}
-
 	right = fork();
 	if (right < 0)
 		return (perror("fork failed"), false);
@@ -137,7 +135,6 @@ bool execute_pipe(t_ast *node, t_env *env)
 	return (1);
 }
 
-
 int execute_ast(t_ast *node, t_env *env, bool has_forked)
 {
 	int	old_stdin;
@@ -159,13 +156,10 @@ int execute_ast(t_ast *node, t_env *env, bool has_forked)
 	else if (node->cmd->token_paren_type == PAREN_OPEN)
 		result = execute_subshell(node, env);
 	else
-		result = execute_command(node, env, 0);// stex 0 em tvel chgitem vonc handle anem
+		result = execute_command(node, env, 0);
 	restore_standard_fd(old_stdin, old_stdout);
 	if (result == -1)
 		return (-1);
 	(void)has_forked;
 	return (result);
 }
-
-
-

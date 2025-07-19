@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   strict_errors.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 02:55:20 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/17 14:24:32 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/19 09:31:04 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ bool	invalid_redirect(const t_token *token, const int strict_flag)
 	{
 		if (!token->next_token)
 			return (printf("%s `newline'\n", SYN_ERR), true);
-		if (token->prev_token && token->prev_token->token_paren_type == PAREN_CLOSE
+		if (token->prev_token && token->prev_token->token_paren_type
+			== PAREN_CLOSE
 			&& token->next_token->next_token
 			&& token->next_token->next_token->token_type == TOKEN_WORD)
 			return (printf("%s `%s'\n", SYN_ERR,
@@ -89,10 +90,8 @@ bool	check_heredoc_case(t_token *token)
 bool	strict_syntax_errors(t_shell *shell)
 {
 	t_token	*temp;
-	t_token	*prev;
 
 	temp = shell->tokens;
-	prev = NULL;
 	while (temp)
 	{
 		if (temp->token_type == TOKEN_REDIRECT)
@@ -102,14 +101,6 @@ bool	strict_syntax_errors(t_shell *shell)
 		if (temp->token_type == TOKEN_OPERATOR)
 			if (invalid_operator(temp, STRICT))
 				return (true);
-		if (((prev && prev->token_redirect_type != REDIRECT_HEREDOC)
-				&& temp && temp->token_type == TOKEN_WORD)
-			|| (prev == NULL && temp && temp->token_type == TOKEN_WORD))
-		{
-			if (handle_quots(shell->envp, temp) == -1)
-				return (true);
-		}
-		prev = temp;
 		temp = temp->next_token;
 	}
 	return (false);

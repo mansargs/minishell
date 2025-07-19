@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:22:46 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/17 23:39:53 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/19 09:29:26 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 
 # include "syntax.h"
 # include "execute.h"
+
 # define HASH_SIZE 128
 # define PATH_MAX 4096
 # define ENV_TABLE_SIZE 128
-
 
 typedef struct s_ast
 {
@@ -27,8 +27,7 @@ typedef struct s_ast
 	struct s_ast	*right_side;
 	t_token			*cmd;
 	t_token			*redir;
-}					t_ast;
-
+}	t_ast;
 
 typedef struct s_env_node
 {
@@ -43,22 +42,22 @@ typedef struct s_env
 	t_env_node	*env[HASH_SIZE];
 }	t_env;
 
+/* AST */
+t_ast			*building_ast(t_token *head);
+bool			logic_division(t_ast **branch, t_token *head);
+bool			command_redirection_division(t_ast *branch);
+bool			division_into_parenthesis(t_ast *branch);
 
-t_ast	*building_ast(t_token	*head);
-bool	logic_division(t_ast **branch, t_token *head);
-bool	command_redirection_division(t_ast *branch);
-bool	division_into_parenthesis(t_ast *branch);
-
-//keyvalue
+/* Env Helpers */
 char			*get_value_data(char *env_line);
 char			*get_key_data(char *env_line);
 unsigned int	hash_key(const char *key);
 
-//frees
+/* Freeing */
 void			free_array(char **arr);
 void			free_env_table(t_env *env);
 
-//env
+/* Env Operations */
 int				env_size(t_env *env);
 void			env_set(t_env *env, char *key, char *value, int is_equal);
 void			sort_env_nodes(t_env_node **list, int count);
@@ -66,10 +65,10 @@ t_env			*init_env(char **envp);
 t_env_node		*env_get(t_env *env, const char *key);
 t_env_node		**get_all_env(t_env *env, int *count);
 
-//prin
+/* Export Output */
 void			print_sorted_export(t_env *env);
 
-//builtin
+/* Builtins */
 bool			is_valid_identifier(const char *s);
 int				export_builtin(char **args, t_env *env);
 void			handle_builtin_commands(t_shell *shell, t_env *env);
@@ -78,4 +77,7 @@ void			env_builtin(char **args, t_env *env);
 void			pwd_builtin(t_shell *shell);
 void			cd_builtin(char **args, t_env *env);
 void			echo_builtin(char **args, t_env *env);
+
+int				count_env_vars(t_env *env);
+
 #endif
