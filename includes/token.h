@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:21 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/18 22:02:14 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/19 11:37:12 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ typedef struct s_token
 
 typedef struct s_shell
 {
+	int			exit_code;
 	char		**envp;
 	t_token		*tokens;
 }	t_shell;

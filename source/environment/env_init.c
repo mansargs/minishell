@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 14:37:31 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/19 09:22:04 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/19 11:09:34 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	env_init_from_envp(t_env *env, char **envp)
 	}
 }
 
-t_env	*init_env(char **envp)
+t_env	*init_env(t_shell *my_shell, char **envp)
 {
 	t_env	*environment;
 	int		i;
@@ -100,5 +100,6 @@ t_env	*init_env(char **envp)
 	while (i < HASH_SIZE)
 		environment->env[i++] = NULL;
 	env_init_from_envp(environment, envp);
+	environment->shell = my_shell;
 	return (environment);
 }
