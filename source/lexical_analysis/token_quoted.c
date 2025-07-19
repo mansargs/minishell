@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 01:28:36 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/07 01:19:49 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/19 11:11:11 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ t_shell	*init_shell(char **envp)
 	shell = (t_shell *)malloc(sizeof(t_shell));
 	if (shell == NULL)
 		return (NULL);
+	shell->exit_code = 0;
 	shell->envp = envp;
 	shell->tokens = NULL;
 	return (shell);

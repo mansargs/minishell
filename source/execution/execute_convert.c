@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 13:11:41 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/18 14:50:51 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/19 09:19:05 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,21 +35,44 @@ bool	fill_arguments(t_token *cmd, char **argv, int argc)
 	return (true);
 }
 
-char	**get_arguments(t_token *cmd)
+static char	**build_argv_from_tokens(t_token *cmd_tokens, char **envp)
 {
-	char	**arguments;
-	int		argc;
+	char	**argv;
+	t_token	*arg;
+	int		count;
+	int		i;
 
-	if (!cmd)
+	count = count_tokens(cmd_tokens);
+	argv = malloc(sizeof(char *) * (count + 1));
+	if (!argv)
 		return (NULL);
-	argc = count_args(cmd);
-	arguments = ft_calloc(argc + 1, sizeof(char *));
-	if (!arguments || !fill_arguments(cmd, arguments, argc))
+	arg = cmd_tokens;
+	i = 0;
+	while (arg)
 	{
-		free(arguments);
-		return (NULL);
+		if (arg->token_type == TOKEN_WORD)
+		{
+			if (handle_quots(envp, arg) == -1)
+				return (free_matrix(&argv), NULL);
+			argv[i++] = ft_strdup(arg->token_data);
+		}
+		arg = arg->next_token;
 	}
-	return (arguments);
+	argv[i] = NULL;
+	return (argv);
+}
+
+char	**get_arguments(t_token *cmd_tokens, t_env *env)
+{
+	char	**argv;
+	char	**envp;
+
+	envp = convert_env_to_matrix(env);
+	if (!envp)
+		return (NULL);
+	argv = build_argv_from_tokens(cmd_tokens, envp);
+	free_matrix(&envp);
+	return (argv);
 }
 
 char	*command_search(char **paths)
@@ -63,27 +86,6 @@ char	*command_search(char **paths)
 			return (ft_strdup(paths[i]));
 	}
 	return (NULL);
-}
-
-int	count_env_vars(t_env *env)
-{
-	int				count;
-	int				i;
-	t_env_node		*node;
-
-	count = 0;
-	i = 0;
-	while (i < ENV_TABLE_SIZE)
-	{
-		node = env->env[i];
-		while (node)
-		{
-			count++;
-			node = node->next;
-		}
-		i++;
-	}
-	return (count);
 }
 
 char	**convert_env_to_matrix(t_env *env)

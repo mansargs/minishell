@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:25 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/18 09:06:48 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/19 11:08:05 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,7 @@ int	main(int argc, char *argv[], char **envp)
 		return (EXIT_FAILURE);
 	}
 	shell = init_shell(envp);
-	my_env = init_env(envp);
+	my_env = init_env(shell, envp);
 	if (!my_env)
 	{
 		printf("Failed to initialize env table.\n");

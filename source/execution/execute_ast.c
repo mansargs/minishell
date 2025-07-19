@@ -6,13 +6,13 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 19:49:43 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/18 16:09:38 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/19 14:32:22 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
 
-static	void restore_standard_fd(int std_in, int std_out)
+static void	restore_standard_fd(int std_in, int std_out)
 {
 	dup2(std_in, STDIN_FILENO);
 	dup2(std_out, STDOUT_FILENO);
@@ -120,7 +120,6 @@ int	execute_pipe(t_ast *node, t_env *env)
 		close(pipe_fds[1]);
 		exit(execute_ast(node->left_side, env, true));
 	}
-
 	right = fork();
 	if (right < 0)
 		return (perror("fork failed"), 1);
@@ -142,7 +141,6 @@ int	execute_pipe(t_ast *node, t_env *env)
 		return (WEXITSTATUS(right_status));
 	return (0);
 }
-
 
 int execute_ast(t_ast *node, t_env *env, bool has_forked)
 {
@@ -171,6 +169,4 @@ int execute_ast(t_ast *node, t_env *env, bool has_forked)
 		return (-1);
 	return (result);
 }
-
-
 

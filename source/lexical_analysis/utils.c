@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 22:09:46 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/09 16:51:10 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/18 22:01:12 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,18 @@ void	free_token(t_token **token)
 	}
 	free(*token);
 	*token = NULL;
+}
+
+int	count_tokens(t_token *token)
+{
+	int	count;
+
+	count = 0;
+	while (token)
+	{
+		if (token->token_type == TOKEN_WORD)
+			count++;
+		token = token->next_token;
+	}
+	return (count);
 }

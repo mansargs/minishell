@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 21:53:17 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/18 16:30:29 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/19 14:31:12 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	child_execute(char **argv, t_env *env)
 	perror("execve");
 	free(cmd_path);
 	free_matrix(&envp);
-	exit(126);// es promiison denide i u is a directory tarberakna kam not a directory
+	exit(126);
 }
 
 int	execute_command(t_ast *node, t_env *env, bool has_forked)
@@ -78,7 +78,7 @@ int	execute_command(t_ast *node, t_env *env, bool has_forked)
 	int		status;
 	char	**argv;
 
-	argv = get_arguments(node->cmd);
+	argv = get_arguments(node->cmd, env);
 	if (!argv)
 		return (-1);
 	if (execute_builtin(argv, env))
@@ -99,4 +99,3 @@ int	execute_command(t_ast *node, t_env *env, bool has_forked)
 		return (WEXITSTATUS(status));
 	return (1);
 }
-

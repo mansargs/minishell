@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:21 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/13 19:57:37 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/19 11:37:12 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ typedef struct s_token
 
 typedef struct s_shell
 {
+	int			exit_code;
 	char		**envp;
 	t_token		*tokens;
 }	t_shell;
@@ -93,5 +94,6 @@ int				handle_quots_token(char *line, int i, t_token **head);
 int				skip_variable(const char *line, int i);
 int				get_word_len_with_quotes(const char *line);
 void			free_token(t_token **token);
+int				count_tokens(t_token *token);
 
 #endif
