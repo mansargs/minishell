@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 19:50:18 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/19 11:04:48 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/20 12:35:01 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,10 @@ char	*join(char *str1, char *str2, char *str3);
 int		count_args(t_token *cmd);
 char	**convert_env_to_matrix(t_env *env);
 bool	execute_builtin(char **argv, t_env *env);
-char	*command_search(char **paths);
+char	*command_search(char **paths, t_env *env);
 char	**get_arguments(t_token *cmd_tokens, t_env *env);
-
+char	*find_command_path(const char *cmd, t_env *env);
+bool	add_cmd_to_path(char **paths, const char *cmd);
+bool	fill_arguments(t_token *cmd, char **argv, int argc);
+void	free_ast(t_ast *tree);
 #endif

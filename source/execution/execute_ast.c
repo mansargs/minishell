@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_ast.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 19:49:43 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/19 14:32:22 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/20 12:48:46 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,7 @@ int execute_ast(t_ast *node, t_env *env, bool has_forked)
 	else if (node->cmd->token_paren_type == PAREN_OPEN)
 		result = execute_subshell(node, env, has_forked);
 	else
-		result = execute_command(node, env, has_forked);// stex 0 em tvel chgitem vonc handle anem
+		result = execute_command(node, env, has_forked);
 	restore_standard_fd(old_stdin, old_stdout);
 	if (result == -1)
 		return (-1);

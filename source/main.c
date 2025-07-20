@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:25 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/19 11:08:05 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/20 12:33:48 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,6 +184,7 @@ int	main(int argc, char *argv[], char **envp)
 		// else
 		// 	print_ast_full(tree,0);
 		execute_ast(tree, my_env, 0);
+		free_ast(tree);
 		free(line);
 		free_tokens(shell->tokens);
 		shell->tokens = NULL;

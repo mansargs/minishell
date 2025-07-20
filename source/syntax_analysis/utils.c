@@ -6,11 +6,11 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 22:19:44 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/06 22:20:42 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/20 12:34:26 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "syntax.h"
+#include "execute.h"
 
 int	is_env_char(char c)
 {
@@ -40,4 +40,31 @@ char	*ft_strjoin_free(char *s1, const char *s2)
 	res = ft_strjoin(s1, s2);
 	free(s1);
 	return (res);
+}
+
+void	free_matrix(char ***matrix)
+{
+	int	i;
+
+	if (!matrix || !*matrix)
+		return ;
+	i = 0;
+	while ((*matrix)[i])
+	{
+		free((*matrix)[i]);
+		i++;
+	}
+	free(*matrix);
+	*matrix = NULL;
+}
+
+void	free_ast(t_ast *tree)
+{
+	if (!tree)
+		return ;
+	if (tree->left_side)
+		free_ast(tree->left_side);
+	if (tree->right_side)
+		free_ast(tree->right_side);
+	free(tree);
 }

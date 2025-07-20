@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 13:11:41 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/19 09:19:05 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/20 12:26:32 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,14 +75,18 @@ char	**get_arguments(t_token *cmd_tokens, t_env *env)
 	return (argv);
 }
 
-char	*command_search(char **paths)
+char	*command_search(char **paths, t_env *env)
 {
 	int	i;
 
 	i = -1;
 	while (paths[++i])
 	{
-		if (access(paths[i], F_OK | X_OK) == 0)
+		if (access(paths[i], F_OK) != 0)
+			env->shell->exit_code = 127;
+		else if (access(paths[i], X_OK | R_OK) != 0)
+			env->shell->exit_code = 126;
+		else if (access(paths[i], F_OK | X_OK) == 0)
 			return (ft_strdup(paths[i]));
 	}
 	return (NULL);

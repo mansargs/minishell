@@ -3,57 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 21:53:17 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/19 14:31:12 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/20 12:35:57 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
+#include <errno.h>
+#include <unistd.h>
 
-bool	add_cmd_to_path(char **paths, const char *cmd)
+static void	print_exec_error(const char *cmd, int exit_code)
 {
-	int		i;
-	char	*temp;
-	char	*joined;
-
-	if (!cmd)
-		return (false);
-	temp = ft_strjoin("/", cmd);
-	if (!temp)
-		return (false);
-	i = -1;
-	while (paths[++i])
+	if (strchr(cmd, '/'))
 	{
-		joined = ft_strjoin(paths[i], temp);
-		if (!joined)
-			return (free(temp), false);
-		free(paths[i]);
-		paths[i] = joined;
+		if (exit_code == 127)
+			printf("minishell: %s: No such file or directory\n", cmd);
+		else if (exit_code == 126)
+			printf("minishell: %s: Permission denied\n", cmd);
 	}
-	free(temp);
-	return (true);
+	else
+		printf("%s: command not found\n", cmd);
 }
 
-char	*find_command_path(const char *cmd, t_env *env)
-{
-	t_env_node	*path;
-	char		**bins;
-	char		*cmd_path;
-
-	path = env_get(env, "PATH");
-	if (!path)
-		return (NULL);
-	bins = ft_split(path->value, ':');
-	if (!bins || !add_cmd_to_path(bins, cmd))
-		return (NULL);
-	cmd_path = command_search(bins);
-	free_matrix(&bins);
-	return (cmd_path);
-}
-
-int	child_execute(char **argv, t_env *env)
+static int	child_execute(char **argv, t_env *env)
 {
 	char	*cmd_path;
 	char	**envp;
@@ -61,8 +35,8 @@ int	child_execute(char **argv, t_env *env)
 	cmd_path = find_command_path(argv[0], env);
 	if (!cmd_path)
 	{
-		fprintf(stderr, "%s: command not found\n", argv[0]);
-		exit(127);
+		print_exec_error(argv[0], env->shell->exit_code);
+		exit(env->shell->exit_code);
 	}
 	envp = convert_env_to_matrix(env);
 	execve(cmd_path, argv, envp);
@@ -72,7 +46,23 @@ int	child_execute(char **argv, t_env *env)
 	exit(126);
 }
 
-int	execute_command(t_ast *node, t_env *env, bool has_forked)
+static int	execute_command_no_fork(t_ast *node, t_env *env)
+{
+	char	**argv;
+
+	argv = get_arguments(node->cmd, env);
+	if (!argv)
+		return (-1);
+	if (execute_builtin(argv, env))
+	{
+		free_matrix(&argv);
+		return (0);
+	}
+	child_execute(argv, env);
+	exit(EXIT_FAILURE);
+}
+
+static int	execute_command_with_fork(t_ast *node, t_env *env)
 {
 	pid_t	pid;
 	int		status;
@@ -83,19 +73,28 @@ int	execute_command(t_ast *node, t_env *env, bool has_forked)
 		return (-1);
 	if (execute_builtin(argv, env))
 		return (free_matrix(&argv), 0);
-	if (has_forked)
-	{
-		child_execute(argv, env);
-		exit(EXIT_FAILURE);
-	}
 	pid = fork();
 	if (pid < 0)
-		return (perror("fork failed"), free_matrix(&argv), -1);
+	{
+		perror("fork failed");
+		free_matrix(&argv);
+		return (-1);
+	}
 	if (pid == 0)
 		child_execute(argv, env);
 	waitpid(pid, &status, 0);
 	free_matrix(&argv);
 	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	return (1);
+		env->shell->exit_code = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		env->shell->exit_code = WTERMSIG(status) + 128;
+	return (env->shell->exit_code);
+}
+
+int	execute_command(t_ast *node, t_env *env, bool has_forked)
+{
+	if (has_forked)
+		return (execute_command_no_fork(node, env));
+	else
+		return (execute_command_with_fork(node, env));
 }
