@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 19:49:43 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/20 12:48:46 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/20 13:33:26 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ int execute_ast(t_ast *node, t_env *env, bool has_forked)
 	int	old_stdout;
 	int	result;
 
-	if (!node)
+	if (!node || !node->cmd)
 		return (0);
 	old_stdin = dup(STDIN_FILENO);
 	old_stdout = dup(STDOUT_FILENO);

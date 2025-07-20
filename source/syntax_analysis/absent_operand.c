@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   absent_operand.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 00:51:12 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/06 22:26:49 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/20 01:59:51 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,100 +15,70 @@
 static bool	read_and_join_line(char **line, char **extra_line)
 {
 	char	*temp;
-	int		len;
 
-	ft_putstr_fd("> ", STDOUT_FILENO);
-	*extra_line = get_next_line(STDIN_FILENO);
-	if (!*extra_line)
-		return (false);
-	len = ft_strlen(*extra_line);
-	if (only_spaces(*extra_line))
-		return (free(*extra_line), read_and_join_line(line, extra_line));
-	if (len > 0 && (*extra_line)[len - 1] == '\n')
-		(*extra_line)[len - 1] = '\0';
-	temp = *line;
-	*line = ft_strjoin(*line, *extra_line);
-	free(temp);
-	if (!*line)
-		return (free(*extra_line), false);
+	while (1)
+	{
+		*extra_line = readline("> ");
+		if (!*extra_line)
+			return (false);
+		if (only_spaces(*extra_line))
+		{
+			free(*extra_line);
+			continue;
+		}
+		if (!*line)
+			*line = ft_strdup(*extra_line);
+		else
+		{
+			temp = *line;
+			*line = ft_strjoin(*line, *extra_line);
+			free(temp);
+		}
+		if (!*line)
+			return (free(*extra_line), false);
+		break ;
+	}
 	return (true);
 }
 
-static bool	validate_and_merge_tokens(t_shell *shell, char *extra_line)
+static int	validate_and_merge_tokens(t_shell *shell, char **extra_line)
 {
 	t_token	*new_tokens;
 	t_token	*prev;
 	t_token	*last;
 
-	new_tokens = tokenize(extra_line);
-	free(extra_line);
+	new_tokens = tokenize(*extra_line);
+	free(*extra_line);
+	*extra_line = NULL;
 	if (!new_tokens)
-		return (false);
+		return (1);
 	prev = shell->tokens;
 	shell->tokens = new_tokens;
 	if (!syntax_and_heredoc(shell))
-		return (false);
+		return (2);
 	last = add_token(&prev, shell->tokens);
 	shell->tokens = prev;
-	if (last->token_type != TOKEN_OPERATOR)
-		return (true);
-	return (false);
+	if (last->token_type == TOKEN_OPERATOR)
+		return (3);
+	return (0);
 }
 
 bool	wait_for_input(t_shell *shell, char **line)
 {
 	char	*extra_line;
+	int		result;
 
 	while (1)
 	{
 		if (!read_and_join_line(line, &extra_line))
 			return (false);
-		if (validate_and_merge_tokens(shell, extra_line))
-			break ;
+		result = validate_and_merge_tokens(shell, &extra_line);
+		if (result == 3)
+			continue ;
+		else if (result == 1)
+			return (false);
+		break ;
 	}
 	return (true);
 }
 
-// bool	wait_for_input(t_shell *shell, char **line)
-// {
-// 	char	*extra_line;
-// 	char	*temp_str;
-// 	t_token	*new_tokens;
-// 	t_token	*prev;
-// 	t_token	*last;
-// 	int		len;
-
-// 	while (1)
-// 	{
-// 		ft_putstr_fd("> ", STDOUT_FILENO);
-// 		extra_line = get_next_line(STDIN_FILENO);
-// 		if (!extra_line)
-// 			return (false);
-// 		len = ft_strlen(extra_line);
-// 		if (only_spaces(extra_line))
-// 		{
-// 			free(extra_line);
-// 			continue;
-// 		}
-// 		if (len > 0 && extra_line[len - 1] == '\n')
-// 			extra_line[len - 1] = '\0';
-// 		temp_str = *line;
-// 		*line = ft_strjoin(*line, extra_line);
-// 		free(temp_str);
-// 		if (!*line)
-// 			return (free(extra_line), false);
-// 		new_tokens = tokenize(extra_line);
-// 		free(extra_line);
-// 		if (!new_tokens)
-// 			return (false);
-// 		prev = shell->tokens;
-// 		shell->tokens = new_tokens;
-// 		if (!syntax_and_heredoc(shell))
-// 			return (false);
-// 		last = add_token(&prev, shell->tokens);
-// 		shell->tokens = prev;
-// 		if (last->token_type != TOKEN_OPERATOR)
-// 			break ;
-// 	}
-// 	return (true);
-// }

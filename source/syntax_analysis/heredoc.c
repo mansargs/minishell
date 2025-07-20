@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 02:47:43 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/11 13:23:49 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/19 15:44:12 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static char	*get_file_name(void)
 		num_by_string = ft_itoa(number);
 		if (!num_by_string)
 			return (NULL);
-		file_name = ft_strjoin("heredoc_", num_by_string);
+		file_name = ft_strjoin(".heredoc_", num_by_string);
 		free(num_by_string);
 		if (access(file_name, F_OK) == -1)
 			break ;
@@ -54,22 +54,20 @@ static char	*get_file_name(void)
 	return (file_name);
 }
 
-static void	read_from_stdin(const int fd, const char *delim)
+static void	read_from_stdin(const int fd, const char *delim, const int fd_history)
 {
 	char	*line;
 	size_t	len;
 
 	while (1)
 	{
-		ft_putstr_fd("> ", STDOUT_FILENO);
-		line = get_next_line(STDIN_FILENO);
+		line = readline("> ");
 		if (!line)
 			return ;
+		ft_putendl_fd(line, fd_history);
 		len = ft_strlen(line);
-		if (len > 0 && line[len -1] == '\n')
-			line[--len] = '\0';
 		if (len == ft_strlen(delim)
-			&& ft_strncmp(line, delim, ft_strlen(delim)) == 0)
+			&& ft_strncmp(line, delim, len) == 0)
 		{
 			free(line);
 			return ;
@@ -79,7 +77,7 @@ static void	read_from_stdin(const int fd, const char *delim)
 	}
 }
 
-char	*open_heredoc(const t_token *token)
+char	*open_heredoc(const t_token *token, const int fd_history)
 {
 	int		fd;
 	char	*name;
@@ -94,7 +92,7 @@ char	*open_heredoc(const t_token *token)
 	fd = open(name, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (fd == -1)
 		return (free(name), NULL);
-	read_from_stdin(fd, token->next_token->token_data);
+	read_from_stdin(fd, token->next_token->token_data, fd_history);
 	close(fd);
 	return (name);
 }

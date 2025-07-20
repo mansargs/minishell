@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 16:24:51 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/08 16:00:33 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/19 15:45:33 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define SYNTAX_H
 
 # include "token.h"
-# include <fcntl.h>
 
 # define STRICT 1
 # define NOT_STRICT 0
@@ -30,7 +29,7 @@ bool	strict_syntax_errors(t_shell *shell);
 bool	valid_line(t_shell *shell, char **line);
 bool	secondary_syntax_errors(const t_token *token, int *opened_parenthesis);
 int		handle_quots(char **envp, t_token *token);
-char	*open_heredoc(const t_token *tokens);
+char	*open_heredoc(const t_token *tokens, const int fd_history);
 int		is_env_char(char c);
 char	*get_env_value(char **envp, const char *str);
 char	*ft_strjoin_free(char *s1, const char *s2);
