@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 21:53:17 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/20 12:35:57 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/21 20:30:38 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ static int	execute_command_with_fork(t_ast *node, t_env *env)
 	argv = get_arguments(node->cmd, env);
 	if (!argv)
 		return (-1);
+	if (!open_wildcards(&argv))
+		return (free_matrix(&argv), -1)
 	if (execute_builtin(argv, env))
 		return (free_matrix(&argv), 0);
 	pid = fork();
