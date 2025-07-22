@@ -56,7 +56,8 @@ SRCS = \
 	$(EXECUTION)/execute_command.c \
 	$(EXECUTION)/execute_utils.c \
 	$(EXECUTION)/execute_convert.c \
-	$(EXECUTION)/execute_cmd_path.c
+	$(EXECUTION)/execute_cmd_path.c \
+	$(EXECUTION)/wildcard.c
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 

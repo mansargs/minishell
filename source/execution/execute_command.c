@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 21:53:17 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/21 20:30:38 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/23 02:25:43 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ static int	child_execute(char **argv, t_env *env)
 	exit(126);
 }
 
+
 static int	execute_command_no_fork(t_ast *node, t_env *env)
 {
 	char	**argv;
@@ -53,6 +54,8 @@ static int	execute_command_no_fork(t_ast *node, t_env *env)
 	argv = get_arguments(node->cmd, env);
 	if (!argv)
 		return (-1);
+	if (!open_wildcards(&argv))
+		return (free(argv), -1);
 	if (execute_builtin(argv, env))
 	{
 		free_matrix(&argv);
@@ -72,7 +75,7 @@ static int	execute_command_with_fork(t_ast *node, t_env *env)
 	if (!argv)
 		return (-1);
 	if (!open_wildcards(&argv))
-		return (free_matrix(&argv), -1)
+		return (free_matrix(&argv), -1);
 	if (execute_builtin(argv, env))
 		return (free_matrix(&argv), 0);
 	pid = fork();

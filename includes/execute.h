@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 19:50:18 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/21 21:07:45 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/23 00:29:14 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,5 @@ char	*find_command_path(const char *cmd, t_env *env);
 bool	add_cmd_to_path(char **paths, const char *cmd);
 bool	fill_arguments(t_token *cmd, char **argv, int argc);
 void	free_ast(t_ast *tree);
+bool	open_wildcards(char	***argv);
 #endif
