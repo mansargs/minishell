@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 20:31:07 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/23 02:23:58 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/24 14:52:44 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,8 @@ bool	open_directory(const char *dir, const char *word, char ***incoming_arg)
 		item = readdir(dir_content);
 		if(!item)
 			break ;
+		if (!ft_strcmp(".", item->d_name) || !ft_strcmp("..", item->d_name))
+			continue ;
 		if (is_match(item->d_name, word))
 			if (!collect_matched(incoming_arg, item->d_name))
 				return (free_matrix(incoming_arg), closedir(dir_content), false);

@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 16:24:51 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/19 15:45:33 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/24 14:50:40 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define SYNTAX_H
 
 # include "token.h"
+# include <signal.h>
 
 # define STRICT 1
 # define NOT_STRICT 0
