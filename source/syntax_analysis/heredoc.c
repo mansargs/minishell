@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 02:47:43 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/19 15:44:12 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/27 02:25:48 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,18 @@ static void	read_from_stdin(const int fd, const char *delim, const int fd_histor
 {
 	char	*line;
 	size_t	len;
+	int		count_lines;
 
+	count_lines = 0;
 	while (1)
 	{
 		line = readline("> ");
 		if (!line)
+		{
+			printf("minishell: warning: here-document at line %d delimited by end-of-file (wanted `%s')\n",  count_lines, delim);
 			return ;
+		}
+		++count_lines;
 		ft_putendl_fd(line, fd_history);
 		len = ft_strlen(line);
 		if (len == ft_strlen(delim)
@@ -81,7 +87,10 @@ char	*open_heredoc(const t_token *token, const int fd_history)
 {
 	int		fd;
 	char	*name;
+	pid_t	pid;
+	int		status;
 
+	status = 0;
 	if (token->file_name)
 		return (token->file_name);
 	if (!token->next_token)
@@ -92,7 +101,29 @@ char	*open_heredoc(const t_token *token, const int fd_history)
 	fd = open(name, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (fd == -1)
 		return (free(name), NULL);
-	read_from_stdin(fd, token->next_token->token_data, fd_history);
-	close(fd);
+	pid = fork();
+	if (pid < 0)
+	{
+		perror("fork failed");
+		return (NULL);
+	}
+	signal(SIGINT, SIG_IGN);
+	if (pid == 0)
+	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_IGN);
+		read_from_stdin(fd, token->next_token->token_data, fd_history);
+		close(fd);
+		exit(0);
+	}
+	if (waitpid(pid, &status, 0) == -1)
+		return (perror("waiting failed"), free(name), NULL);
+	if (WIFSIGNALED(status))
+	{
+		if (status == SIGINT)
+			write(STDOUT_FILENO, "\n", 1);
+		g_received_signal = WTERMSIG(status);
+		return (free(name), NULL);
+	}
 	return (name);
 }

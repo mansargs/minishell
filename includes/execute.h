@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 19:50:18 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/23 00:29:14 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/27 02:12:48 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,10 @@
 # define EXECUTE_H
 
 # include "parser.h"
-# include <sys/wait.h>
 # include <dirent.h>
 
 typedef struct s_ast	t_ast;
 typedef struct s_env	t_env;
-
-typedef void	(*t_builtin_func)(void);
 
 int		execute_ast(t_ast *node, t_env *env, bool has_forked);
 int		execute_command(t_ast *node, t_env *env, bool has_forked);
@@ -38,4 +35,7 @@ bool	add_cmd_to_path(char **paths, const char *cmd);
 bool	fill_arguments(t_token *cmd, char **argv, int argc);
 void	free_ast(t_ast *tree);
 bool	open_wildcards(char	***argv);
+
+void	setup_signals();
+
 #endif

@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 21:53:17 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/23 02:25:43 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/27 01:37:01 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,14 +85,23 @@ static int	execute_command_with_fork(t_ast *node, t_env *env)
 		free_matrix(&argv);
 		return (-1);
 	}
+	signal(SIGINT, SIG_IGN);
 	if (pid == 0)
+	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		child_execute(argv, env);
+	}
 	waitpid(pid, &status, 0);
 	free_matrix(&argv);
 	if (WIFEXITED(status))
 		env->shell->exit_code = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
+	{
+		if (status == SIGINT)
+			write(STDOUT_FILENO, "\n", 1);
 		env->shell->exit_code = WTERMSIG(status) + 128;
+	}
 	return (env->shell->exit_code);
 }
 

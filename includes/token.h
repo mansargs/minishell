@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:21 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/19 15:59:33 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/07/27 01:26:56 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,15 @@
 # include <stdbool.h>
 # include <fcntl.h>
 # include <errno.h>
+# include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../library/libft/libft.h"
 # include "../library/gnl/get_next_line.h"
 
 # define SYN_ERR "minishell: syntax error near unexpected token"
+
+extern volatile sig_atomic_t	g_received_signal;
 
 typedef enum e_token_type
 {

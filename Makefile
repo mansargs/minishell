@@ -3,7 +3,7 @@ MAKEFLAGS += --no-print-directory
 NAME = minishell
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror #-fsanitize=address -g
 
 SRC_DIR = source
 OBJ_DIR = objects
@@ -57,7 +57,8 @@ SRCS = \
 	$(EXECUTION)/execute_utils.c \
 	$(EXECUTION)/execute_convert.c \
 	$(EXECUTION)/execute_cmd_path.c \
-	$(EXECUTION)/wildcard.c
+	$(EXECUTION)/wildcard.c \
+	$(EXECUTION)/signals.c
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 

@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:25 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/20 13:34:09 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/27 01:27:40 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "execute.h"
+
+volatile sig_atomic_t g_received_signal;
 
 void	print_list(t_shell *shell)
 {
@@ -37,79 +39,6 @@ bool	only_spaces(const char *str)
 	}
 	return (true);
 }
-
-static void print_indent(int level)
-{
-	for (int i = 0; i < level; ++i)
-		printf("│   ");
-}
-
-static void print_token_chain(t_token *tok)
-{
-	while (tok)
-	{
-		printf("%s", tok->token_data);
-        if (tok->file_name)
-            printf("%s", tok->file_name);
-		if (tok->next_token)
-			printf(" ");
-		tok = tok->next_token;
-	}
-}
-
-static void print_redir_chain(t_token *redir)
-{
-	if (!redir)
-		return;
-	printf(" [ ");
-	print_token_chain(redir);
-	printf(" ]");
-}
-
-void print_ast_full(t_ast *node, int level)
-{
-	print_indent(level);
-	if (node->cmd && node->cmd->token_paren_type == PAREN_OPEN)
-	{
-		// Subshell detected
-		printf("● Subshell: ( ) ");
-		print_redir_chain(node->redir);
-		printf("\n");
-
-		print_indent(level + 1);
-		printf("└─ Subshell Body:\n");
-		print_ast_full(node->left_side, level + 2);
-
-		// ❌ DO NOT print left_side and right_side again
-		return;
-	}
-
-	if (node->cmd && node->cmd->token_type == TOKEN_OPERATOR)
-	{
-		printf("● Operator: %s ", node->cmd->token_data);
-	}
-	else
-	{
-		printf("● Command: ");
-		print_token_chain(node->cmd);
-		print_redir_chain(node->redir);
-	}
-	printf("\n");
-
-	if (node->left_side)
-	{
-		print_indent(level + 1);
-		printf("├─ Left:\n");
-		print_ast_full(node->left_side, level + 2);
-	}
-	if (node->right_side)
-	{
-		print_indent(level + 1);
-		printf("└─ Right:\n");
-		print_ast_full(node->right_side, level + 2);
-	}
-}
-
 
 void	print_env_table(t_env *env)
 {
@@ -158,18 +87,17 @@ int	main(int argc, char *argv[], char **envp)
 		printf("Failed to initialize env table.\n");
 		return (1);
 	}
-
-	printf("=== Environment Table ===\n\n\n\n\n");
-	print_env_table(my_env);
-	printf("=========================\n");
-	printf("=== After Manual Additions ===\n\n\n\n\n");
-	print_env_table(my_env);
-	printf("==============================\n");
 	while (1)
 	{
+		setup_signals();
 		line = readline("minishell$ ");
 		if (!line)
 			break ;
+		if (g_received_signal)
+		{
+			shell->exit_code = g_received_signal + 128;
+			g_received_signal = 0;
+		}
 		shell->tokens = tokenize(line);
 		if (!shell->tokens)
 			continue ;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_ast.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 19:49:43 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/20 13:33:26 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/27 01:39:53 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,23 +81,33 @@ int	execute_subshell(t_ast *node, t_env *env, bool has_forked)
 {
 	pid_t	pid;
 	int		result;
+	int		status;
 
+	status = 0;
 	if (has_forked)
 		return (execute_ast(node->left_side, env, true));
 	pid = fork();
 	if (pid < 0)
-		return (perror("fork failed"), 1);
-	if (!pid)
+		return (perror("fork failed"), -1);
+	signal(SIGINT, SIG_IGN);
+	if (pid == 0)
 	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		result = execute_ast(node->left_side, env, true);
 		exit(result);
 	}
 	if (waitpid(pid, &result, 0) == -1)
-		return (perror("waiting failed"), 1);
-	if (WIFEXITED(result))
-		return (WEXITSTATUS(result));
-	else
-		return (1);
+		return (perror("waiting failed"), -1);
+	if (WIFEXITED(status))
+		env->shell->exit_code = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+	{
+		if (status == SIGINT)
+			write(STDOUT_FILENO, "\n", 1);
+		env->shell->exit_code = WTERMSIG(status) + 128;
+	}
+	return (env->shell->exit_code);
 }
 
 int	execute_pipe(t_ast *node, t_env *env)
@@ -113,8 +123,11 @@ int	execute_pipe(t_ast *node, t_env *env)
 	left = fork();
 	if (left < 0)
 		return (perror("fork failed"), 1);
+	signal(SIGINT, SIG_IGN);
 	if (left == 0)
 	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		dup2(pipe_fds[1], STDOUT_FILENO);
 		close(pipe_fds[0]);
 		close(pipe_fds[1]);
@@ -125,6 +138,8 @@ int	execute_pipe(t_ast *node, t_env *env)
 		return (perror("fork failed"), 1);
 	if (right == 0)
 	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		dup2(pipe_fds[0], STDIN_FILENO);
 		close(pipe_fds[0]);
 		close(pipe_fds[1]);
@@ -137,8 +152,14 @@ int	execute_pipe(t_ast *node, t_env *env)
 		|| waitpid(right, &right_status, 0) == -1)
 		return (perror("waiting failed"), 1);
 
+	if (WIFSIGNALED(right_status))
+	{
+		if (right_status == SIGINT)
+			write(STDOUT_FILENO, "\n", 1);
+		return 128 + WTERMSIG(right_status);
+	}
 	if (WIFEXITED(right_status))
-		return (WEXITSTATUS(right_status));
+		return WEXITSTATUS(right_status);
 	return (0);
 }
 
