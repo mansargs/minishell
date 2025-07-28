@@ -80,6 +80,7 @@ typedef struct	s_history
 
 typedef struct	s_shell
 {
+	char		*pwd;
 	int			exit_code;
 	t_history	history;
 	char		**envp;
