@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 01:28:36 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/01 12:03:50 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/01 20:54:22 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ t_shell	*init_shell(char **envp)
 	shell->exit_code = 0;
 	shell->envp = envp;
 	shell->tokens = NULL;
+	shell->heredoc_quote = 0;
 	shell->pwd = getcwd(NULL, 0);
 	if (!shell->pwd)
 	{

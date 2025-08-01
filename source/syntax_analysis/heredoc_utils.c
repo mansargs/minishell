@@ -6,13 +6,13 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 23:04:36 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/07 00:52:34 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/01 20:56:00 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "syntax.h"
 
-char	*open_quotes_heredoc(const char *str, int *open_flag)
+char	*open_quotes_heredoc(t_shell *shell, const char *str, int *open_flag)
 {
 	int		i;
 	char	quote;
@@ -22,10 +22,14 @@ char	*open_quotes_heredoc(const char *str, int *open_flag)
 	quote = 0;
 	*open_flag = 0;
 	res = ft_calloc(1, 1);
+	(void)shell;
 	while (str[i])
 	{
 		if (!quote && (str[i] == '\'' || str[i] == '"'))
+		{
+			shell->heredoc_quote = 1;
 			quote = str[i];
+		}
 		else if (quote && str[i] == quote)
 			quote = 0;
 		else

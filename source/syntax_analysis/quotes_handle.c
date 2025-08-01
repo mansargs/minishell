@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 22:40:43 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/18 20:56:33 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/01 22:00:27 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ char	*open_quotes(char **envp, const char *str, int *open_flag)
 	char	quote;
 	char	*res;
 
+	if (!str)
+		return (NULL);
 	i = 0;
 	quote = 0;
 	*open_flag = 0;

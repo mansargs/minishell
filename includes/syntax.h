@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 16:24:51 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/27 02:12:57 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/01 20:51:39 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,14 @@ bool	strict_syntax_errors(t_shell *shell);
 bool	valid_line(t_shell *shell, char **line);
 bool	secondary_syntax_errors(const t_token *token, int *opened_parenthesis);
 int		handle_quots(char **envp, t_token *token);
-char	*open_heredoc(const t_token *tokens, const int fd_history);
+char	*open_heredoc(t_shell *shell, const t_token *tokens,
+		const int fd_history);
 int		is_env_char(char c);
 char	*get_env_value(char **envp, const char *str);
 char	*ft_strjoin_free(char *s1, const char *s2);
 
 bool	is_quoted_delimiter(const char *s);
-char	*open_quotes_heredoc(const char *str, int *open_flag);
+char	*open_quotes_heredoc(t_shell *shell, const char *str, int *open_flag);
 char	*open_quotes(char **envp, const char *str, int *open_flag);
 void	append_char(char **res, char c);
 int		check_is_open_quote(int quote, char *res);

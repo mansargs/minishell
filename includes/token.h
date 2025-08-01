@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:21 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/27 01:26:56 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/01 20:53:51 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ typedef struct	s_history
 
 typedef struct	s_shell
 {
+	int			heredoc_quote;
 	char		*pwd;
 	int			exit_code;
 	t_history	history;

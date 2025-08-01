@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 13:38:09 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/20 02:15:00 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/01 20:49:36 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ bool	syntax_and_heredoc(t_shell *shell)
 		if (temp->token_redirect_type == REDIRECT_HEREDOC)
 		{
 			if (!temp->file_name)
-				temp->file_name = open_heredoc(temp, shell->history.fd);
+				temp->file_name = open_heredoc(shell, temp, shell->history.fd);
 			if (!temp->file_name)
 				return (false);
 		}

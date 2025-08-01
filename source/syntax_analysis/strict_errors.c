@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 02:55:20 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/19 09:31:04 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/01 20:52:58 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ bool	invalid_operator(const t_token *token, const int strict_flag)
 	return (false);
 }
 
-bool	check_heredoc_case(t_token *token)
+bool	check_heredoc_case(t_shell *shell, t_token *token)
 {
 	t_token	*tmp;
 	char	*parsed;
@@ -77,7 +77,7 @@ bool	check_heredoc_case(t_token *token)
 		&& token->next_token->token_type == TOKEN_WORD)
 	{
 		tmp = token->next_token;
-		parsed = open_quotes_heredoc(tmp->token_data,
+		parsed = open_quotes_heredoc(shell, tmp->token_data,
 				&open_flag);
 		if (!parsed)
 			return (true);
@@ -97,7 +97,7 @@ bool	strict_syntax_errors(t_shell *shell)
 		if (temp->token_type == TOKEN_REDIRECT)
 			if (invalid_redirect(temp, STRICT))
 				return (true);
-		check_heredoc_case(temp);
+		check_heredoc_case(shell, temp);
 		if (temp->token_type == TOKEN_OPERATOR)
 			if (invalid_operator(temp, STRICT))
 				return (true);

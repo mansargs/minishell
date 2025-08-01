@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:25 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/27 01:27:40 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/01 20:45:12 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,8 +109,6 @@ int	main(int argc, char *argv[], char **envp)
 		}
 		if (!(tree = building_ast(shell->tokens)))
 			return (EXIT_FAILURE);
-		// else
-		// 	print_ast_full(tree,0);
 		execute_ast(tree, my_env, 0);
 		free_ast(tree);
 		free(line);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 02:47:43 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/27 02:25:48 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/01 22:18:44 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,14 @@ static char	*get_file_name(void)
 	return (file_name);
 }
 
-static void	read_from_stdin(const int fd, const char *delim, const int fd_history)
+static void	read_from_stdin(t_shell *shell, const int fd, const char *delim,
+	const int fd_history)
 {
-	char	*line;
 	size_t	len;
 	int		count_lines;
+	int		copy_flag;
+	char	*new_line;
+	char	*line;
 
 	count_lines = 0;
 	while (1)
@@ -78,12 +81,20 @@ static void	read_from_stdin(const int fd, const char *delim, const int fd_histor
 			free(line);
 			return ;
 		}
-		ft_putendl_fd(line, fd);
+		if (ft_strchr(line, '$') && shell->heredoc_quote == 0)
+		{
+			copy_flag = 0;
+			new_line = open_quotes(shell->envp, line, &copy_flag);
+			ft_putendl_fd(new_line, fd);
+			free(new_line);
+		}
+		else
+			ft_putendl_fd(line, fd);
 		free(line);
 	}
 }
 
-char	*open_heredoc(const t_token *token, const int fd_history)
+char	*open_heredoc(t_shell *shell, const t_token *token, const int fd_history)
 {
 	int		fd;
 	char	*name;
@@ -112,7 +123,7 @@ char	*open_heredoc(const t_token *token, const int fd_history)
 	{
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_IGN);
-		read_from_stdin(fd, token->next_token->token_data, fd_history);
+		read_from_stdin(shell, fd, token->next_token->token_data, fd_history);
 		close(fd);
 		exit(0);
 	}
