@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:25 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/02 00:53:56 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/02 03:22:32 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
 
 volatile sig_atomic_t g_received_signal;
-
 
 void	free_shell(t_shell *shell)
 {
@@ -83,20 +82,14 @@ int	main(int argc, char *argv[], char **envp)
 {
 	char	*line;
 	t_shell	*shell;
-	t_env	*my_env;
-	t_ast	*tree;
 
 	(void)argv;
 	if (argc > 1)
-	{
-		printf("This program must be run without any arguments.\n");
-		return (EXIT_FAILURE);
-	}
-
+		return (printf("This program must be run without any arguments.\n"),
+				EXIT_FAILURE);
 	shell = init_shell(envp);
 	if (!shell)
-		return (EXIT_FAILURE);
-
+		return (ENOMEM);
 	my_env = init_env(shell, envp);
 	if (!my_env)
 	{

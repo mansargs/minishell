@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:22:46 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/01 12:24:53 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/02 03:14:51 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,34 +16,10 @@
 # include "syntax.h"
 # include "execute.h"
 
-# define HASH_SIZE 128
 # define PATH_MAX 4096
 # define ENV_TABLE_SIZE 128
 # define LONG_MAX_STR "9223372036854775807"
 # define LONG_MIN_STR "9223372036854775808"
-
-typedef struct s_ast
-{
-	t_token			*tokens;
-	struct s_ast	*left_side;
-	struct s_ast	*right_side;
-	t_token			*cmd;
-	t_token			*redir;
-}	t_ast;
-
-typedef struct s_env_node
-{
-	int					is_equal;
-	char				*key;
-	char				*value;
-	struct s_env_node	*next;
-}	t_env_node;
-
-typedef struct s_env
-{
-	t_env_node	*env[HASH_SIZE];
-	t_shell		*shell;
-}	t_env;
 
 /* AST */
 t_ast			*building_ast(t_token *head);
@@ -72,16 +48,18 @@ t_env_node		**get_all_env(t_env *env, int *count);
 void			print_sorted_export(t_env *env);
 
 /* Builtins */
-bool			is_valid_identifier(const char *s);
-bool			export_builtin(char **args, t_env *env);
-void			handle_builtin_commands(t_shell *shell, t_env *env);
-bool			unset_builtin(char **arg, t_env *env);
-bool			env_builtin(char **args, t_env *env);
-bool			pwd_builtin(char **args, t_env *env);
-bool			cd_builtin(char **args, t_env *env);
-bool			echo_builtin(char **args, t_env *env);
-void			exit_builtin(t_shell *shell, char **args);
-bool			history_builtin(void);
-int				count_env_vars(t_env *env);
+
+t_builtin_status	export_builtin(char **args, t_env *env);
+t_builtin_status	unset_builtin(char **arg, t_env *env);
+t_builtin_status	env_builtin(char **args, t_env *env);
+t_builtin_status	pwd_builtin(char **args, t_env *env);
+t_builtin_status	cd_builtin(char **args, t_env *env);
+t_builtin_status	echo_builtin(char **args, t_env *env);
+t_builtin_status	exit_builtin(t_shell *shell, char **args);
+t_builtin_status	history_builtin(void);
+t_builtin_status	execute_builtin(char **argv, t_env *env);
+int					count_env_vars(t_env *env);
+void				handle_builtin_commands(t_shell *shell, t_env *env);
+bool				is_valid_identifier(const char *s);
 
 #endif

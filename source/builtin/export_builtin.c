@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_builtin.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 21:17:08 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/01 12:20:27 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/02 02:55:17 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ t_env_node	**get_all_env(t_env *env, int *count)
 	return (list);
 }
 
-bool	export_builtin(char **args, t_env *env)
+t_builtin_status	export_builtin(char **args, t_env *env)
 {
 	int	i;
 
@@ -128,5 +128,5 @@ bool	export_builtin(char **args, t_env *env)
 	i = 1;
 	while (args[i])
 		handle_export_argument(args[i++], env);
-	return (true);
+	return (BUILTIN_OK);
 }

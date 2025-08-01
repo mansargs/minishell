@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:21 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/02 00:39:06 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/02 03:13:42 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include <stdio.h>
 # include <stdlib.h>
-# include <stdbool.h>
 # include <fcntl.h>
 # include <errno.h>
 # include <signal.h>
@@ -23,70 +22,11 @@
 # include <readline/history.h>
 # include "../library/libft/libft.h"
 # include "../library/gnl/get_next_line.h"
+# include "types.h"
 
 # define SYN_ERR "minishell: syntax error near unexpected token"
 
 extern volatile sig_atomic_t	g_received_signal;
-
-typedef enum e_token_type
-{
-	TOKEN_WORD,
-	TOKEN_OPERATOR,
-	TOKEN_PAREN,
-	TOKEN_REDIRECT
-}	t_token_type;
-
-typedef enum e_operator_type
-{
-	OPERATOR_NONE,
-	OPERATOR_PIPE,
-	OPERATOR_OR,
-	OPERATOR_AND
-}	t_operator_type;
-
-typedef enum e_redirection_type
-{
-	REDIRECT_NONE,
-	REDIRECT_IN,
-	REDIRECT_OUT,
-	REDIRECT_APPEND,
-	REDIRECT_HEREDOC
-}	t_redirection_type;
-
-typedef enum e_paren_type
-{
-	PAREN_NONE,
-	PAREN_OPEN,
-	PAREN_CLOSE
-}	t_paren_type;
-
-typedef struct s_token
-{
-	char				*token_data;
-	char				*file_name;
-	t_token_type		token_type;
-	t_operator_type		token_operator_type;
-	t_redirection_type	token_redirect_type;
-	t_paren_type		token_paren_type;
-	struct s_token		*next_token;
-	struct s_token		*prev_token;
-}	t_token;
-
-typedef struct	s_history
-{
-	int		fd;
-	bool	is_there_heredoc;
-}				t_history;
-
-typedef struct	s_shell
-{
-	int			heredoc_quote;
-	char		*pwd;
-	int			exit_code;
-	t_history	history;
-	t_token		*tokens;
-	char		**envp;
-}	t_shell;
 
 bool			only_spaces(const char *str);
 t_shell			*init_shell(char **envp);

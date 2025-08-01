@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 21:53:17 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/01 23:00:46 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/02 03:07:52 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ static int	execute_command_no_fork(t_ast *node, t_env *env)
 		return (-1);
 	if (!open_wildcards(&argv))
 		return (free(argv), -1);
-	int ret = execute_builtin(argv, env);
-	if (ret != -1)
+	t_builtin_status ret = execute_builtin(argv, env);
+	if (ret != NOT_BUILTIN)
 	{
 		free_matrix(&argv);
 		env->shell->exit_code = ret;

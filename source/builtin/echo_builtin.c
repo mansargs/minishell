@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 12:53:47 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/01 12:21:49 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/02 02:55:37 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	print_arg_with_exitcode(char *arg, int exit_code)
 	}
 }
 
-bool	echo_builtin(char **args, t_env *env)
+t_builtin_status	echo_builtin(char **args, t_env *env)
 {
 	int		i;
 	bool	newline;
@@ -53,5 +53,5 @@ bool	echo_builtin(char **args, t_env *env)
 	}
 	if (newline)
 		printf("\n");
-	return (true);
+	return (BUILTIN_OK);
 }

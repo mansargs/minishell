@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_init.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 14:37:31 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/19 11:09:34 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/02 03:25:20 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,18 +88,12 @@ void	env_init_from_envp(t_env *env, char **envp)
 	}
 }
 
-t_env	*init_env(t_shell *my_shell, char **envp)
+bool	init_env(t_shell *my_shell, char **envp)
 {
-	t_env	*environment;
-	int		i;
-
-	environment = malloc(sizeof(t_env));
-	if (!environment)
-		return (NULL);
-	i = 0;
-	while (i < HASH_SIZE)
-		environment->env[i++] = NULL;
-	env_init_from_envp(environment, envp);
-	environment->shell = my_shell;
-	return (environment);
+	my_shell->my_env = ft_calloc(1, sizeof(t_env));
+	if (!my_shell->my_env)
+		return (false);
+	env_init_from_envp(my_shell->my_env, envp);
+	my_shell->my_env->shell = my_shell;
+	return (true);
 }

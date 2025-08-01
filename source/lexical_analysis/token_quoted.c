@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_quoted.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 01:28:36 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/01 20:54:22 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/02 03:21:33 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,25 +89,20 @@ t_shell	*init_shell(char **envp)
 {
 	t_shell	*shell;
 
-	shell = (t_shell *)malloc(sizeof(t_shell));
+	shell = ft_calloc(1, sizeof(t_shell));
 	if (shell == NULL)
 		return (NULL);
-	shell->exit_code = 0;
 	shell->envp = envp;
-	shell->tokens = NULL;
-	shell->heredoc_quote = 0;
 	shell->pwd = getcwd(NULL, 0);
 	if (!shell->pwd)
 	{
 		shell->pwd = ft_strdup(".");
+		if (!shell->pwd)
+			return (NULL);
 	}
 	shell->history.fd = open(".mini_history", O_CREAT
 			| O_RDWR | O_APPEND, 0644);
 	if (shell->history.fd < 0)
-	{
 		perror("Warning: Could not open .mini_history");
-		shell->history.fd = -1;
-	}
-	shell->history.is_there_heredoc = false;
 	return (shell);
 }

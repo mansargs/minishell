@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_builtin.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 17:49:52 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/01 12:21:27 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/02 02:55:10 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,13 @@ void	print_env(t_env *env)
 	free(all_vars);
 }
 
-bool	env_builtin(char **args, t_env *env)
+t_builtin_status	env_builtin(char **args, t_env *env)
 {
 	if (args[1])
 	{
 		printf("minishell: env: too many arguments\n");
-		return (false);
+		return (BUILTIN_FAIL);
 	}
 	print_env(env);
-	return (true);
+	return (BUILTIN_OK);
 }

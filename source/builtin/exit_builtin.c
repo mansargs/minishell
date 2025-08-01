@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 12:54:15 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/01 12:21:00 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/02 02:52:54 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ bool	is_numeric(const char *str)
 	return (true);
 }
 
-void	exit_builtin(t_shell *shell, char **args)
+t_builtin_status	exit_builtin(t_shell *shell, char **args)
 {
 	long	exit_code;
 
@@ -129,8 +129,9 @@ void	exit_builtin(t_shell *shell, char **args)
 	{
 		ft_putendl_fd("minishell: exit: too many arguments", 2);
 		shell->exit_code = 1;
-		return ;
+		return (BUILTIN_FAIL);
 	}
 	exit_code = ft_atol(args[1]);
 	exit(exit_code % 256);
+	return (BUILTIN_OK);
 }

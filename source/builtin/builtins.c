@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 21:32:20 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/01 14:11:59 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/02 02:49:17 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,23 +49,23 @@ char	**token_list_to_array(t_token *token)
 	return (arr);
 }
 
-bool	execute_builtin(char **argv, t_env *env)
+t_builtin_status	execute_builtin(char **argv, t_env *env)
 {
 	if (!ft_strcmp("cd", argv[0]))
-		return (cd_builtin(argv, env), true);
+		return (cd_builtin(argv, env));
 	if (!ft_strcmp("pwd", argv[0]))
-		return (pwd_builtin(argv, env), true);
+		return (pwd_builtin(argv, env));
 	if (!ft_strcmp("unset", argv[0]))
-		return (unset_builtin(argv, env), true);
+		return (unset_builtin(argv, env));
 	if (!ft_strcmp("export", argv[0]))
-		return (export_builtin(argv, env), true);
+		return (export_builtin(argv, env));
 	if (!ft_strcmp("env", argv[0]))
-		return (env_builtin(argv, env), true);
+		return (env_builtin(argv, env));
 	if (!ft_strcmp("echo", argv[0]))
-		return (echo_builtin(argv, env), true);
+		return (echo_builtin(argv, env));
 	if (!ft_strcmp("exit", argv[0]))
-		return (exit_builtin(env->shell, argv), true);
+		return (exit_builtin(env->shell, argv));
 	if (!ft_strcmp("history", argv[0]))
-		return (history_builtin(), true);
-	return (false);
+		return (history_builtin());
+	return (NOT_BUILTIN);
 }
