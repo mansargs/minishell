@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 02:18:23 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/20 02:50:08 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/01 12:20:00 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-void	history_builtin()
+bool	history_builtin(void)
 {
 	char			*line;
 	unsigned long	count_line;
@@ -22,7 +22,7 @@ void	history_builtin()
 	if (fd < 0)
 	{
 		perror("history doesn't open");
-		return ;
+		return (false);
 	}
 	count_line = 0;
 	while (1)
@@ -30,10 +30,11 @@ void	history_builtin()
 		++count_line;
 		line = get_next_line(fd);
 		if (!line)
-			return ;
+			return (false);
 		printf("%lu %s", count_line, line);
 		free(line);
 	}
 	if (close(fd) == -1)
-		perror("close history failed");
+		return (perror("close history failed"), false);
+	return (true);
 }

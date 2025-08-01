@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 21:17:08 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/11 18:21:33 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/01 12:20:27 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,14 +119,14 @@ t_env_node	**get_all_env(t_env *env, int *count)
 	return (list);
 }
 
-int	export_builtin(char **args, t_env *env)
+bool	export_builtin(char **args, t_env *env)
 {
 	int	i;
 
 	if (!args[1])
-		return (print_sorted_export(env), 0);
+		return (print_sorted_export(env), true);
 	i = 1;
 	while (args[i])
 		handle_export_argument(args[i++], env);
-	return (0);
+	return (true);
 }

@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 20:27:17 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/22 10:24:15 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/01 12:22:47 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,37 +47,55 @@ int	check_too_many_dirs(char **args, t_env *env)
 	return (1);
 }
 
-void	cd_builtin(char **args, t_env *env)
+char	*cd_validation(char **args, t_env *env)
 {
-	char	*old_pwd;
-	char	new_pwd[PATH_MAX];
 	char	*path;
 
 	if (!check_too_many_dirs(args, env))
-		return ;
+		return (NULL);
 	if (!args[1])
 	{
 		path = handle_cd_without_dir(args, env);
 		if (!path)
-			return ;
+			return (NULL);
 	}
 	else
 		path = args[1];
+	return (path);
+}
+
+bool	cd_builtin(char **args, t_env *env)
+{
+	char		*old_pwd;
+	char		new_pwd[PATH_MAX];
+	char		*path;
+	t_env_node	*pwd_node;
+
+	path = cd_validation(args, env);
+	if (path == NULL)
+		return (false);
 	old_pwd = env_get(env, "PWD")->value;
 	if (chdir(path) != 0)
 	{
 		env->shell->exit_code = 1;
 		perror("minishell: cd");
-		return ;
+		return (false);
 	}
 	if (!getcwd(new_pwd, sizeof(new_pwd)))
 	{
 		printf("cd: error retrieving current directory: getcwd: ");
 		printf("cannot access parent directories: No such file or directory\n");
-		env->shell->pwd = ft_strjoin(env_get(env, "PWD")->value, "/..");
+		pwd_node = env_get(env, "PWD");
+		if (!pwd_node || !pwd_node->value)
+			env->shell->pwd = ft_strdup("");
+		else
+			env->shell->pwd = ft_strjoin(pwd_node->value, "/..");
 		env_set(env, "PWD", env->shell->pwd, 1);
-		return ;
+		return (false);
 	}
 	env_set(env, "OLDPWD", old_pwd, 1);
 	env_set(env, "PWD", new_pwd, 1);
+	free(env->shell->pwd);
+	env->shell->pwd = ft_strdup(new_pwd);
+	return (true);
 }

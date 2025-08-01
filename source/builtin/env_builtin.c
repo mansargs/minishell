@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 17:49:52 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/12 15:49:20 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/01 12:21:27 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,13 @@ void	print_env(t_env *env)
 	free(all_vars);
 }
 
-void	env_builtin(char **args, t_env *env)
+bool	env_builtin(char **args, t_env *env)
 {
 	if (args[1])
 	{
 		printf("minishell: env: too many arguments\n");
-		return ;
+		return (false);
 	}
 	print_env(env);
-	return ;
+	return (true);
 }

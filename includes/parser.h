@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:22:46 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/20 02:49:39 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/01 12:24:53 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,16 +73,15 @@ void			print_sorted_export(t_env *env);
 
 /* Builtins */
 bool			is_valid_identifier(const char *s);
-int				export_builtin(char **args, t_env *env);
+bool			export_builtin(char **args, t_env *env);
 void			handle_builtin_commands(t_shell *shell, t_env *env);
-void			unset_builtin(char **arg, t_env *env);
-void			env_builtin(char **args, t_env *env);
-void			pwd_builtin(t_shell *shell);
-void			cd_builtin(char **args, t_env *env);
-void			echo_builtin(char **args, t_env *env);
+bool			unset_builtin(char **arg, t_env *env);
+bool			env_builtin(char **args, t_env *env);
+bool			pwd_builtin(char **args, t_env *env);
+bool			cd_builtin(char **args, t_env *env);
+bool			echo_builtin(char **args, t_env *env);
 void			exit_builtin(t_shell *shell, char **args);
-void			history_builtin();
-
+bool			history_builtin(void);
 int				count_env_vars(t_env *env);
 
 #endif
