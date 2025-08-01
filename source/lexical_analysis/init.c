@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:23 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/06 22:15:05 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/02 00:41:20 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,3 +79,4 @@ t_token	*create_token(const char *t_data, t_token_type type)
 	token->next_token = NULL;
 	return (token);
 }
+

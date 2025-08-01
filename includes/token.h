@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:21 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/01 20:53:51 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/02 00:39:06 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,8 @@ typedef struct	s_shell
 	char		*pwd;
 	int			exit_code;
 	t_history	history;
-	char		**envp;
 	t_token		*tokens;
+	char		**envp;
 }	t_shell;
 
 bool			only_spaces(const char *str);

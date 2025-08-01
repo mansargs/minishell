@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 13:38:09 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/01 20:49:36 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/02 00:48:02 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,12 @@ bool	syntax_and_heredoc(t_shell *shell)
 		if (temp->token_redirect_type == REDIRECT_HEREDOC)
 		{
 			if (!temp->file_name)
-				temp->file_name = open_heredoc(shell, temp, shell->history.fd);
-			if (!temp->file_name)
-				return (false);
+			{
+				char *heredoc_file = open_heredoc(shell, temp, shell->history.fd);
+				if (!heredoc_file)
+					return (false);
+				temp->file_name = heredoc_file;
+			}
 		}
 		else if (secondary_syntax_errors(temp, &opened_parenthesis))
 			return (free_tokens(shell->tokens), false);

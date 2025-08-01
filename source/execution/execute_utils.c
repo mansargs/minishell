@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 00:19:38 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/20 12:32:48 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/01 23:06:14 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,15 +86,26 @@ char	*ft_strcat(char *dest, const char *src)
 
 char	*join(char *str1, char *str2, char *str3)
 {
+	size_t	len1 = 0;
+	size_t	len2 = 0;
+	size_t	len3 = 0;
 	char	*joined;
-	size_t	len;
 
-	len = ft_strlen(str1) + ft_strlen(str2) + ft_strlen(str3) + 1;
-	joined = malloc(len);
+	if (str1)
+		len1 = ft_strlen(str1);
+	if (str2)
+		len2 = ft_strlen(str2);
+	if (str3)
+		len3 = ft_strlen(str3);
+	joined = malloc(len1 + len2 + len3 + 1);
 	if (!joined)
 		return (NULL);
-	ft_strcpy(joined, str1);
-	ft_strcat(joined, str2);
-	ft_strcat(joined, str3);
+	joined[0] = '\0';
+	if (str1)
+		ft_strcat(joined, str1);
+	if (str2)
+		ft_strcat(joined, str2);
+	if (str3)
+		ft_strcat(joined, str3);
 	return (joined);
 }

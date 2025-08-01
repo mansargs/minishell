@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 16:24:51 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/01 20:51:39 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/02 00:48:32 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ char	*open_heredoc(t_shell *shell, const t_token *tokens,
 int		is_env_char(char c);
 char	*get_env_value(char **envp, const char *str);
 char	*ft_strjoin_free(char *s1, const char *s2);
-
 bool	is_quoted_delimiter(const char *s);
 char	*open_quotes_heredoc(t_shell *shell, const char *str, int *open_flag);
 char	*open_quotes(char **envp, const char *str, int *open_flag);
