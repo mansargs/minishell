@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_ast.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 19:49:43 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/27 01:39:53 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/01 13:05:08 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,10 +156,10 @@ int	execute_pipe(t_ast *node, t_env *env)
 	{
 		if (right_status == SIGINT)
 			write(STDOUT_FILENO, "\n", 1);
-		return 128 + WTERMSIG(right_status);
+		return (128 + WTERMSIG(right_status));
 	}
 	if (WIFEXITED(right_status))
-		return WEXITSTATUS(right_status);
+		return (WEXITSTATUS(right_status));
 	return (0);
 }
 

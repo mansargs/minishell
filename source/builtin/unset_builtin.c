@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 14:36:43 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/12 15:54:55 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/01 12:46:39 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	remove_env_key(t_env *env, const char *key)
 	}
 }
 
-void	unset_builtin(char **args, t_env *env)
+bool	unset_builtin(char **args, t_env *env)
 {
 	int	i;
 
@@ -55,4 +55,5 @@ void	unset_builtin(char **args, t_env *env)
 		remove_env_key(env, args[i]);
 		i++;
 	}
+	return (true);
 }

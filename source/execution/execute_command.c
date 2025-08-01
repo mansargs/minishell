@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 21:53:17 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/27 01:37:01 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/01 14:05:26 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ static int	child_execute(char **argv, t_env *env)
 	exit(126);
 }
 
-
 static int	execute_command_no_fork(t_ast *node, t_env *env)
 {
 	char	**argv;
@@ -56,10 +55,12 @@ static int	execute_command_no_fork(t_ast *node, t_env *env)
 		return (-1);
 	if (!open_wildcards(&argv))
 		return (free(argv), -1);
-	if (execute_builtin(argv, env))
+	int ret = execute_builtin(argv, env);
+	if (ret != -1)
 	{
 		free_matrix(&argv);
-		return (0);
+		env->shell->exit_code = ret;
+		return (ret);
 	}
 	child_execute(argv, env);
 	exit(EXIT_FAILURE);
