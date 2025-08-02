@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 13:38:09 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/02 16:44:49 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/02 20:19:35 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ bool	syntax_and_heredoc(t_shell *shell)
 {
 	t_token	*temp;
 	int		opened_parenthesis;
+	char	*heredoc_file;
 
 	if (strict_syntax_errors(shell))
 		return (free_tokens(&shell->tokens), false);
@@ -44,7 +45,7 @@ bool	syntax_and_heredoc(t_shell *shell)
 		{
 			if (!temp->file_name)
 			{
-				char *heredoc_file = open_heredoc(shell, temp, shell->history.fd);
+				heredoc_file = open_heredoc(shell, temp, shell->history.fd);
 				if (!heredoc_file)
 					return (false);
 				temp->file_name = heredoc_file;
@@ -76,4 +77,15 @@ bool	valid_line(t_shell *shell, char **line)
 	if (*line)
 		ft_putendl_fd(*line, shell->history.fd);
 	return (true);
+}
+
+int	check_is_open_quote(int quote, char *res)
+{
+	if (quote)
+	{
+		free(res);
+		printf("minishell: syntax error: unclosed quote\n");
+		return (0);
+	}
+	return (1);
 }

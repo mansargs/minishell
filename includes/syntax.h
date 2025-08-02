@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 16:24:51 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/02 00:48:32 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/02 20:19:00 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ bool	valid_line(t_shell *shell, char **line);
 bool	secondary_syntax_errors(const t_token *token, int *opened_parenthesis);
 int		handle_quots(char **envp, t_token *token);
 char	*open_heredoc(t_shell *shell, const t_token *tokens,
-		const int fd_history);
+			const int fd_history);
 int		is_env_char(char c);
 char	*get_env_value(char **envp, const char *str);
 char	*ft_strjoin_free(char *s1, const char *s2);

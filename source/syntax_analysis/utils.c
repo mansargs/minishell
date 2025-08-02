@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 22:19:44 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/02 18:26:15 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/02 20:09:08 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ void	free_matrix(char ***matrix)
 	free(*matrix);
 	*matrix = NULL;
 }
-
 
 void	free_ast(t_ast **tree)
 {

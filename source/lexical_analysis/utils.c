@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 22:09:46 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/02 18:33:14 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/02 20:04:57 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,13 @@ t_token	*last_token(t_token *head)
 	return (last);
 }
 
-void free_tokens(t_token **tokens)
+void	free_tokens(t_token **tokens)
 {
-	t_token *curr;
-	t_token *next;
+	t_token	*curr;
+	t_token	*next;
 
 	if (!tokens || !*tokens)
-		return;
+		return ;
 	curr = *tokens;
 	while (curr)
 	{
@@ -59,11 +59,10 @@ void free_tokens(t_token **tokens)
 	*tokens = NULL;
 }
 
-
 void	free_token(t_token **token)
 {
 	if (!token || !*token)
-		return;
+		return ;
 	if ((*token)->token_data)
 	{
 		free((*token)->token_data);

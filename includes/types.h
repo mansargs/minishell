@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   types.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 03:11:37 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/02 19:47:16 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/02 20:50:53 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 
 # define HASH_SIZE 128
 
-typedef struct s_ast t_ast;
-typedef struct s_env t_env;
+typedef struct s_ast	t_ast;
+typedef struct s_env	t_env;
 
 typedef enum e_token_type
 {
@@ -64,13 +64,13 @@ typedef struct s_token
 	struct s_token		*prev_token;
 }	t_token;
 
-typedef struct	s_history
+typedef struct s_history
 {
 	int		fd;
 	bool	is_there_heredoc;
 }				t_history;
 
-typedef struct	s_shell
+typedef struct s_shell
 {
 	int			heredoc_quote;
 	char		*pwd;
@@ -83,11 +83,11 @@ typedef struct	s_shell
 	bool		mem_error;
 }	t_shell;
 
-typedef struct s_env_flags {
-	bool has_equal_sign;
-	bool mem_error;
+typedef struct s_env_flags
+{
+	bool	has_equal_sign;
+	bool	mem_error;
 }	t_env_flags;
-
 
 typedef enum e_execute_status
 {

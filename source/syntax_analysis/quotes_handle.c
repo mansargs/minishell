@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 22:40:43 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/02 00:27:29 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/02 20:19:11 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,50 +57,47 @@ void	append_var(char **res, char **envp, const char *str, int *i)
 	*i = start + len;
 }
 
-int	check_is_open_quote(int quote, char *res)
+static int	parser_quote_loop(char **envp, const char *str,
+	char **res, char *quote)
 {
-	if (quote)
+	int	i;
+
+	i = 0;
+	while (str[i])
 	{
-		free(res);
-		printf("minishell: syntax error: unclosed quote\n");
-		return (0);
+		if (!*quote && (str[i] == '\'' || str[i] == '"'))
+			*quote = str[i++];
+		else if (*quote && str[i] == *quote)
+		{
+			*quote = 0;
+			i++;
+		}
+		else if (str[i] == '$' && *quote != '\'')
+			append_var(res, envp, str, &i);
+		else
+			append_char(res, str[i++]);
+		if (!*res)
+			return (0);
 	}
 	return (1);
 }
 
 char	*open_quotes(char **envp, const char *str, int *open_flag)
 {
-	int		i;
 	char	quote;
 	char	*res;
 
 	if (!str)
 		return (NULL);
-	i = 0;
 	quote = 0;
 	*open_flag = 0;
 	res = ft_calloc(1, 1);
-	while (str[i])
-	{
-		if (!quote && (str[i] == '\'' || str[i] == '"'))
-			quote = str[i++];
-		else if (quote && str[i] == quote)
-		{
-			quote = 0;
-			i++;
-		}
-		else if (str[i] == '$' && quote != '\'')
-			append_var(&res, envp, str, &i);
-		else
-			append_char(&res, str[i++]);
-		if (!res)
-			return (NULL);
-	}
-	if (check_is_open_quote(quote, res) == 0)
-	{
-		free(res);
+	if (!res)
 		return (NULL);
-	}
+	if (!parser_quote_loop(envp, str, &res, &quote))
+		return (NULL);
+	if (check_is_open_quote(quote, res) == 0)
+		return (free(res), NULL);
 	return (res);
 }
 
