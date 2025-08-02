@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 21:17:08 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/02 02:55:17 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/02 13:47:02 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	print_sorted_export(t_env *env)
 	i = 0;
 	while (i < count)
 	{
-		if (all_vars[i]->is_equal)
+		if (all_vars[i]->has_equal_sign)
 		{
 			if (all_vars[i]->value)
 				printf("declare -x %s=\"%s\"\n", all_vars[i]->key,
@@ -64,14 +64,14 @@ void	sort_env_nodes(t_env_node **list, int count)
 
 void	handle_export_argument(char *arg, t_env *env)
 {
-	char	*key;
-	char	*value;
-	int		is_equal;
+	char		*key;
+	char		*value;
+	t_env_flags	flags;
 
-	is_equal = 0;
+	flags.has_equal_sign = false;
 	value = NULL;
 	if (ft_strchr(arg, '=') != NULL)
-		is_equal = 1;
+		flags.has_equal_sign = true;
 	key = get_key_data(arg);
 	if (!is_valid_identifier(key))
 	{
@@ -79,15 +79,15 @@ void	handle_export_argument(char *arg, t_env *env)
 		free(key);
 		return ;
 	}
-	if (is_equal)
+	if (flags.has_equal_sign)
 	{
-		value = get_value_data(arg);
+		value = get_value_data(arg, &flags.mem_error);
 		env_set(env, key, value, 1);
 	}
 	else if (!env_get(env, key))
 		env_set(env, key, NULL, 0);
 	free(key);
-	if (is_equal && value)
+	if (flags.has_equal_sign && value)
 		free(value);
 }
 

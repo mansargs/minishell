@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 03:11:37 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/02 03:18:27 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/02 14:04:09 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@
 # include <stdbool.h>
 
 # define HASH_SIZE 128
+
+typedef struct s_ast t_ast;
+typedef struct s_env t_env;
 
 typedef enum e_token_type
 {
@@ -80,14 +83,18 @@ typedef struct	s_shell
 
 }	t_shell;
 
+typedef struct s_env_flags {
+	bool has_equal_sign;
+	bool mem_error;
+}	t_env_flags;
+
+
 typedef enum e_builtin_status
 {
 	BUILTIN_OK,
 	BUILTIN_FAIL,
 	NOT_BUILTIN
 }	t_builtin_status;
-
-
 
 typedef struct s_ast
 {
@@ -100,7 +107,7 @@ typedef struct s_ast
 
 typedef struct s_env_node
 {
-	int					is_equal;
+	bool				has_equal_sign;
 	char				*key;
 	char				*value;
 	struct s_env_node	*next;
@@ -111,7 +118,5 @@ typedef struct s_env
 	t_env_node	*env[HASH_SIZE];
 	t_shell		*shell;
 }	t_env;
-
-
 
 #endif

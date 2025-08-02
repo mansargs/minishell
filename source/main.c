@@ -6,51 +6,13 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:25 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/02 03:22:32 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/02 14:28:43 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
 
-volatile sig_atomic_t g_received_signal;
-
-void	free_shell(t_shell *shell)
-{
-	if (!shell)
-		return ;
-	free(shell->pwd);
-	if (shell->tokens)
-		free_tokens(shell->tokens);
-	if (shell->history.fd >= 0)
-		close(shell->history.fd);
-	free(shell);
-}
-
-void	print_list(t_shell *shell)
-{
-	t_token	*tmp;
-
-	tmp = shell->tokens;
-	while (tmp != NULL)
-	{
-		printf("%s -> ", tmp->token_data);
-		tmp = tmp -> next_token;
-	}
-	printf("NULL\n");
-}
-
-bool	only_spaces(const char *str)
-{
-	int	i;
-
-	i = -1;
-	while (str[++i])
-	{
-		if (!is_space(str[i]))
-			return (false);
-	}
-	return (true);
-}
+volatile sig_atomic_t	g_received_signal;
 
 void	print_env_table(t_env *env)
 {
@@ -66,7 +28,7 @@ void	print_env_table(t_env *env)
 		while (node)
 		{
 			printf("  \033[34m%s\033[0m", node->key);
-			if (node->is_equal)
+			if (node->has_equal_sign)
 			{
 				printf("\033[37m=\033[0m");
 				if (node->value)
@@ -78,72 +40,113 @@ void	print_env_table(t_env *env)
 		i++;
 	}
 }
+
+// void	print_list(t_shell *shell)
+// {
+// 	t_token	*tmp;
+
+// 	tmp = shell->tokens;
+// 	while (tmp != NULL)
+// 	{
+// 		printf("%s -> ", tmp->token_data);
+// 		tmp = tmp -> next_token;
+// 	}
+// 	printf("NULL\n");
+// }
+
+bool	only_spaces(const char *str)
+{
+	int	i;
+
+	i = -1;
+	while (str[++i])
+	{
+		if (!is_space(str[i]))
+			return (false);
+	}
+	return (true);
+}
+
+void	free_shell(t_shell **shell)
+{
+	if (!*shell)
+		return ;
+	free((*shell)->pwd);
+	if ((*shell)->tokens)
+		free_tokens((*shell)->tokens);
+	if ((*shell)->history.fd >= 0)
+		close((*shell)->history.fd);
+	if ((*shell)->tree)
+		free_ast((*shell)->tree);
+	if ((*shell)->my_env)
+		free_env_table((*shell)->my_env);
+	free(*shell);
+	*shell = NULL;
+}
+
 int	main(int argc, char *argv[], char **envp)
 {
-	char	*line;
+	// char	*line;
 	t_shell	*shell;
 
-	(void)argv;
+	(void) argv;
 	if (argc > 1)
 		return (printf("This program must be run without any arguments.\n"),
-				EXIT_FAILURE);
+			EXIT_FAILURE);
 	shell = init_shell(envp);
 	if (!shell)
 		return (ENOMEM);
-	my_env = init_env(shell, envp);
-	if (!my_env)
-	{
-		printf("Failed to initialize env table.\n");
-		free_shell(shell);
-		return (EXIT_FAILURE);
-	}
+	if (!init_env(shell, envp))
+		return (printf("Failed to initialize env table.\n"),
+			free_shell(&shell), ENOMEM);
+	print_env_table(shell->my_env);
+	free_shell(&shell);
+	// while (1)
+	// {
+	// 	setup_signals();
+	// 	line = readline("minishell$ ");
+	// 	if (!line)
+	// 		break;
 
-	while (1)
-	{
-		setup_signals();
-		line = readline("minishell$ ");
-		if (!line)
-			break;
+	// 	if (g_received_signal)
+	// 	{
+	// 		shell->exit_code = g_received_signal + 128;
+	// 		g_received_signal = 0;
+	// 	}
 
-		if (g_received_signal)
-		{
-			shell->exit_code = g_received_signal + 128;
-			g_received_signal = 0;
-		}
+	// 	shell->tokens = tokenize(line);
+	// 	if (!shell->tokens)
+	// 	{
+	// 		free(line);
+	// 		continue;
+	// 	}
 
-		shell->tokens = tokenize(line);
-		if (!shell->tokens)
-		{
-			free(line);
-			continue;
-		}
+	// 	add_history(line);
+	// 	if (shell->tokens && !valid_line(shell, &line))
+	// 	{
+	// 		free_tokens(shell->tokens);
+	// 		shell->tokens = NULL;
+	// 		free(line);
+	// 		continue;
+	// 	}
 
-		add_history(line);
-		if (shell->tokens && !valid_line(shell, &line))
-		{
-			free_tokens(shell->tokens);
-			shell->tokens = NULL;
-			free(line);
-			continue;
-		}
+	// 	if (!(tree = building_ast(shell->tokens)))
+	// 	{
+	// 		free_tokens(shell->tokens);
+	// 		shell->tokens = NULL;
+	// 		free(line);
+	// 		return (EXIT_FAILURE);
+	// 	}
+	// 	execute_ast(tree, my_env, 0);
 
-		if (!(tree = building_ast(shell->tokens)))
-		{
-			free_tokens(shell->tokens);
-			shell->tokens = NULL;
-			free(line);
-			return (EXIT_FAILURE);
-		}
-		execute_ast(tree, my_env, 0);
+	// 	free_ast(tree);
+	// 	free_tokens(shell->tokens);
+	// 	shell->tokens = NULL;
+	// 	free(line);
+	// }
 
-		free_ast(tree);
-		free_tokens(shell->tokens);
-		shell->tokens = NULL;
-		free(line);
-	}
-
-	free_env_table(my_env);
-	free_shell(shell);
-	printf("exit\n");
+	// free_env_table(my_env);
+	// free_shell(shell);
+	// printf("exit\n");
 	return (0);
 }

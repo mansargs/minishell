@@ -6,45 +6,51 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 14:37:31 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/02 03:25:20 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/02 14:05:19 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-t_env_node	*create_env_node(char *key, char *value, int is_equal)
+t_env_node	*create_env_node(char *key, char *value, bool has_equal_sign)
 {
 	t_env_node	*new;
 
-	new = malloc(sizeof(t_env_node));
+	new = ft_calloc(1, sizeof(t_env_node));
 	if (!new)
 		return (NULL);
 	new->key = ft_strdup(key);
+	if (!new->key)
+		return (free(new), NULL);
 	if (value)
+	{
 		new->value = ft_strdup(value);
+		if (!new->value)
+			return (free(new->key), free(new), NULL);
+	}
 	else
 		new->value = NULL;
-	new->is_equal = is_equal;
-	new->next = NULL;
+	new->has_equal_sign = has_equal_sign;
 	return (new);
 }
 
-void	compair_key(t_env_node *current, char *key, char *value, int is_equal)
+bool	update_env_node_value(t_env_node *current, char *value, bool has_equal_sign)
 {
-	if (ft_strcmp(current->key, key) == 0)
+	if (current->value)
+		free(current->value);
+	if (value)
 	{
-		if (current->value)
-			free(current->value);
-		if (value)
-			current->value = ft_strdup(value);
-		else
-			current->value = NULL;
-		current->is_equal = is_equal;
-		return ;
+		current->value = ft_strdup(value);
+		if (!current->value)
+			return (false);
 	}
+	else
+		current->value = NULL;
+	current->has_equal_sign = has_equal_sign;
+	return (true);
 }
 
-void	env_set(t_env *env, char *key, char *value, int is_equal)
+bool	env_set(t_env *env, char *key, char *value, bool has_equal_sign)
 {
 	unsigned int	index;
 	t_env_node		*current;
@@ -55,37 +61,38 @@ void	env_set(t_env *env, char *key, char *value, int is_equal)
 	while (current)
 	{
 		if (ft_strcmp(current->key, key) == 0)
-		{
-			compair_key(current, key, value, is_equal);
-			return ;
-		}
+			return (update_env_node_value(current, value, has_equal_sign));
 		current = current->next;
 	}
-	new_node = create_env_node(key, value, is_equal);
+	new_node = create_env_node(key, value, has_equal_sign);
 	if (!new_node)
-		return ;
+		return (false);
 	new_node->next = env->env[index];
 	env->env[index] = new_node;
+	return (true);
 }
 
-void	env_init_from_envp(t_env *env, char **envp)
+bool	env_init_from_envp(t_env *env, char **envp)
 {
-	int		i;
-	char	*key;
-	char	*value;
-	int		has_equal;
+	int			i;
+	char		*key;
+	char		*value;
+	t_env_flags	flags;
 
-	i = 0;
-	while (envp[i])
+	i = -1;
+	while (envp[++i])
 	{
 		key = get_key_data(envp[i]);
-		value = get_value_data(envp[i]);
-		has_equal = (ft_strchr(envp[i], '=') != NULL);
-		env_set(env, key, value, has_equal);
+		value = get_value_data(envp[i], &flags.mem_error);
+		if (!key || flags.mem_error)
+			return (false);
+		flags.has_equal_sign = (ft_strchr(envp[i], '=') != NULL);
+		if (!env_set(env, key, value, flags.has_equal_sign))
+			return (free(key), free(value), false);
 		free(key);
 		free(value);
-		i++;
 	}
+	return (true);
 }
 
 bool	init_env(t_shell *my_shell, char **envp)
@@ -93,7 +100,8 @@ bool	init_env(t_shell *my_shell, char **envp)
 	my_shell->my_env = ft_calloc(1, sizeof(t_env));
 	if (!my_shell->my_env)
 		return (false);
-	env_init_from_envp(my_shell->my_env, envp);
+	if (!env_init_from_envp(my_shell->my_env, envp))
+		return (false);
 	my_shell->my_env->shell = my_shell;
 	return (true);
 }

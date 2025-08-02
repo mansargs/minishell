@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 17:49:52 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/02 02:55:10 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/02 13:44:13 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	print_env(t_env *env)
 	i = 0;
 	while (i < count)
 	{
-		if (all_vars[i]->is_equal)
+		if (all_vars[i]->has_equal_sign)
 		{
 			if (all_vars[i]->value)
 				printf("%s=%s\n", all_vars[i]->key, all_vars[i]->value);

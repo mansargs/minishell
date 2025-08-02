@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:22:46 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/02 03:14:51 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/02 14:08:17 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ bool			command_redirection_division(t_ast *branch);
 bool			division_into_parenthesis(t_ast *branch);
 
 /* Env Helpers */
-char			*get_value_data(char *env_line);
+char			*get_value_data(char *env_line, bool *memprob);
 char			*get_key_data(char *env_line);
 unsigned int	hash_key(const char *key);
 
@@ -38,9 +38,9 @@ void			free_env_table(t_env *env);
 
 /* Env Operations */
 int				env_size(t_env *env);
-void			env_set(t_env *env, char *key, char *value, int is_equal);
+bool			env_set(t_env *env, char *key, char *value, bool has_equal_sign);
 void			sort_env_nodes(t_env_node **list, int count);
-t_env			*init_env(t_shell *shell, char **envp);
+bool			init_env(t_shell *shell, char **envp);
 t_env_node		*env_get(t_env *env, const char *key);
 t_env_node		**get_all_env(t_env *env, int *count);
 

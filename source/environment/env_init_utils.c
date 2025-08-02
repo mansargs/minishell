@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_init_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 16:49:09 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/11 23:58:03 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/02 13:50:20 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,22 @@ t_env_node	*env_get(t_env *env, const char *key)
 	return (NULL);
 }
 
-char	*get_value_data(char *env_line)
+char	*get_value_data(char *env_line, bool *mem_error)
 {
 	char	*equal_pos;
+	char	*result;
 
+	*mem_error = false;
 	equal_pos = ft_strchr(env_line, '=');
 	if (!equal_pos)
 		return (NULL);
-	return (ft_strdup(equal_pos + 1));
+	result = ft_strdup(equal_pos + 1);
+	if (!result)
+	{
+		*mem_error = true;
+		return (NULL);
+	}
+	return (result);
 }
 
 char	*get_key_data(char *env_line)
