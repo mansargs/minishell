@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 22:19:44 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/02 16:41:09 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/02 18:26:15 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	free_matrix(char ***matrix)
 
 void	free_ast(t_ast **tree)
 {
-	if (!*tree)
+	if (!tree || !*tree)
 		return ;
 	if ((*tree)->left_side)
 		free_ast(&(*tree)->left_side);

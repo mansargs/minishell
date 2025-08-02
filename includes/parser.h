@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:22:46 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/02 14:08:17 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/02 19:33:57 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,15 +49,15 @@ void			print_sorted_export(t_env *env);
 
 /* Builtins */
 
-t_builtin_status	export_builtin(char **args, t_env *env);
-t_builtin_status	unset_builtin(char **arg, t_env *env);
-t_builtin_status	env_builtin(char **args, t_env *env);
-t_builtin_status	pwd_builtin(char **args, t_env *env);
-t_builtin_status	cd_builtin(char **args, t_env *env);
-t_builtin_status	echo_builtin(char **args, t_env *env);
-t_builtin_status	exit_builtin(t_shell *shell, char **args);
-t_builtin_status	history_builtin(void);
-t_builtin_status	execute_builtin(char **argv, t_env *env);
+t_execute_status	export_builtin(char **args, t_env *env);
+t_execute_status	unset_builtin(char **arg, t_env *env);
+t_execute_status	env_builtin(char **args, t_env *env);
+t_execute_status	pwd_builtin(char **args, t_env *env);
+t_execute_status	cd_builtin(char **args, t_env *env);
+t_execute_status	echo_builtin(char **args, t_env *env);
+t_execute_status	exit_builtin(t_shell *shell, char **args);
+t_execute_status	history_builtin(void);
+t_execute_status	execute_builtin(char **argv, t_env *env);
 int					count_env_vars(t_env *env);
 void				handle_builtin_commands(t_shell *shell, t_env *env);
 bool				is_valid_identifier(const char *s);

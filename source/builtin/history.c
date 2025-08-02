@@ -6,13 +6,13 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 02:18:23 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/02 02:56:55 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/02 19:33:57 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-t_builtin_status	history_builtin(void)
+t_execute_status	history_builtin(void)
 {
 	char			*line;
 	unsigned long	count_line;

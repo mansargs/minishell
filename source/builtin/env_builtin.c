@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 17:49:52 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/02 13:44:13 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/02 19:33:57 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	print_env(t_env *env)
 	free(all_vars);
 }
 
-t_builtin_status	env_builtin(char **args, t_env *env)
+t_execute_status	env_builtin(char **args, t_env *env)
 {
 	if (args[1])
 	{

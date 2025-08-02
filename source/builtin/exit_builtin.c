@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 12:54:15 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/02 02:52:54 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/02 19:33:57 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ bool	is_numeric(const char *str)
 	return (true);
 }
 
-t_builtin_status	exit_builtin(t_shell *shell, char **args)
+t_execute_status	exit_builtin(t_shell *shell, char **args)
 {
 	long	exit_code;
 

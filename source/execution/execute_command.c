@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 21:53:17 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/02 03:07:52 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/02 19:47:04 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	print_exec_error(const char *cmd, int exit_code)
 		printf("%s: command not found\n", cmd);
 }
 
-static int	child_execute(char **argv, t_env *env)
+static void	child_execute(char **argv, t_env *env)
 {
 	char	*cmd_path;
 	char	**envp;
@@ -46,16 +46,16 @@ static int	child_execute(char **argv, t_env *env)
 	exit(126);
 }
 
-static int	execute_command_no_fork(t_ast *node, t_env *env)
+static t_execute_status	execute_command_no_fork(t_ast *node, t_env *env)
 {
 	char	**argv;
 
 	argv = get_arguments(node->cmd, env);
 	if (!argv)
-		return (-1);
+		return (ANOTHER_FAIL);
 	if (!open_wildcards(&argv))
-		return (free(argv), -1);
-	t_builtin_status ret = execute_builtin(argv, env);
+		return (free(argv), ANOTHER_FAIL);
+	t_execute_status ret = execute_builtin(argv, env);
 	if (ret != NOT_BUILTIN)
 	{
 		free_matrix(&argv);
@@ -66,25 +66,27 @@ static int	execute_command_no_fork(t_ast *node, t_env *env)
 	exit(EXIT_FAILURE);
 }
 
-static int	execute_command_with_fork(t_ast *node, t_env *env)
+static t_execute_status	execute_command_with_fork(t_ast *node, t_env *env)
 {
 	pid_t	pid;
 	int		status;
 	char	**argv;
+	t_execute_status res;
 
 	argv = get_arguments(node->cmd, env);
 	if (!argv)
-		return (-1);
+		return (ANOTHER_FAIL);
 	if (!open_wildcards(&argv))
-		return (free_matrix(&argv), -1);
-	if (execute_builtin(argv, env))
-		return (free_matrix(&argv), 0);
+		return (free_matrix(&argv), ANOTHER_FAIL);
+	res = execute_builtin(argv, env);
+	if (res != NOT_BUILTIN)
+		return (free_matrix(&argv), res);
 	pid = fork();
 	if (pid < 0)
 	{
 		perror("fork failed");
 		free_matrix(&argv);
-		return (-1);
+		return (ANOTHER_FAIL);
 	}
 	signal(SIGINT, SIG_IGN);
 	if (pid == 0)
@@ -106,7 +108,7 @@ static int	execute_command_with_fork(t_ast *node, t_env *env)
 	return (env->shell->exit_code);
 }
 
-int	execute_command(t_ast *node, t_env *env, bool has_forked)
+t_execute_status	execute_command(t_ast *node, t_env *env, bool has_forked)
 {
 	if (has_forked)
 		return (execute_command_no_fork(node, env));

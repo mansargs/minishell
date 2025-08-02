@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 21:32:20 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/02 02:49:17 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/02 19:33:57 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char	**token_list_to_array(t_token *token)
 	return (arr);
 }
 
-t_builtin_status	execute_builtin(char **argv, t_env *env)
+t_execute_status	execute_builtin(char **argv, t_env *env)
 {
 	if (!ft_strcmp("cd", argv[0]))
 		return (cd_builtin(argv, env));

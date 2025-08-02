@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 22:09:46 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/02 17:28:24 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/02 18:33:14 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,21 +42,28 @@ t_token	*last_token(t_token *head)
 	return (last);
 }
 
-void	free_tokens(t_token **head)
+void free_tokens(t_token **tokens)
 {
-	t_token	*temp;
+	t_token *curr;
+	t_token *next;
 
-	while (*head)
+	if (!tokens || !*tokens)
+		return;
+	curr = *tokens;
+	while (curr)
 	{
-		temp = *head;
-		*head = (*head)->next_token;
-		free_token(&temp);
+		next = curr->next_token;
+		free_token(&curr);
+		curr = next;
 	}
-	*head = NULL;
+	*tokens = NULL;
 }
+
 
 void	free_token(t_token **token)
 {
+	if (!token || !*token)
+		return;
 	if ((*token)->token_data)
 	{
 		free((*token)->token_data);

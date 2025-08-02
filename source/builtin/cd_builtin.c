@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 20:27:17 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/02 02:50:46 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/02 19:33:37 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ char	*cd_validation(char **args, t_env *env)
 	return (path);
 }
 
-t_builtin_status	cd_builtin(char **args, t_env *env)
+t_execute_status	cd_builtin(char **args, t_env *env)
 {
 	char		*old_pwd;
 	char		new_pwd[PATH_MAX];

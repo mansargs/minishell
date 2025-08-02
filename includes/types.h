@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 03:11:37 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/02 17:08:27 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/02 19:47:16 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,12 +89,15 @@ typedef struct s_env_flags {
 }	t_env_flags;
 
 
-typedef enum e_builtin_status
+typedef enum e_execute_status
 {
 	BUILTIN_OK,
 	BUILTIN_FAIL,
-	NOT_BUILTIN
-}	t_builtin_status;
+	NOT_BUILTIN,
+	EXECUTE_OK,
+	EXECUTE_FAIL,
+	ANOTHER_FAIL,
+}	t_execute_status;
 
 typedef struct s_ast
 {

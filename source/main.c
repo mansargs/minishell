@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:25 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/02 17:21:55 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/02 19:11:54 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,12 +72,8 @@ void	free_shell(t_shell **shell)
 	if (!*shell)
 		return ;
 	free((*shell)->pwd);
-	if ((*shell)->tokens)
-		free_tokens(&(*shell)->tokens);
 	if ((*shell)->history.fd >= 0)
 		close((*shell)->history.fd);
-	if ((*shell)->tree)
-		free_ast(&(*shell)->tree);
 	if ((*shell)->my_env)
 		free_env_table((*shell)->my_env);
 	free(*shell);
@@ -85,62 +81,85 @@ void	free_shell(t_shell **shell)
 }
 
 
-
-static const char *get_token_type_str(t_token_type type)
+static void print_indent(int level)
 {
-	if (type == TOKEN_WORD) return "WORD";
-	if (type == TOKEN_OPERATOR) return "OPERATOR";
-	if (type == TOKEN_PAREN) return "PAREN";
-	if (type == TOKEN_REDIRECT) return "REDIRECT";
-	return "UNKNOWN";
+	for (int i = 0; i < level; ++i)
+		printf("│   ");
 }
 
-static const char *get_operator_type_str(t_operator_type type)
+static void print_token_chain(t_token *tok)
 {
-	if (type == OPERATOR_PIPE) return "PIPE";
-	if (type == OPERATOR_OR) return "OR";
-	if (type == OPERATOR_AND) return "AND";
-	return "NONE";
-}
-
-static const char *get_redirection_type_str(t_redirection_type type)
-{
-	if (type == REDIRECT_IN) return "IN";
-	if (type == REDIRECT_OUT) return "OUT";
-	if (type == REDIRECT_APPEND) return "APPEND";
-	if (type == REDIRECT_HEREDOC) return "HEREDOC";
-	return "NONE";
-}
-
-static const char *get_paren_type_str(t_paren_type type)
-{
-	if (type == PAREN_OPEN) return "OPEN";
-	if (type == PAREN_CLOSE) return "CLOSE";
-	return "NONE";
-}
-
-void print_tokens(t_token *head)
-{
-	t_token *current = head;
-	int i = 0;
-
-	while (current)
+	while (tok)
 	{
-		printf("Token %d:\n", i++);
-		printf("  Data:           %s\n", current->token_data ? current->token_data : "(null)");
-		printf("  File name:      %s\n", current->file_name ? current->file_name : "(null)");
-		printf("  Type:           %s\n", get_token_type_str(current->token_type));
-		printf("  Operator type:  %s\n", get_operator_type_str(current->token_operator_type));
-		printf("  Redirect type:  %s\n", get_redirection_type_str(current->token_redirect_type));
-		printf("  Paren type:     %s\n", get_paren_type_str(current->token_paren_type));
-		printf("  Prev:           %p\n", (void *)current->prev_token);
-		printf("  Next:           %p\n", (void *)current->next_token);
-		printf("--------------------------------------------------\n");
-		current = current->next_token;
+		printf("%s", tok->token_data);
+        if (tok->file_name)
+            printf("%s", tok->file_name);
+		if (tok->next_token)
+			printf(" ");
+		tok = tok->next_token;
 	}
 }
 
+static void print_redir_chain(t_token *redir)
+{
+	if (!redir)
+		return;
+	printf(" [ ");
+	print_token_chain(redir);
+	printf(" ]");
+}
 
+void print_ast_full(t_ast *node, int level)
+{
+	print_indent(level);
+	if (node->cmd && node->cmd->token_paren_type == PAREN_OPEN)
+	{
+		// Subshell detected
+		printf("● Subshell: ( ) ");
+		print_redir_chain(node->redir);
+		printf("\n");
+
+		print_indent(level + 1);
+		printf("└─ Subshell Body:\n");
+		print_ast_full(node->left_side, level + 2);
+
+		// ❌ DO NOT print left_side and right_side again
+		return;
+	}
+
+	if (node->cmd && node->cmd->token_type == TOKEN_OPERATOR)
+	{
+		printf("● Operator: %s ", node->cmd->token_data);
+	}
+	else
+	{
+		printf("● Command: ");
+		print_token_chain(node->cmd);
+		print_redir_chain(node->redir);
+	}
+	printf("\n");
+
+	if (node->left_side)
+	{
+		print_indent(level + 1);
+		printf("├─ Left:\n");
+		print_ast_full(node->left_side, level + 2);
+	}
+	if (node->right_side)
+	{
+		print_indent(level + 1);
+		printf("└─ Right:\n");
+		print_ast_full(node->right_side, level + 2);
+	}
+}
+
+void conditional_free(t_shell **shell, bool ast, bool minishell)
+{
+	if (ast == true)
+		free_ast(&(*shell)->tree);
+	if (minishell == true)
+		free_shell(shell);
+}
 int	main(int argc, char *argv[], char **envp)
 {
 	char	*line;
@@ -156,6 +175,7 @@ int	main(int argc, char *argv[], char **envp)
 		return (ENOMEM);
 	if (!init_env(shell, envp))
 		return (printf("Failed to initialize env table.\n"),
+			free_tokens(&shell->tokens),
 			free_shell(&shell), ENOMEM);
 	while (1)
 	{
@@ -177,7 +197,7 @@ int	main(int argc, char *argv[], char **envp)
 				continue;
 			}
 			else
-				return (free(line), free_shell(&shell), ENOMEM);
+				return (free(line), free_tokens(&shell->tokens), free_shell(&shell), ENOMEM);
 		}
 		add_history(line);
 		if (shell->tokens && !valid_line(shell, &line))
@@ -186,21 +206,19 @@ int	main(int argc, char *argv[], char **envp)
 			free(line);
 			continue;
 		}
-		free_tokens(&shell->tokens);
 		free(line);
-		// if (!(shell->tree = building_ast(shell->tokens)))
-		// {
-		// 	free_tokens(&shell->tokens);
-		// 	return (EXIT_FAILURE);
-		// }
-		// execute_ast(shell->tree, shell->my_env, 0);
+		shell->tree = building_ast(shell->tokens);
+		if (!shell->tree)
+			return (free_shell(&shell), ENOMEM);
+		print_ast_full(shell->tree, 0);
+		conditional_free(&shell, true, false);
+		execute_ast(shell->tree, shell->my_env, false);
 
 		// free_ast(&shell->tree);
 		// free_tokens(&shell->tokens);
 		// free(line);
 	}
-	free_shell(&shell);
-
+	conditional_free(&shell, true, true);
 	printf("exit\n");
 	return (0);
 }
