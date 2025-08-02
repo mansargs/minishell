@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 22:09:46 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/02 00:40:10 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/02 17:28:24 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,16 +42,17 @@ t_token	*last_token(t_token *head)
 	return (last);
 }
 
-void	free_tokens(t_token *head)
+void	free_tokens(t_token **head)
 {
 	t_token	*temp;
 
-	while (head)
+	while (*head)
 	{
-		temp = head;
-		head = head->next_token;
+		temp = *head;
+		*head = (*head)->next_token;
 		free_token(&temp);
 	}
+	*head = NULL;
 }
 
 void	free_token(t_token **token)
@@ -63,6 +64,8 @@ void	free_token(t_token **token)
 	}
 	if ((*token)->file_name)
 	{
+		if ((*token)->token_redirect_type == REDIRECT_HEREDOC)
+			unlink((*token)->file_name);
 		free((*token)->file_name);
 		(*token)->file_name = NULL;
 	}

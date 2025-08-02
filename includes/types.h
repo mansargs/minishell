@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 03:11:37 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/02 14:04:09 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/02 17:08:27 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ typedef struct	s_shell
 	char		**envp;
 	t_ast		*tree;
 	t_env		*my_env;
-
+	bool		mem_error;
 }	t_shell;
 
 typedef struct s_env_flags {

@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 00:51:12 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/20 01:59:51 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/02 15:38:56 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,9 @@ static int	validate_and_merge_tokens(t_shell *shell, char **extra_line)
 	t_token	*new_tokens;
 	t_token	*prev;
 	t_token	*last;
+	bool	mem_error;
 
-	new_tokens = tokenize(*extra_line);
+	new_tokens = tokenize(*extra_line, &mem_error);
 	free(*extra_line);
 	*extra_line = NULL;
 	if (!new_tokens)

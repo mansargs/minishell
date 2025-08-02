@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:23 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/02 00:41:20 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/02 16:03:53 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ t_token	*create_token(const char *t_data, t_token_type type)
 	if (!token)
 		return (NULL);
 	token->token_data = ft_strdup(t_data);
+	if (!token->token_data)
+		return (free(token), NULL);
 	token->token_type = type;
 	if (type == TOKEN_OPERATOR)
 		token->token_operator_type
@@ -76,7 +78,6 @@ t_token	*create_token(const char *t_data, t_token_type type)
 	else if (type == TOKEN_PAREN)
 		token->token_paren_type
 			= get_paren_type(t_data);
-	token->next_token = NULL;
 	return (token);
 }
 

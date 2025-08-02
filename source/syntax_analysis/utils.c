@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 22:19:44 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/01 23:24:39 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/02 16:41:09 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,18 @@ void	free_matrix(char ***matrix)
 }
 
 
-void	free_ast(t_ast *tree)
+void	free_ast(t_ast **tree)
 {
-	if (!tree)
+	if (!*tree)
 		return ;
-	if (tree->left_side)
-		free_ast(tree->left_side);
-	if (tree->right_side)
-		free_ast(tree->right_side);
-	free(tree);
+	if ((*tree)->left_side)
+		free_ast(&(*tree)->left_side);
+	if ((*tree)->right_side)
+		free_ast(&(*tree)->right_side);
+	if ((*tree)->cmd)
+		free_tokens(&(*tree)->cmd);
+	if ((*tree)->redir)
+		free_tokens(&(*tree)->redir);
+	free(*tree);
+	*tree = NULL;
 }

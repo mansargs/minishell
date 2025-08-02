@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 13:38:09 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/02 00:48:02 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/02 16:44:49 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ bool	syntax_and_heredoc(t_shell *shell)
 	int		opened_parenthesis;
 
 	if (strict_syntax_errors(shell))
-		return (free_tokens(shell->tokens), false);
+		return (free_tokens(&shell->tokens), false);
 	temp = shell->tokens;
 	opened_parenthesis = 0;
 	while (temp)
@@ -51,7 +51,7 @@ bool	syntax_and_heredoc(t_shell *shell)
 			}
 		}
 		else if (secondary_syntax_errors(temp, &opened_parenthesis))
-			return (free_tokens(shell->tokens), false);
+			return (free_tokens(&shell->tokens), false);
 		temp = temp->next_token;
 	}
 	return (true);

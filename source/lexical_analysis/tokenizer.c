@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 20:35:41 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/12 01:30:24 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/02 17:10:31 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,18 +96,22 @@ static t_token	*tokenize_loop(char *line, t_token *head)
 		else
 			len = handle_word_token(line, i, &head);
 		if (len < 0)
-			return (free_tokens(head), NULL);
+			return (free_tokens(&head), NULL);
 		i += len;
 	}
 	return (head);
 }
 
-t_token	*tokenize(char *line)
+t_token	*tokenize(char *line, bool *mem_error)
 {
 	t_token	*head;
 
 	head = NULL;
+	*mem_error = false;
 	if (!*line || only_spaces(line))
 		return (NULL);
-	return (tokenize_loop(line, head));
+	head = tokenize_loop(line, head);
+	if (!head)
+		*mem_error = true;
+	return (head);
 }

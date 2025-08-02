@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 03:03:48 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/11 16:19:19 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/02 17:40:54 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ static bool	invalid_open_parenthesis(const t_token *token)
 {
 	if (token->prev_token && token->prev_token->token_type == TOKEN_WORD)
 		return (printf("%s `('\n", SYN_ERR), true);
-	if (token->next_token && token->next_token->token_type == TOKEN_OPERATOR)
+	if (token->next_token && (token->next_token->token_type == TOKEN_OPERATOR
+		|| token->next_token->token_paren_type == PAREN_CLOSE))
 		return (printf("%s `%s'\n", SYN_ERR,
 				token->next_token->token_data), true);
 	return (false);

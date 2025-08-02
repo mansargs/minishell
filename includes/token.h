@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:21 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/02 03:13:42 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/02 16:17:51 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ extern volatile sig_atomic_t	g_received_signal;
 
 bool			only_spaces(const char *str);
 t_shell			*init_shell(char **envp);
-t_token			*tokenize(char *line);
+t_token			*tokenize(char *line, bool *possible_mem_error);
 t_token			*create_token(const char *t_data, t_token_type t_type);
 t_token			*add_token(t_token **head, t_token *new_token);
 t_token			*last_token(t_token *head);
@@ -41,7 +41,7 @@ bool			is_redirect(char tok);
 bool			is_special_char(char tok);
 bool			is_special_operator(char tok);
 bool			wait_for_input_if_need(char **line);
-void			free_tokens(t_token *head);
+void			free_tokens(t_token **head);
 int				extract_quoted_string(char *line, int i, char *str);
 int				handle_quots_token(char *line, int i, t_token **head);
 int				skip_variable(const char *line, int i);

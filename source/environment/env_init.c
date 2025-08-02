@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 14:37:31 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/02 14:05:19 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/02 15:05:49 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ t_env_node	*create_env_node(char *key, char *value, bool has_equal_sign)
 	return (new);
 }
 
-bool	update_env_node_value(t_env_node *current, char *value, bool has_equal_sign)
+bool	update_env_node_value(t_env_node *current, char *value,
+	bool has_equal_sign)
 {
 	if (current->value)
 		free(current->value);
