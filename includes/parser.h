@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:22:46 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/02 20:51:51 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/02 21:36:08 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void				free_env_table(t_env *env);
 /* Env Operations */
 int					env_size(t_env *env);
 bool				env_set(t_env *env, char *key, char *value,
-						bool has_equal_sign);
+					bool has_equal_sign);
 void				sort_env_nodes(t_env_node **list, int count);
 bool				init_env(t_shell *shell, char **envp);
 t_env_node			*env_get(t_env *env, const char *key);
@@ -49,17 +49,17 @@ t_env_node			**get_all_env(t_env *env, int *count);
 void				print_sorted_export(t_env *env);
 
 /* Builtins */
-t_execute_status	export_builtin(char **args, t_env *env);
-t_execute_status	unset_builtin(char **arg, t_env *env);
-t_execute_status	env_builtin(char **args, t_env *env);
-t_execute_status	pwd_builtin(char **args, t_env *env);
-t_execute_status	cd_builtin(char **args, t_env *env);
-t_execute_status	echo_builtin(char **args, t_env *env);
-t_execute_status	exit_builtin(t_shell *shell, char **args);
-t_execute_status	history_builtin(void);
-t_execute_status	execute_builtin(char **argv, t_env *env);
-int					count_env_vars(t_env *env);
-void				handle_builtin_commands(t_shell *shell, t_env *env);
-bool				is_valid_identifier(const char *s);
+bool	export_builtin(char **args, t_env *env);
+bool	unset_builtin(char **arg, t_env *env);
+bool	env_builtin(char **args, t_env *env);
+bool	pwd_builtin(char **args, t_env *env);
+bool	cd_builtin(char **args, t_env *env);
+bool	echo_builtin(char **args, t_env *env);
+bool	exit_builtin(t_shell *shell, char **args);
+bool	history_builtin(void);
+bool	execute_builtin(char **argv, t_env *env, bool *is_builtin);
+int		count_env_vars(t_env *env);
+void	handle_builtin_commands(t_shell *shell, t_env *env);
+bool	is_valid_identifier(const char *s);
 
 #endif

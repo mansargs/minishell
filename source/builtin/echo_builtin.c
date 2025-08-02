@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 12:53:47 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/02 19:33:57 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/02 21:28:15 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	print_arg_with_exitcode(char *arg, int exit_code)
 	}
 }
 
-t_execute_status	echo_builtin(char **args, t_env *env)
+bool	echo_builtin(char **args, t_env *env)
 {
 	int		i;
 	bool	newline;
@@ -53,5 +53,5 @@ t_execute_status	echo_builtin(char **args, t_env *env)
 	}
 	if (newline)
 		printf("\n");
-	return (BUILTIN_OK);
+	return (true);
 }

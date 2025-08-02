@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_convert.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 13:11:41 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/02 00:25:15 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/07/20 16:02:42 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,7 @@ static char	**build_argv_from_tokens(t_token *cmd_tokens, char **envp)
 		if (arg->token_type == TOKEN_WORD)
 		{
 			if (handle_quots(envp, arg) == -1)
-			{
-				free_matrix(&argv);
-				return (NULL);
-			}
-			if (!arg->token_data)
-			{
-				free_matrix(&argv);
-				return (NULL);
-			}
+				return (free_matrix(&argv), NULL);
 			argv[i++] = ft_strdup(arg->token_data);
 		}
 		arg = arg->next_token;

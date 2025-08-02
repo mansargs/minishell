@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 23:04:36 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/02 20:47:31 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/02 21:15:42 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static int	get_random_number(void)
 	return (number);
 }
 
-static char	*get_file_name(void)
+char	*get_file_name(void)
 {
 	char			*num_by_string;
 	char			*file_name;
@@ -98,7 +98,7 @@ static char	*get_file_name(void)
 	return (file_name);
 }
 
-void	handle_heredoc_open_quote(t_shell *shell, const char *line,
+void	handle_heredoc_open_quote(t_shell *shell, char *line,
 	const int fd)
 {
 	int		copy_flag;

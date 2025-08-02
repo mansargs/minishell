@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 17:49:52 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/02 19:33:57 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/02 21:29:11 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,13 @@ void	print_env(t_env *env)
 	free(all_vars);
 }
 
-t_execute_status	env_builtin(char **args, t_env *env)
+bool	env_builtin(char **args, t_env *env)
 {
 	if (args[1])
 	{
 		printf("minishell: env: too many arguments\n");
-		return (BUILTIN_FAIL);
+		return (false);
 	}
 	print_env(env);
-	return (BUILTIN_OK);
+	return (true);
 }

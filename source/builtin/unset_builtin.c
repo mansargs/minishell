@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 14:36:43 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/02 19:33:57 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/02 21:31:47 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	remove_env_key(t_env *env, const char *key)
 	}
 }
 
-t_execute_status	unset_builtin(char **args, t_env *env)
+bool	unset_builtin(char **args, t_env *env)
 {
 	int	i;
 
@@ -55,5 +55,5 @@ t_execute_status	unset_builtin(char **args, t_env *env)
 		remove_env_key(env, args[i]);
 		i++;
 	}
-	return (BUILTIN_OK);
+	return (true);
 }

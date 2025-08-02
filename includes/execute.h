@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 19:50:18 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/02 20:49:09 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/02 21:35:21 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,6 @@ bool	add_cmd_to_path(char **paths, const char *cmd);
 bool	fill_arguments(t_token *cmd, char **argv, int argc);
 void	free_ast(t_ast **tree);
 bool	open_wildcards(char	***argv);
-void	setup_ignals(void);
+void	setup_signals(void);
 
 #endif

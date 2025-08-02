@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 19:49:43 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/02 19:51:58 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/02 22:05:17 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,39 +57,38 @@ bool	open_redirects(t_ast *node)
 	return (true);
 }
 
-t_execute_status	execute_logic_and(t_ast *node, t_env *env)
+int	execute_logic_and(t_ast *node, t_env *env)
 {
-	t_execute_status	left_return;
+	int	left_return;
 
 	left_return = execute_ast(node->left_side, env, false);
-	if (left_return != BUILTIN_OK && left_return != EXECUTE_OK)
+	if (left_return != 0)
 		return (left_return);
 	return (execute_ast(node->right_side, env, false));
 }
 
-t_execute_status	execute_logic_or(t_ast *node, t_env *env)
+int	execute_logic_or(t_ast *node, t_env *env)
 {
-	t_execute_status	left_return;
+	int	left_return;
 
 	left_return = execute_ast(node->left_side, env, false);
-	if (left_return == BUILTIN_OK || left_return == EXECUTE_OK)
-		return (left_return);
+	if (left_return == 1)
+		return (0);
 	return (execute_ast(node->right_side, env, false));
 }
 
-
-t_execute_status	execute_subshell(t_ast *node, t_env *env, bool has_forked)
+int	execute_subshell(t_ast *node, t_env *env, bool has_forked)
 {
-	pid_t					pid;
-	t_execute_status		result;
-	int						status;
+	pid_t	pid;
+	int		result;
+	int		status;
 
 	status = 0;
 	if (has_forked)
 		return (execute_ast(node->left_side, env, true));
 	pid = fork();
 	if (pid < 0)
-		return (perror("fork failed"), ANOTHER_FAIL);
+		return (perror("fork failed"), -1);
 	signal(SIGINT, SIG_IGN);
 	if (pid == 0)
 	{
@@ -111,7 +110,7 @@ t_execute_status	execute_subshell(t_ast *node, t_env *env, bool has_forked)
 	return (env->shell->exit_code);
 }
 
-t_execute_status	execute_pipe(t_ast *node, t_env *env)
+int	execute_pipe(t_ast *node, t_env *env)
 {
 	int		pipe_fds[2];
 	pid_t	left;
@@ -157,25 +156,25 @@ t_execute_status	execute_pipe(t_ast *node, t_env *env)
 	{
 		if (right_status == SIGINT)
 			write(STDOUT_FILENO, "\n", 1);
-		return (128 + WTERMSIG(right_status));
+		return 128 + WTERMSIG(right_status);
 	}
 	if (WIFEXITED(right_status))
-		return (WEXITSTATUS(right_status));
+		return WEXITSTATUS(right_status);
 	return (0);
 }
 
-t_execute_status execute_ast(t_ast *node, t_env *env, bool has_forked)
+int execute_ast(t_ast *node, t_env *env, bool has_forked)
 {
-	int					old_stdin;
-	int					old_stdout;
-	t_execute_status	result;
+	int	old_stdin;
+	int	old_stdout;
+	int	result;
 
 	if (!node || !node->cmd)
-		return (EXECUTE_OK);
+		return (0);
 	old_stdin = dup(STDIN_FILENO);
 	old_stdout = dup(STDOUT_FILENO);
 	if (!open_redirects(node))
-		return (restore_standard_fd(old_stdin, old_stdout), ANOTHER_FAIL);
+		return (restore_standard_fd(old_stdin, old_stdout), 1);
 	if (node->cmd->token_operator_type == OPERATOR_AND)
 		result = execute_logic_and(node, env);
 	else if (node->cmd->token_operator_type == OPERATOR_OR)

@@ -6,13 +6,13 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 02:18:23 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/02 19:33:57 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/02 21:31:03 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-t_execute_status	history_builtin(void)
+bool	history_builtin(void)
 {
 	char			*line;
 	unsigned long	count_line;
@@ -22,7 +22,7 @@ t_execute_status	history_builtin(void)
 	if (fd < 0)
 	{
 		perror("history doesn't open");
-		return (BUILTIN_FAIL);
+		return (false);
 	}
 	count_line = 0;
 	while (1)
@@ -30,11 +30,11 @@ t_execute_status	history_builtin(void)
 		++count_line;
 		line = get_next_line(fd);
 		if (!line)
-			return (BUILTIN_FAIL);
+			return (false);
 		printf("%lu %s", count_line, line);
 		free(line);
 	}
 	if (close(fd) == -1)
-		return (perror("close history failed"), BUILTIN_FAIL);
-	return (BUILTIN_OK);
+		return (perror("close history failed"), false);
+	return (true);
 }

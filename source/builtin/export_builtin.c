@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 21:17:08 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/02 19:33:57 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/02 21:30:37 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ t_env_node	**get_all_env(t_env *env, int *count)
 	return (list);
 }
 
-t_execute_status	export_builtin(char **args, t_env *env)
+bool	export_builtin(char **args, t_env *env)
 {
 	int	i;
 
@@ -128,5 +128,5 @@ t_execute_status	export_builtin(char **args, t_env *env)
 	i = 1;
 	while (args[i])
 		handle_export_argument(args[i++], env);
-	return (BUILTIN_OK);
+	return (true);
 }

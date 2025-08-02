@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 16:24:51 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/02 20:19:00 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/02 21:16:30 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,8 @@ char	*open_quotes_heredoc(t_shell *shell, const char *str, int *open_flag);
 char	*open_quotes(char **envp, const char *str, int *open_flag);
 void	append_char(char **res, char c);
 int		check_is_open_quote(int quote, char *res);
+char	*get_file_name(void);
+void	handle_heredoc_open_quote(t_shell *shell, char *line,
+			const int fd);
 
 #endif

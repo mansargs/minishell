@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 12:54:15 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/02 19:33:57 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/02 21:30:02 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,9 +110,9 @@ bool	is_numeric(const char *str)
 	return (true);
 }
 
-t_execute_status	exit_builtin(t_shell *shell, char **args)
+bool	exit_builtin(t_shell *shell, char **args)
 {
-	long	exit_code;
+	int		exit_code;
 
 	exit_code = 0;
 	ft_putendl_fd("exit", 1);
@@ -129,9 +129,9 @@ t_execute_status	exit_builtin(t_shell *shell, char **args)
 	{
 		ft_putendl_fd("minishell: exit: too many arguments", 2);
 		shell->exit_code = 1;
-		return (BUILTIN_FAIL);
+		return (false);
 	}
 	exit_code = ft_atol(args[1]);
 	exit(exit_code % 256);
-	return (BUILTIN_OK);
+	return (true);
 }

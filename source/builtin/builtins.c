@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 21:32:20 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/02 19:33:57 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/02 21:26:37 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,9 @@ char	**token_list_to_array(t_token *token)
 	return (arr);
 }
 
-t_execute_status	execute_builtin(char **argv, t_env *env)
+bool	execute_builtin(char **argv, t_env *env, bool *is_builtin)
 {
+	*is_builtin = true;
 	if (!ft_strcmp("cd", argv[0]))
 		return (cd_builtin(argv, env));
 	if (!ft_strcmp("pwd", argv[0]))
@@ -67,5 +68,6 @@ t_execute_status	execute_builtin(char **argv, t_env *env)
 		return (exit_builtin(env->shell, argv));
 	if (!ft_strcmp("history", argv[0]))
 		return (history_builtin());
-	return (NOT_BUILTIN);
+	*is_builtin = false;
+	return (false);
 }

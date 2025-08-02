@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 21:53:17 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/02 19:47:04 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/02 21:52:42 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	print_exec_error(const char *cmd, int exit_code)
 		printf("%s: command not found\n", cmd);
 }
 
-static void	child_execute(char **argv, t_env *env)
+static int	child_execute(char **argv, t_env *env)
 {
 	char	*cmd_path;
 	char	**envp;
@@ -46,47 +46,49 @@ static void	child_execute(char **argv, t_env *env)
 	exit(126);
 }
 
-static t_execute_status	execute_command_no_fork(t_ast *node, t_env *env)
+
+static int	execute_command_no_fork(t_ast *node, t_env *env)
 {
 	char	**argv;
+	bool	result;
+	bool	is_builtin;
 
 	argv = get_arguments(node->cmd, env);
 	if (!argv)
-		return (ANOTHER_FAIL);
+		return (-1);
 	if (!open_wildcards(&argv))
-		return (free(argv), ANOTHER_FAIL);
-	t_execute_status ret = execute_builtin(argv, env);
-	if (ret != NOT_BUILTIN)
+		return (free(argv), -1);
+	result = execute_builtin(argv, env, &is_builtin);
+	if (is_builtin)
+		return (free_matrix(&argv), result);
+	else
 	{
-		free_matrix(&argv);
-		env->shell->exit_code = ret;
-		return (ret);
+		child_execute(argv, env);
+		exit(EXIT_FAILURE);
 	}
-	child_execute(argv, env);
-	exit(EXIT_FAILURE);
 }
 
-static t_execute_status	execute_command_with_fork(t_ast *node, t_env *env)
+static int	execute_command_with_fork(t_ast *node, t_env *env)
 {
 	pid_t	pid;
 	int		status;
 	char	**argv;
-	t_execute_status res;
+	bool	is_builtin;
 
 	argv = get_arguments(node->cmd, env);
 	if (!argv)
-		return (ANOTHER_FAIL);
+		return (-1);
 	if (!open_wildcards(&argv))
-		return (free_matrix(&argv), ANOTHER_FAIL);
-	res = execute_builtin(argv, env);
-	if (res != NOT_BUILTIN)
-		return (free_matrix(&argv), res);
+		return (free_matrix(&argv), -1);
+	status = execute_builtin(argv, env, &is_builtin);
+	if (is_builtin)
+		return (free_matrix(&argv), status);
 	pid = fork();
 	if (pid < 0)
 	{
 		perror("fork failed");
 		free_matrix(&argv);
-		return (ANOTHER_FAIL);
+		return (-1);
 	}
 	signal(SIGINT, SIG_IGN);
 	if (pid == 0)
@@ -95,20 +97,23 @@ static t_execute_status	execute_command_with_fork(t_ast *node, t_env *env)
 		signal(SIGQUIT, SIG_DFL);
 		child_execute(argv, env);
 	}
-	waitpid(pid, &status, 0);
-	free_matrix(&argv);
-	if (WIFEXITED(status))
-		env->shell->exit_code = WEXITSTATUS(status);
-	else if (WIFSIGNALED(status))
+	else
 	{
-		if (status == SIGINT)
-			write(STDOUT_FILENO, "\n", 1);
-		env->shell->exit_code = WTERMSIG(status) + 128;
+		waitpid(pid, &status, 0);
+		free_matrix(&argv);
+		if (WIFEXITED(status))
+			env->shell->exit_code = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+		{
+			if (status == SIGINT)
+				write(STDOUT_FILENO, "\n", 1);
+			env->shell->exit_code = WTERMSIG(status) + 128;
+		}
 	}
 	return (env->shell->exit_code);
 }
 
-t_execute_status	execute_command(t_ast *node, t_env *env, bool has_forked)
+int	execute_command(t_ast *node, t_env *env, bool has_forked)
 {
 	if (has_forked)
 		return (execute_command_no_fork(node, env));

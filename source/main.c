@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:25 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/02 19:11:54 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/02 22:00:55 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,10 +210,9 @@ int	main(int argc, char *argv[], char **envp)
 		shell->tree = building_ast(shell->tokens);
 		if (!shell->tree)
 			return (free_shell(&shell), ENOMEM);
-		print_ast_full(shell->tree, 0);
-		conditional_free(&shell, true, false);
+		// print_ast_full(shell->tree, 0);
 		execute_ast(shell->tree, shell->my_env, false);
-
+		conditional_free(&shell, true, false);
 		// free_ast(&shell->tree);
 		// free_tokens(&shell->tokens);
 		// free(line);

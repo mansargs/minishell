@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 20:27:17 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/02 19:33:37 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/02 21:27:48 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ char	*cd_validation(char **args, t_env *env)
 	return (path);
 }
 
-t_execute_status	cd_builtin(char **args, t_env *env)
+bool	cd_builtin(char **args, t_env *env)
 {
 	char		*old_pwd;
 	char		new_pwd[PATH_MAX];
@@ -73,13 +73,13 @@ t_execute_status	cd_builtin(char **args, t_env *env)
 
 	path = cd_validation(args, env);
 	if (path == NULL)
-		return (BUILTIN_FAIL);
+		return (false);
 	old_pwd = env_get(env, "PWD")->value;
 	if (chdir(path) != 0)
 	{
 		env->shell->exit_code = 1;
 		perror("minishell: cd");
-		return (BUILTIN_FAIL);
+		return (false);
 	}
 	if (!getcwd(new_pwd, sizeof(new_pwd)))
 	{
@@ -91,11 +91,11 @@ t_execute_status	cd_builtin(char **args, t_env *env)
 		else
 			env->shell->pwd = ft_strjoin(pwd_node->value, "/..");
 		env_set(env, "PWD", env->shell->pwd, 1);
-		return (BUILTIN_FAIL);
+		return (false);
 	}
 	env_set(env, "OLDPWD", old_pwd, 1);
 	env_set(env, "PWD", new_pwd, 1);
 	free(env->shell->pwd);
 	env->shell->pwd = ft_strdup(new_pwd);
-	return (BUILTIN_OK);
+	return (true);
 }
