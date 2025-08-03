@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 21:53:17 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/03 16:19:21 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/03 16:37:16 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int	child_execute(char **argv, t_env *env)
 }
 
 
-static int	execute_command_no_fork(t_ast *node, t_env *env)
+static int	execute_command_no_fork(t_ast *node, t_env *env, bool has_forked)
 {
 	char	**argv;
 	bool	result;
@@ -58,7 +58,7 @@ static int	execute_command_no_fork(t_ast *node, t_env *env)
 		return (-1);
 	if (!open_wildcards(&argv))
 		return (free(argv), -1);
-	result = execute_builtin(argv, env, &is_builtin);
+	result = execute_builtin(argv, env, &is_builtin, has_forked);
 	if (is_builtin)
 		return (free_matrix(&argv), result);
 	else
@@ -68,7 +68,7 @@ static int	execute_command_no_fork(t_ast *node, t_env *env)
 	}
 }
 
-static int	execute_command_with_fork(t_ast *node, t_env *env)
+static int	execute_command_with_fork(t_ast *node, t_env *env, bool has_forked)
 {
 	pid_t	pid;
 	int		status;
@@ -80,7 +80,7 @@ static int	execute_command_with_fork(t_ast *node, t_env *env)
 		return (-1);
 	if (!open_wildcards(&argv))
 		return (free_matrix(&argv), -1);
-	status = execute_builtin(argv, env, &is_builtin);
+	status = execute_builtin(argv, env, &is_builtin, has_forked);
 	if (is_builtin)
 		return (free_matrix(&argv), status);
 	pid = fork();
@@ -116,7 +116,7 @@ static int	execute_command_with_fork(t_ast *node, t_env *env)
 int	execute_command(t_ast *node, t_env *env, bool has_forked)
 {
 	if (has_forked)
-		return (execute_command_no_fork(node, env));
+		return (execute_command_no_fork(node, env, has_forked));
 	else
-		return (execute_command_with_fork(node, env));
+		return (execute_command_with_fork(node, env, has_forked));
 }

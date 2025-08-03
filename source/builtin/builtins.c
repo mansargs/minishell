@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 21:32:20 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/03 16:14:08 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/03 16:29:24 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ char	**token_list_to_array(t_token *token)
 	return (arr);
 }
 
-bool	execute_builtin(char **argv, t_env *env, bool *is_builtin, bool has_forked)
+bool	execute_builtin(char **argv, t_env *env, bool *is_builtin,
+	bool has_forked)
 {
 	*is_builtin = true;
 	if (!ft_strcmp("cd", argv[0]))
