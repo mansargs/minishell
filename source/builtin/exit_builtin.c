@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 12:54:15 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/02 21:30:02 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/03 16:18:45 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ bool	is_str_greater(const char *str1, const char *str2)
 	int	i;
 
 	i = 0;
-	len1 = strlen(str1);
-	len2 = strlen(str2);
+	len1 = ft_strlen(str1);
+	len2 = ft_strlen(str2);
 	if (len1 > len2)
 		return (true);
 	if (len1 < len2)
@@ -110,12 +110,13 @@ bool	is_numeric(const char *str)
 	return (true);
 }
 
-bool	exit_builtin(t_shell *shell, char **args)
+bool	exit_builtin(t_shell *shell, char **args, bool has_forked)
 {
 	int		exit_code;
 
 	exit_code = 0;
-	ft_putendl_fd("exit", 1);
+	if (!has_forked)
+		ft_putendl_fd("exit", 1);
 	if (!args[1])
 		exit(shell->exit_code);
 	if (!is_numeric(args[1]) || ft_str_is_too_big(args[1]))

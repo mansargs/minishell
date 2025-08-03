@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:21 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/02 16:17:51 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/03 16:22:16 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,11 @@ t_token			*tokenize(char *line, bool *possible_mem_error);
 t_token			*create_token(const char *t_data, t_token_type t_type);
 t_token			*add_token(t_token **head, t_token *new_token);
 t_token			*last_token(t_token *head);
-t_token_type	single_token_type(const char *token);
-t_token_type	double_token_type(const char *token);
 bool			is_space(char tok);
 bool			is_redirect(char tok);
 bool			is_special_char(char tok);
 bool			is_special_operator(char tok);
-bool			wait_for_input_if_need(char **line);
 void			free_tokens(t_token **head);
-int				extract_quoted_string(char *line, int i, char *str);
 int				handle_quots_token(char *line, int i, t_token **head);
 int				skip_variable(const char *line, int i);
 int				get_word_len_with_quotes(const char *line);

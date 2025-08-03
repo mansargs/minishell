@@ -6,19 +6,18 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 13:49:14 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/03 15:30:05 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/03 15:44:18 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-bool	shlvl(char **argv, t_env *env)
+bool	shlvl(t_env *env)
 {
 	t_env_node	*node;
 	int			shlvl_count;
 	char		*new_value;
 
-	(void)argv;
 	node = env_get(env, "SHLVL");
 	if (!node || !node->value)
 		shlvl_count = 1;

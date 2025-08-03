@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 21:53:17 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/02 21:52:42 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/03 16:19:21 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 static void	print_exec_error(const char *cmd, int exit_code)
 {
-	if (strchr(cmd, '/'))
+	if (ft_strchr(cmd, '/'))
 	{
 		if (exit_code == 127)
 			printf("minishell: %s: No such file or directory\n", cmd);

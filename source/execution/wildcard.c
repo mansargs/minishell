@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 20:31:07 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/03 15:26:23 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/03 15:40:54 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,6 +193,8 @@ bool	open_wildcards(char	***argv)
 	i = -1;
 	while ((*argv)[++i])
 	{
+		if (ft_strchr((*argv)[i], '*') == 0)
+			continue ;
 		if (!find_directory_and_word((*argv)[i], &dir, &word))
 			return (false);
 		if (!open_directory(dir, word, &replace))

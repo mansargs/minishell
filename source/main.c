@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:25 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/02 22:00:55 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/03 16:23:17 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ void	print_env_table(t_env *env)
 	while (i < HASH_SIZE)
 	{
 		node = env->env[i];
-		// if (node)
-		// 	printf("Index %d:\n", i);
 		while (node)
 		{
 			printf("  \033[34m%s\033[0m", node->key);
@@ -81,19 +79,19 @@ void	free_shell(t_shell **shell)
 }
 
 
-static void print_indent(int level)
+static void	print_indent(int level)
 {
 	for (int i = 0; i < level; ++i)
 		printf("│   ");
 }
 
-static void print_token_chain(t_token *tok)
+static void	print_token_chain(t_token *tok)
 {
 	while (tok)
 	{
 		printf("%s", tok->token_data);
-        if (tok->file_name)
-            printf("%s", tok->file_name);
+		if (tok->file_name)
+			printf("%s", tok->file_name);
 		if (tok->next_token)
 			printf(" ");
 		tok = tok->next_token;
@@ -103,7 +101,7 @@ static void print_token_chain(t_token *tok)
 static void print_redir_chain(t_token *redir)
 {
 	if (!redir)
-		return;
+		return ;
 	printf(" [ ");
 	print_token_chain(redir);
 	printf(" ]");
@@ -124,7 +122,7 @@ void print_ast_full(t_ast *node, int level)
 		print_ast_full(node->left_side, level + 2);
 
 		// ❌ DO NOT print left_side and right_side again
-		return;
+		return ;
 	}
 
 	if (node->cmd && node->cmd->token_type == TOKEN_OPERATOR)
@@ -153,7 +151,7 @@ void print_ast_full(t_ast *node, int level)
 	}
 }
 
-void conditional_free(t_shell **shell, bool ast, bool minishell)
+void	conditional_free(t_shell **shell, bool ast, bool minishell)
 {
 	if (ast == true)
 		free_ast(&(*shell)->tree);
@@ -182,7 +180,7 @@ int	main(int argc, char *argv[], char **envp)
 		setup_signals();
 		line = readline("minishell$ ");
 		if (!line)
-			break;
+			break ;
 		if (g_received_signal)
 		{
 			shell->exit_code = g_received_signal + 128;
@@ -194,7 +192,7 @@ int	main(int argc, char *argv[], char **envp)
 			if (shell->mem_error == false)
 			{
 				free(line);
-				continue;
+				continue ;
 			}
 			else
 				return (free(line), free_tokens(&shell->tokens), free_shell(&shell), ENOMEM);
@@ -204,7 +202,7 @@ int	main(int argc, char *argv[], char **envp)
 		{
 			free_tokens(&shell->tokens);
 			free(line);
-			continue;
+			continue ;
 		}
 		free(line);
 		shell->tree = building_ast(shell->tokens);

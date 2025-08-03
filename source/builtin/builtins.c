@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 21:32:20 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/02 21:26:37 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/03 16:14:08 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char	**token_list_to_array(t_token *token)
 	return (arr);
 }
 
-bool	execute_builtin(char **argv, t_env *env, bool *is_builtin)
+bool	execute_builtin(char **argv, t_env *env, bool *is_builtin, bool has_forked)
 {
 	*is_builtin = true;
 	if (!ft_strcmp("cd", argv[0]))
@@ -65,7 +65,7 @@ bool	execute_builtin(char **argv, t_env *env, bool *is_builtin)
 	if (!ft_strcmp("echo", argv[0]))
 		return (echo_builtin(argv, env));
 	if (!ft_strcmp("exit", argv[0]))
-		return (exit_builtin(env->shell, argv));
+		return (exit_builtin(env->shell, argv, has_forked));
 	if (!ft_strcmp("history", argv[0]))
 		return (history_builtin());
 	*is_builtin = false;
