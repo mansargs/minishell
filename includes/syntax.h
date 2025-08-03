@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 16:24:51 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/03 16:21:15 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/03 20:01:08 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ bool	is_quoted_delimiter(const char *s);
 char	*open_quotes_heredoc(t_shell *shell, const char *str, int *open_flag);
 char	*open_quotes(char **envp, const char *str, int *open_flag);
 void	append_char(char **res, char c);
-int		check_is_open_quote(int quote, char *res);
+int		check_is_open_quote(int quote);
 char	*get_file_name(void);
 void	handle_heredoc_open_quote(t_shell *shell, char *line,
 			const int fd);

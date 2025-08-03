@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 23:04:36 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/02 21:15:42 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/03 21:35:10 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	*open_quotes_heredoc(t_shell *shell, const char *str, int *open_flag)
 			append_char(&res, str[i]);
 		i++;
 	}
-	if (check_is_open_quote(quote, res) == 0)
+	if (check_is_open_quote(quote) == 0)
 		return (NULL);
 	return (res);
 }

@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:25 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/03 16:23:17 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/03 20:19:14 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,79 +78,6 @@ void	free_shell(t_shell **shell)
 	*shell = NULL;
 }
 
-
-static void	print_indent(int level)
-{
-	for (int i = 0; i < level; ++i)
-		printf("│   ");
-}
-
-static void	print_token_chain(t_token *tok)
-{
-	while (tok)
-	{
-		printf("%s", tok->token_data);
-		if (tok->file_name)
-			printf("%s", tok->file_name);
-		if (tok->next_token)
-			printf(" ");
-		tok = tok->next_token;
-	}
-}
-
-static void print_redir_chain(t_token *redir)
-{
-	if (!redir)
-		return ;
-	printf(" [ ");
-	print_token_chain(redir);
-	printf(" ]");
-}
-
-void print_ast_full(t_ast *node, int level)
-{
-	print_indent(level);
-	if (node->cmd && node->cmd->token_paren_type == PAREN_OPEN)
-	{
-		// Subshell detected
-		printf("● Subshell: ( ) ");
-		print_redir_chain(node->redir);
-		printf("\n");
-
-		print_indent(level + 1);
-		printf("└─ Subshell Body:\n");
-		print_ast_full(node->left_side, level + 2);
-
-		// ❌ DO NOT print left_side and right_side again
-		return ;
-	}
-
-	if (node->cmd && node->cmd->token_type == TOKEN_OPERATOR)
-	{
-		printf("● Operator: %s ", node->cmd->token_data);
-	}
-	else
-	{
-		printf("● Command: ");
-		print_token_chain(node->cmd);
-		print_redir_chain(node->redir);
-	}
-	printf("\n");
-
-	if (node->left_side)
-	{
-		print_indent(level + 1);
-		printf("├─ Left:\n");
-		print_ast_full(node->left_side, level + 2);
-	}
-	if (node->right_side)
-	{
-		print_indent(level + 1);
-		printf("└─ Right:\n");
-		print_ast_full(node->right_side, level + 2);
-	}
-}
-
 void	conditional_free(t_shell **shell, bool ast, bool minishell)
 {
 	if (ast == true)
@@ -158,11 +85,28 @@ void	conditional_free(t_shell **shell, bool ast, bool minishell)
 	if (minishell == true)
 		free_shell(shell);
 }
+
+void	ps_path(t_shell *shell)
+{
+	char	*user_name;
+	char	*pwd_path;
+	char	*result_line;
+
+	user_name = get_env_value(shell->envp, "USER");
+	if (!user_name)
+		user_name = ft_strdup("unknown");
+	printf("%s\n", user_name);
+	pwd_path = shell->pwd;
+	result_line = ft_strjoin("minishell@", user_name);
+	result_line = ft_strjoin(result_line, ":");
+	result_line = ft_strjoin(result_line, pwd_path);
+	result_line = ft_strjoin(result_line, "$ ");
+}
+
 int	main(int argc, char *argv[], char **envp)
 {
 	char	*line;
 	t_shell	*shell;
-
 
 	(void) argv;
 	if (argc > 1)
@@ -177,6 +121,15 @@ int	main(int argc, char *argv[], char **envp)
 			free_shell(&shell), ENOMEM);
 	while (1)
 	{
+		// user_name = get_env_value(shell->envp, "USER");
+		// if (!user_name)
+		// 	user_name = ft_strdup("unknown");
+		// printf("%s\n", user_name);
+		// pwd_path = shell->pwd;
+		// result_line = ft_strjoin("minishell@", user_name);
+		// result_line = ft_strjoin(result_line, ":");
+		// result_line = ft_strjoin(result_line, pwd_path);
+		// result_line = ft_strjoin(result_line, "$ ");
 		setup_signals();
 		line = readline("minishell$ ");
 		if (!line)
@@ -211,6 +164,7 @@ int	main(int argc, char *argv[], char **envp)
 		// print_ast_full(shell->tree, 0);
 		execute_ast(shell->tree, shell->my_env, false);
 		conditional_free(&shell, true, false);
+		// free(result_line);
 		// free_ast(&shell->tree);
 		// free_tokens(&shell->tokens);
 		// free(line);

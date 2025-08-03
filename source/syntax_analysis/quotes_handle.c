@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 22:40:43 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/02 20:19:11 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/03 20:01:00 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void	append_char(char **res, char c)
 	char	tmp[2];
 	char	*new;
 
+	if (!*res)
+		return ;
 	tmp[0] = c;
 	tmp[1] = '\0';
 	new = ft_strjoin(*res, tmp);
@@ -95,9 +97,15 @@ char	*open_quotes(char **envp, const char *str, int *open_flag)
 	if (!res)
 		return (NULL);
 	if (!parser_quote_loop(envp, str, &res, &quote))
+	{
+		free(res);
 		return (NULL);
-	if (check_is_open_quote(quote, res) == 0)
-		return (free(res), NULL);
+	}
+	if (check_is_open_quote(quote) == 0)
+	{
+		free(res);
+		return (NULL);
+	}
 	return (res);
 }
 

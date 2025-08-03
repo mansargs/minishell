@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 21:53:17 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/03 16:37:16 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/03 21:29:03 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ static int	child_execute(char **argv, t_env *env)
 	exit(126);
 }
 
-
 static int	execute_command_no_fork(t_ast *node, t_env *env, bool has_forked)
 {
 	char	**argv;
@@ -67,6 +66,7 @@ static int	execute_command_no_fork(t_ast *node, t_env *env, bool has_forked)
 		exit(EXIT_FAILURE);
 	}
 }
+
 
 static int	execute_command_with_fork(t_ast *node, t_env *env, bool has_forked)
 {

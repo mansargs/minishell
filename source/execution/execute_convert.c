@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_convert.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 13:11:41 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/20 16:02:42 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/03 20:09:53 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static char	**build_argv_from_tokens(t_token *cmd_tokens, char **envp)
 	int		i;
 
 	count = count_tokens(cmd_tokens);
-	argv = malloc(sizeof(char *) * (count + 1));
+	argv = ft_calloc((count + 1), sizeof(char *));
 	if (!argv)
 		return (NULL);
 	arg = cmd_tokens;
@@ -101,7 +101,7 @@ char	**convert_env_to_matrix(t_env *env)
 	t_env_node	*node;
 
 	count = count_env_vars(env);
-	envp = malloc(sizeof(char *) * (count + 1));
+	envp = ft_calloc(count + 1, sizeof(char *));
 	if (!envp)
 		return (NULL);
 	i = 0;

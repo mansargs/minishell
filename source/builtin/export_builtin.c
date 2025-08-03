@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 21:17:08 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/03 16:16:27 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/03 20:09:31 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ t_env_node	**get_all_env(t_env *env, int *count)
 	int			total;
 
 	total = env_size(env);
-	list = malloc(sizeof(t_env_node *) * total);
+	list = ft_calloc(total, sizeof(t_env_node *));
 	if (!list)
 		return (NULL);
 	idx = 0;

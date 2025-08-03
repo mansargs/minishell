@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 00:19:38 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/20 12:32:48 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/03 20:10:25 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ char	*join(char *str1, char *str2, char *str3)
 	size_t	len;
 
 	len = ft_strlen(str1) + ft_strlen(str2) + ft_strlen(str3) + 1;
-	joined = malloc(len);
+	joined = ft_calloc(len, sizeof(char));
 	if (!joined)
 		return (NULL);
 	ft_strcpy(joined, str1);

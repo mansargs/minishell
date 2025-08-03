@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 21:32:20 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/03 16:29:24 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/03 20:08:49 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	**token_list_to_array(t_token *token)
 		len++;
 		tmp = tmp->next_token;
 	}
-	arr = malloc(sizeof(char *) * (len + 1));
+	arr = ft_calloc(len + 1, sizeof(char *));
 	if (!arr)
 		return (NULL);
 	i = 0;
