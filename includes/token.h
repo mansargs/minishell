@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:21 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/03 16:22:16 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/04 02:28:53 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include "../library/libft/libft.h"
 # include "../library/gnl/get_next_line.h"
 # include "types.h"
+# include "syntax.h"
 
 # define SYN_ERR "minishell: syntax error near unexpected token"
 
@@ -44,5 +45,8 @@ int				skip_variable(const char *line, int i);
 int				get_word_len_with_quotes(const char *line);
 void			free_token(t_token **token);
 int				count_tokens(t_token *token);
+char			*ps_path(t_shell *shell);
+void			free_shell(t_shell **shell);
+void			conditional_free(t_shell **shell, bool ast, bool minishell);
 
 #endif

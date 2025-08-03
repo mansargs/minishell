@@ -25,9 +25,11 @@ SRCS = \
 	$(GNL_DIR)/get_next_line_utils.c \
 	$(SRC_DIR)/main.c \
 	$(LEXICAL)/tokenizer.c \
+	$(LEXICAL)/readline.c \
 	$(LEXICAL)/init.c \
 	$(LEXICAL)/tokenizer_utils.c \
 	$(LEXICAL)/token_quoted.c \
+	$(LEXICAL)/free.c \
 	$(LEXICAL)/utils.c \
 	$(SYNTAX)/strict_errors.c \
 	$(SYNTAX)/secondary_errors.c \

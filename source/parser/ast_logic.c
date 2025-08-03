@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_logic.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 15:30:46 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/02 18:19:23 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/04 02:21:07 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,6 @@ static t_token	*find_lowest_operator(t_token *head)
 
 static bool	handle_leaf_branch(t_ast *branch)
 {
-	// if (!branch || !branch->tokens)
-	// 	return (true);
 	if (branch->tokens->token_paren_type == PAREN_OPEN)
 		return (division_into_parenthesis(branch));
 	if (!command_redirection_division(branch))
