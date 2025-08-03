@@ -40,6 +40,7 @@ SRCS = \
 	$(PARSER)/ast_logic.c \
 	$(PARSER)/ast_redirection.c \
 	$(PARSER)/ast_parenthesis.c \
+	$(BUILTIN)/shlvl.c \
 	$(BUILTIN)/builtins.c \
 	$(BUILTIN)/export_builtin.c \
 	$(BUILTIN)/unset_builtin.c \

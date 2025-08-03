@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 12:22:37 by alisharu          #+#    #+#             */
-/*   Updated: 2025/07/20 12:24:42 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/03 14:51:18 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ static char	*find_command_path_in_path(const char *cmd, t_env *env)
 
 char	*find_command_path(const char *cmd, t_env *env)
 {
-	if (strchr(cmd, '/'))
+	if (ft_strchr(cmd, '/'))
 		return (find_command_path_with_slash(cmd, env));
 	else
 		return (find_command_path_in_path(cmd, env));

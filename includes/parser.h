@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:22:46 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/02 21:36:08 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/03 14:15:14 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,10 @@ bool	cd_builtin(char **args, t_env *env);
 bool	echo_builtin(char **args, t_env *env);
 bool	exit_builtin(t_shell *shell, char **args);
 bool	history_builtin(void);
-bool	execute_builtin(char **argv, t_env *env, bool *is_builtin);
 int		count_env_vars(t_env *env);
 void	handle_builtin_commands(t_shell *shell, t_env *env);
 bool	is_valid_identifier(const char *s);
+bool	execute_builtin(char **argv, t_env *env, bool *is_builtin);
+bool	shlvl(char **argv, t_env *env);
 
 #endif

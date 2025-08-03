@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 20:31:07 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/24 14:52:44 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/03 15:26:23 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ bool	find_directory_and_word(const char *line, char **dir, char **word)
 	return (true);
 }
 
-bool is_match(const char *item_name, const char *pattern)
+bool	is_match(const char *item_name, const char *pattern)
 {
 	const char	*item;
 	const char	*cpy_pattern;
@@ -68,7 +68,7 @@ bool is_match(const char *item_name, const char *pattern)
 		else
 			return (false);
 	}
-	while(*cpy_pattern == '*')
+	while (*cpy_pattern == '*')
 		++cpy_pattern;
 	return (*cpy_pattern == '\0');
 }
@@ -98,7 +98,7 @@ bool	collect_matched(char	***matched, const char	*newly_added)
 	i = 0;
 	if (*matched)
 	{
-		while((*matched)[i])
+		while ((*matched)[i])
 		{
 			new_arg_list[i] = ft_strdup((*matched)[i]);
 			if (!new_arg_list[i])
@@ -132,7 +132,7 @@ bool	open_directory(const char *dir, const char *word, char ***incoming_arg)
 	while (1)
 	{
 		item = readdir(dir_content);
-		if(!item)
+		if (!item)
 			break ;
 		if (!ft_strcmp(".", item->d_name) || !ft_strcmp("..", item->d_name))
 			continue ;
@@ -182,8 +182,6 @@ bool	integration(char ***argv, char **replace, int replace_index)
 	*argv = new_argv;
 	return (true);
 }
-
-
 
 bool	open_wildcards(char	***argv)
 {

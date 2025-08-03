@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 15:08:55 by mansargs          #+#    #+#             */
-/*   Updated: 2025/07/27 01:24:48 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/03 15:26:51 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
 
-void signal_handler(int signum)
+void	signal_handler(int signum)
 {
 	g_received_signal = signum;
 	write(STDOUT_FILENO, "\n", 1);

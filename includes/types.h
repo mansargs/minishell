@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 03:11:37 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/02 20:50:53 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/03 13:53:36 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,15 +72,15 @@ typedef struct s_history
 
 typedef struct s_shell
 {
+	bool		mem_error;
 	int			heredoc_quote;
-	char		*pwd;
 	int			exit_code;
+	char		*pwd;
+	char		**envp;
 	t_history	history;
 	t_token		*tokens;
-	char		**envp;
 	t_ast		*tree;
 	t_env		*my_env;
-	bool		mem_error;
 }	t_shell;
 
 typedef struct s_env_flags
