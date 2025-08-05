@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 13:11:41 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/03 20:09:53 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/06 02:10:59 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,23 +53,14 @@ static char	**build_argv_from_tokens(t_token *cmd_tokens, char **envp)
 		if (arg->token_type == TOKEN_WORD)
 		{
 			if (handle_quots(envp, arg) == -1)
-			{
-				free_matrix(&argv);
-				return (NULL);
-			}
-			argv[i] = ft_strdup(arg->token_data);
-			if (!argv[i++])
-			{
-				free_matrix(&argv);
-				return (NULL);
-			}
+				return (free_matrix(&argv), NULL);
+			argv[i++] = ft_strdup(arg->token_data);
 		}
 		arg = arg->next_token;
 	}
 	argv[i] = NULL;
 	return (argv);
 }
-
 
 char	**get_arguments(t_token *cmd_tokens, t_env *env)
 {
