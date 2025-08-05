@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute_utils.c                                    :+:      :+:    :+:   */
+/*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 04:04:48 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/04 04:04:55 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/06 01:26:07 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,11 @@ char	*join(char *str1, char *str2, char *str3)
 	char	*joined;
 	size_t	len;
 
-	if (!str1 || !str2 || !str3)
+	if (!str1 && str3)
+		return (ft_strdup(str3));
+	if (!str3 && str1)
+		return (ft_strdup(str1));
+	if (!str1 && !str3)
 		return (NULL);
 	len = ft_strlen(str1) + ft_strlen(str2) + ft_strlen(str3) + 1;
 	joined = ft_calloc(len, sizeof(char));

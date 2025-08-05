@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_builtin.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 21:17:08 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/04 04:49:36 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/06 01:25:31 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ void	handle_export_argument(char *arg, t_env *env)
 	key = get_key_data(arg);
 	if (!is_valid_identifier(key))
 	{
+		env->shell->exit_code = 1;
 		printf("minishell: export: `%s': not a valid identifier\n", key);
 		free(key);
 		return ;
