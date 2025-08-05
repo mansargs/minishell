@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   tokens_managing_utils.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/06 22:09:46 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/02 20:04:57 by alisharu         ###   ########.fr       */
+/*   Created: 2025/08/04 04:01:45 by mansargs          #+#    #+#             */
+/*   Updated: 2025/08/05 11:58:39 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "token.h"
+#include "utils.h"
 
 t_token	*add_token(t_token **head, t_token *new_token)
 {
@@ -42,53 +42,48 @@ t_token	*last_token(t_token *head)
 	return (last);
 }
 
-void	free_tokens(t_token **tokens)
-{
-	t_token	*curr;
-	t_token	*next;
-
-	if (!tokens || !*tokens)
-		return ;
-	curr = *tokens;
-	while (curr)
-	{
-		next = curr->next_token;
-		free_token(&curr);
-		curr = next;
-	}
-	*tokens = NULL;
-}
-
-void	free_token(t_token **token)
-{
-	if (!token || !*token)
-		return ;
-	if ((*token)->token_data)
-	{
-		free((*token)->token_data);
-		(*token)->token_data = NULL;
-	}
-	if ((*token)->file_name)
-	{
-		if ((*token)->token_redirect_type == REDIRECT_HEREDOC)
-			unlink((*token)->file_name);
-		free((*token)->file_name);
-		(*token)->file_name = NULL;
-	}
-	free(*token);
-	*token = NULL;
-}
-
 int	count_tokens(t_token *token)
 {
-	int	count;
+	const t_token	*temp;
+	int				count;
 
 	count = 0;
-	while (token)
+	temp = token;
+	while (temp)
 	{
-		if (token->token_type == TOKEN_WORD)
+		if (temp->token_type == TOKEN_WORD)
 			count++;
-		token = token->next_token;
+		temp = temp->next_token;
 	}
 	return (count);
+}
+
+bool	only_spaces(const char *str)
+{
+	int	i;
+
+	i = -1;
+	while (str[++i])
+	{
+		if (!is_space(str[i]))
+			return (false);
+	}
+	return (true);
+}
+
+char	*ft_strndup(const char *s, size_t n)
+{
+	char	*dup;
+	size_t	len;
+
+	len = 0;
+	while (s[len] && len < n)
+		len++;
+	dup = (char *)ft_calloc((len + 1), sizeof(char));
+	if (!dup)
+		return (NULL);
+	dup[len] = '\0';
+	while (len--)
+		dup[len] = s[len];
+	return (dup);
 }

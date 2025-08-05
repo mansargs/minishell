@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:25 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/04 02:23:05 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/05 15:08:56 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,64 @@
 
 volatile sig_atomic_t	g_received_signal;
 
-int	main(int argc, char *argv[], char **envp)
+static void	cleanup_heredoc_tempfiles(void)
+{
+	DIR				*dir;
+	struct dirent	*entry;
+
+	dir = opendir(".");
+	if (!dir)
+		return ;
+	while (1)
+	{
+		entry = readdir(dir);
+		if (!entry)
+			break ;
+		if (ft_strncmp(entry->d_name, ".heredoc_", 9) == 0)
+			unlink(entry->d_name);
+	}
+	closedir(dir);
+}
+
+static void	process_line(t_shell *shell, char *line)
+{
+	shell->tokens = tokenize(line, &shell->mem_error);
+	if (!shell->tokens)
+	{
+		free(line);
+		if (!shell->mem_error)
+			return ;
+		free_shell(&shell);
+		exit(ENOMEM);
+	}
+	add_history(line);
+	if (!valid_line(shell, &line))
+	{
+		free_tokens(&shell->tokens);
+		free(line);
+		return ;
+	}
+	free(line);
+	shell->tree = building_ast(shell->tokens);
+	if (!shell->tree)
+	{
+		free_shell(&shell);
+		exit(ENOMEM);
+	}
+	shell->exit_code = execute_ast(shell->tree, shell->my_env, false);
+	conditional_free(&shell, true, false);
+}
+
+void	run_shell_loop(t_shell *shell)
 {
 	char	*line;
 	char	*prompt;
-	t_shell	*shell;
-
-	(void)argv;
-	if (argc > 1)
-		return (printf("This program must be run without any arguments.\n"),
-			EXIT_FAILURE);
-
-	shell = init_shell(envp);
-	if (!shell)
-		return (ENOMEM);
-
-	if (!init_env(shell, envp))
-		return (printf("Failed to initialize env table.\n"),
-			free_tokens(&shell->tokens), free_shell(&shell), ENOMEM);
 
 	while (1)
 	{
 		setup_signals();
 		prompt = ps_path(shell);
+		cleanup_heredoc_tempfiles();
 		line = readline(prompt);
 		free(prompt);
 		if (!line)
@@ -46,32 +81,26 @@ int	main(int argc, char *argv[], char **envp)
 			shell->exit_code = g_received_signal + 128;
 			g_received_signal = 0;
 		}
-		shell->tokens = tokenize(line, &shell->mem_error);
-		if (!shell->tokens)
-		{
-			if (!shell->mem_error)
-			{
-				free(line);
-				continue ;
-			}
-			return (free(line), free_shell(&shell), ENOMEM);
-		}
-		add_history(line);
-		if (!valid_line(shell, &line))
-		{
-			free_tokens(&shell->tokens);
-			free(line);
-			continue ;
-		}
-		free(line);
-
-		shell->tree = building_ast(shell->tokens);
-		if (!shell->tree)
-			return (free_shell(&shell), ENOMEM);
-
-		execute_ast(shell->tree, shell->my_env, false);
-		conditional_free(&shell, true, false);
+		process_line(shell, line);
 	}
+}
+
+int	main(int argc, char *argv[], char **envp)
+{
+	t_shell		*shell;
+
+	(void)argv;
+	if (argc > 1)
+		return (printf("This program must be run without any arguments.\n"),
+			EXIT_FAILURE);
+	shell = init_shell(envp);
+	if (!shell)
+		return (ENOMEM);
+	if (!init_env(shell, envp))
+		return (printf("Failed to initialize env table.\n"),
+			free_tokens(&shell->tokens), free_shell(&shell), ENOMEM);
+	run_shell_loop(shell);
+	rl_clear_history();
 	conditional_free(&shell, true, true);
 	printf("exit\n");
 	return (0);

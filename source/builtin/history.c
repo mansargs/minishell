@@ -6,13 +6,13 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 02:18:23 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/02 21:31:03 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/04 04:49:42 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "builtin.h"
 
-bool	history_builtin(void)
+int	history_builtin(void)
 {
 	char			*line;
 	unsigned long	count_line;
@@ -22,7 +22,7 @@ bool	history_builtin(void)
 	if (fd < 0)
 	{
 		perror("history doesn't open");
-		return (false);
+		return (FUNCTION_FAIL);
 	}
 	count_line = 0;
 	while (1)
@@ -35,6 +35,6 @@ bool	history_builtin(void)
 		free(line);
 	}
 	if (close(fd) == -1)
-		return (perror("close history failed"), false);
-	return (true);
+		return (perror("close history failed"), FUNCTION_FAIL);
+	return (FUNCTION_SUCCESS);
 }

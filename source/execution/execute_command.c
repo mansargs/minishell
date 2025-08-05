@@ -3,93 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 21:53:17 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/03 21:29:03 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/04 06:03:48 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
-#include <errno.h>
-#include <unistd.h>
 
-static void	print_exec_error(const char *cmd, int exit_code)
+int	handle_child_status(int status, t_env *env)
 {
-	if (ft_strchr(cmd, '/'))
+	int	sig;
+
+	if (WIFEXITED(status))
+		env->shell->exit_code = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
 	{
-		if (exit_code == 127)
-			printf("minishell: %s: No such file or directory\n", cmd);
-		else if (exit_code == 126)
-			printf("minishell: %s: Permission denied\n", cmd);
+		sig = WTERMSIG(status);
+		env->shell->exit_code = sig + 128;
+		if (sig == SIGINT)
+			write(STDOUT_FILENO, "\n", 1);
+		else if (sig == SIGQUIT)
+			write(STDOUT_FILENO, "Quit (core dumped)\n", 20);
 	}
-	else
-		printf("%s: command not found\n", cmd);
+	return (env->shell->exit_code);
 }
 
-static int	child_execute(char **argv, t_env *env)
+static int	handle_fork_result(pid_t pid, char **argv, t_env *env)
 {
-	char	*cmd_path;
-	char	**envp;
+	int	status;
 
-	cmd_path = find_command_path(argv[0], env);
-	if (!cmd_path)
-	{
-		print_exec_error(argv[0], env->shell->exit_code);
-		exit(env->shell->exit_code);
-	}
-	envp = convert_env_to_matrix(env);
-	execve(cmd_path, argv, envp);
-	perror("execve");
-	free(cmd_path);
-	free_matrix(&envp);
-	exit(126);
-}
-
-static int	execute_command_no_fork(t_ast *node, t_env *env, bool has_forked)
-{
-	char	**argv;
-	bool	result;
-	bool	is_builtin;
-
-	argv = get_arguments(node->cmd, env);
-	if (!argv)
-		return (-1);
-	if (!open_wildcards(&argv))
-		return (free(argv), -1);
-	result = execute_builtin(argv, env, &is_builtin, has_forked);
-	if (is_builtin)
-		return (free_matrix(&argv), result);
-	else
-	{
-		child_execute(argv, env);
-		exit(EXIT_FAILURE);
-	}
-}
-
-
-static int	execute_command_with_fork(t_ast *node, t_env *env, bool has_forked)
-{
-	pid_t	pid;
-	int		status;
-	char	**argv;
-	bool	is_builtin;
-
-	argv = get_arguments(node->cmd, env);
-	if (!argv)
-		return (-1);
-	if (!open_wildcards(&argv))
-		return (free_matrix(&argv), -1);
-	status = execute_builtin(argv, env, &is_builtin, has_forked);
-	if (is_builtin)
-		return (free_matrix(&argv), status);
-	pid = fork();
-	if (pid < 0)
-	{
-		perror("fork failed");
-		free_matrix(&argv);
-		return (-1);
-	}
 	signal(SIGINT, SIG_IGN);
 	if (pid == 0)
 	{
@@ -101,16 +45,34 @@ static int	execute_command_with_fork(t_ast *node, t_env *env, bool has_forked)
 	{
 		waitpid(pid, &status, 0);
 		free_matrix(&argv);
-		if (WIFEXITED(status))
-			env->shell->exit_code = WEXITSTATUS(status);
-		else if (WIFSIGNALED(status))
-		{
-			if (status == SIGINT)
-				write(STDOUT_FILENO, "\n", 1);
-			env->shell->exit_code = WTERMSIG(status) + 128;
-		}
+		handle_child_status(status, env);
 	}
 	return (env->shell->exit_code);
+}
+
+static int	execute_command_with_fork(t_ast *node, t_env *env, bool has_forked)
+{
+	pid_t	pid;
+	int		status;
+	char	**argv;
+	bool	is_builtin;
+
+	argv = get_arguments(node->cmd, env);
+	if (!argv)
+		return (FUNCTION_FAIL);
+	if (!open_wildcards(&argv))
+		return (free_matrix(&argv), FUNCTION_FAIL);
+	status = execute_builtin(argv, env, &is_builtin, has_forked);
+	if (is_builtin)
+		return (free_matrix(&argv), status);
+	pid = fork();
+	if (pid < 0)
+	{
+		perror("fork failed");
+		free_matrix(&argv);
+		return (FUNCTION_FAIL);
+	}
+	return (handle_fork_result(pid, argv, env));
 }
 
 int	execute_command(t_ast *node, t_env *env, bool has_forked)

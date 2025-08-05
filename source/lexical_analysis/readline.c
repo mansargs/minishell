@@ -3,18 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   readline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 02:14:36 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/04 02:20:37 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/04 05:01:31 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "token.h"
-
-#define COLOR_BRIGHT_PURPLE "\001\033[0;95m\002"
-#define COLOR_BLUE  "\001\033[0;34m\002"
-#define COLOR_RESET   "\001\033[0m\002"
 
 char	*get_user_part(t_shell *shell)
 {

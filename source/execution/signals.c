@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 15:08:55 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/03 15:26:51 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/04 13:55:54 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	signal_handler(int signum)
 	rl_redisplay();
 }
 
-void setup_signals()
+void	setup_signals(void)
 {
 	struct sigaction	sa;
 
@@ -31,4 +31,3 @@ void setup_signals()
 	sigaction(SIGINT, &sa, NULL);
 	signal(SIGQUIT, SIG_IGN);
 }
-

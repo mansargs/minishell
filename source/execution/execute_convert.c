@@ -53,14 +53,23 @@ static char	**build_argv_from_tokens(t_token *cmd_tokens, char **envp)
 		if (arg->token_type == TOKEN_WORD)
 		{
 			if (handle_quots(envp, arg) == -1)
-				return (free_matrix(&argv), NULL);
-			argv[i++] = ft_strdup(arg->token_data);
+			{
+				free_matrix(&argv);
+				return (NULL);
+			}
+			argv[i] = ft_strdup(arg->token_data);
+			if (!argv[i++])
+			{
+				free_matrix(&argv);
+				return (NULL);
+			}
 		}
 		arg = arg->next_token;
 	}
 	argv[i] = NULL;
 	return (argv);
 }
+
 
 char	**get_arguments(t_token *cmd_tokens, t_env *env)
 {

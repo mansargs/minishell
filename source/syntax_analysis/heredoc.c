@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 02:47:43 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/02 20:47:14 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/05 15:23:36 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,20 @@ static char	*read_using_readline(int count_lines, const char *delim)
 	return (line);
 }
 
+void	handle_exit_and_quote(t_shell *shell, const int fd, char *line)
+{
+	char	*replaced;
+
+	if (ft_strnstr(line, "$?", ft_strlen(line)) && shell->exit_code_flag == 0)
+	{
+		replaced = replace_exit_code(shell, line);
+		ft_putendl_fd(replaced, fd);
+		free(replaced);
+	}
+	else
+		handle_heredoc_open_quote(shell, line, fd);
+}
+
 static void	read_from_stdin(t_shell *shell, const int fd, const char *delim,
 	const int fd_history)
 {
@@ -38,7 +52,7 @@ static void	read_from_stdin(t_shell *shell, const int fd, const char *delim,
 	{
 		line = read_using_readline(count_lines, delim);
 		if (!line)
-			return ;
+			break ;
 		++count_lines;
 		ft_putendl_fd(line, fd_history);
 		len = ft_strlen(line);
@@ -46,11 +60,12 @@ static void	read_from_stdin(t_shell *shell, const int fd, const char *delim,
 			&& ft_strncmp(line, delim, len) == 0)
 		{
 			free(line);
-			return ;
+			break ;
 		}
-		handle_heredoc_open_quote(shell, line, fd);
+		handle_exit_and_quote(shell, fd, line);
 		free(line);
 	}
+	rl_clear_history();
 }
 
 static int	fork_heredoc_reader(t_shell *shell, const t_token *token,

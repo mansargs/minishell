@@ -6,11 +6,11 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 17:49:52 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/02 21:29:11 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/04 04:49:19 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "builtin.h"
 
 void	print_env(t_env *env)
 {
@@ -34,13 +34,13 @@ void	print_env(t_env *env)
 	free(all_vars);
 }
 
-bool	env_builtin(char **args, t_env *env)
+int	env_builtin(char **args, t_env *env)
 {
 	if (args[1])
 	{
 		printf("minishell: env: too many arguments\n");
-		return (false);
+		return (FUNCTION_FAIL);
 	}
 	print_env(env);
-	return (true);
+	return (FUNCTION_SUCCESS);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   strict_errors.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 02:55:20 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/01 20:52:58 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/05 15:25:36 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ bool	invalid_operator(const t_token *token, const int strict_flag)
 			== PAREN_CLOSE)
 			return (printf("%s `%s'\n", SYN_ERR, token->next_token->token_data),
 				true);
+		if (!token->next_token)
+			return (printf("%s `newline'\n", SYN_ERR), true);
 	}
 	return (false);
 }

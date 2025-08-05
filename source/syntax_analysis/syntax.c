@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 13:38:09 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/03 20:00:53 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/05 13:50:49 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,22 +58,24 @@ bool	syntax_and_heredoc(t_shell *shell)
 	return (true);
 }
 
+static void	handle_heredoc_flag(t_shell *shell, char **line)
+{
+	if (!is_there_heredoc(shell->tokens, &shell->history.is_there_heredoc))
+		return ;
+	ft_putendl_fd(*line, shell->history.fd);
+	free(*line);
+	*line = NULL;
+}
+
 bool	valid_line(t_shell *shell, char **line)
 {
-	t_token	*last;
-
-	if (is_there_heredoc(shell->tokens, &shell->history.is_there_heredoc))
-	{
-		ft_putendl_fd(*line, shell->history.fd);
-		free(*line);
-		*line = NULL;
-	}
+	handle_exitstatus(shell);
+	handle_heredoc_flag(shell, line);
 	if (!syntax_and_heredoc(shell))
+	{
+		shell->exit_code = 2;
 		return (false);
-	last = last_token(shell->tokens);
-	if (last && last->token_type == TOKEN_OPERATOR)
-		if (!wait_for_input(shell, line))
-			return (free(*line), *line = NULL, false);
+	}
 	if (*line)
 		ft_putendl_fd(*line, shell->history.fd);
 	return (true);

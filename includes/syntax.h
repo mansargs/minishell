@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 16:24:51 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/03 20:01:08 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/05 11:14:47 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,6 @@
 # include "token.h"
 # include <sys/wait.h>
 
-# define STRICT 1
-# define NOT_STRICT 0
-
-t_token	*last_token(t_token *head);
 void	manage_parenthesis(const t_token *token, int *opened_parenthesis);
 bool	syntax_and_heredoc(t_shell *shell);
 bool	wait_for_input(t_shell *shell, char **line);
@@ -31,9 +27,6 @@ bool	secondary_syntax_errors(const t_token *token, int *opened_parenthesis);
 int		handle_quots(char **envp, t_token *token);
 char	*open_heredoc(t_shell *shell, const t_token *tokens,
 			const int fd_history);
-int		is_env_char(char c);
-char	*get_env_value(char **envp, const char *str);
-char	*ft_strjoin_free(char *s1, const char *s2);
 bool	is_quoted_delimiter(const char *s);
 char	*open_quotes_heredoc(t_shell *shell, const char *str, int *open_flag);
 char	*open_quotes(char **envp, const char *str, int *open_flag);
@@ -42,5 +35,8 @@ int		check_is_open_quote(int quote);
 char	*get_file_name(void);
 void	handle_heredoc_open_quote(t_shell *shell, char *line,
 			const int fd);
+void	signal_handler(int signum);
+void	handle_exitstatus(t_shell *shell);
+char	*replace_exit_code(t_shell *shell, char *token_str);
 
 #endif

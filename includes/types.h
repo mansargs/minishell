@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   types.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 03:11:37 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/03 13:53:36 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/05 13:56:10 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 # define TYPES_H
 
 # include <stdbool.h>
+# include <stdlib.h>
+# include <stdio.h>
+# include "macros.h"
+# include "../library/libft/libft.h"
 
-# define HASH_SIZE 128
-
-typedef struct s_ast	t_ast;
-typedef struct s_env	t_env;
-
+/* Tokens individual info */
 typedef enum e_token_type
 {
 	TOKEN_WORD,
@@ -64,49 +64,15 @@ typedef struct s_token
 	struct s_token		*prev_token;
 }	t_token;
 
-typedef struct s_history
-{
-	int		fd;
-	bool	is_there_heredoc;
-}				t_history;
+/* Environement abstraction */
 
-typedef struct s_shell
-{
-	bool		mem_error;
-	int			heredoc_quote;
-	int			exit_code;
-	char		*pwd;
-	char		**envp;
-	t_history	history;
-	t_token		*tokens;
-	t_ast		*tree;
-	t_env		*my_env;
-}	t_shell;
+typedef struct s_shell	t_shell;
 
 typedef struct s_env_flags
 {
 	bool	has_equal_sign;
 	bool	mem_error;
 }	t_env_flags;
-
-typedef enum e_execute_status
-{
-	BUILTIN_OK,
-	BUILTIN_FAIL,
-	NOT_BUILTIN,
-	EXECUTE_OK,
-	EXECUTE_FAIL,
-	ANOTHER_FAIL,
-}	t_execute_status;
-
-typedef struct s_ast
-{
-	t_token			*tokens;
-	struct s_ast	*left_side;
-	struct s_ast	*right_side;
-	t_token			*cmd;
-	t_token			*redir;
-}	t_ast;
 
 typedef struct s_env_node
 {
@@ -121,5 +87,39 @@ typedef struct s_env
 	t_env_node	*env[HASH_SIZE];
 	t_shell		*shell;
 }	t_env;
+
+/* Abstract Syntax Tree struct */
+
+typedef struct s_ast
+{
+	t_token			*tokens;
+	struct s_ast	*left_side;
+	struct s_ast	*right_side;
+	t_token			*cmd;
+	t_token			*redir;
+}	t_ast;
+
+/* Main shell disagn*/
+
+typedef struct s_history
+{
+	int		fd;
+	bool	is_there_heredoc;
+	bool	exitstatus_flag;
+}				t_history;
+
+typedef struct s_shell
+{
+	bool		mem_error;
+	int			heredoc_quote;
+	int			exit_code_flag;
+	int			exit_code;
+	char		*pwd;
+	char		**envp;
+	t_history	history;
+	t_token		*tokens;
+	t_ast		*tree;
+	t_env		*my_env;
+}	t_shell;
 
 #endif

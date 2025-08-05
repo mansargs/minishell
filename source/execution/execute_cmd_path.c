@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd_path.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 12:22:37 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/03 14:51:18 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/05 13:33:19 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,12 @@ static int	check_and_set_exit_code(const char *cmd, t_env *env)
 	ret = check_path_without_command(cmd);
 	if (ret)
 		env->shell->exit_code = ret;
-	else if (access(cmd, X_OK) == 0)
-		return (0);
 	else if (access(cmd, F_OK) != 0)
 		env->shell->exit_code = 127;
-	else
+	else if (access(cmd, X_OK) != 0)
 		env->shell->exit_code = 126;
+	else
+		return (0);
 	return (env->shell->exit_code);
 }
 

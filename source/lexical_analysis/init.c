@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:23 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/04 02:22:02 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/04 05:01:04 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,17 +79,4 @@ t_token	*create_token(const char *t_data, t_token_type type)
 		token->token_paren_type
 			= get_paren_type(t_data);
 	return (token);
-}
-
-bool	only_spaces(const char *str)
-{
-	int	i;
-
-	i = -1;
-	while (str[++i])
-	{
-		if (!is_space(str[i]))
-			return (false);
-	}
-	return (true);
 }

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   env_init.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 14:37:31 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/03 15:57:34 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/04 04:50:51 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "my_env.h"
 
 t_env_node	*create_env_node(char *key, char *value, bool has_equal_sign)
 {
@@ -93,7 +93,8 @@ bool	env_init_from_envp(t_env *env, char **envp)
 		free(key);
 		free(value);
 	}
-	shlvl(env);
+	if (!shlvl(env))
+		return (false);
 	return (true);
 }
 

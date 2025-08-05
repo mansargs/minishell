@@ -1,16 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/10 23:21:59 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/04 02:31:42 by alisharu         ###   ########.fr       */
+/*   Created: 2025/08/04 03:58:18 by mansargs          #+#    #+#             */
+/*   Updated: 2025/08/04 05:00:47 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "utils.h"
+
+int	is_env_char(char c)
+{
+	return (ft_isalnum(c) || c == '_');
+}
+
+char	*get_env_value(char **envp, const char *str)
+{
+	int		i;
+	int		len;
+
+	i = 0;
+	len = ft_strlen(str);
+	while (envp[i])
+	{
+		if (!ft_strncmp(envp[i], str, len) && envp[i][len] == '=')
+			return (envp[i] + len + 1);
+		i++;
+	}
+	return (NULL);
+}
 
 int	count_env_vars(t_env *env)
 {
@@ -31,14 +52,4 @@ int	count_env_vars(t_env *env)
 		i++;
 	}
 	return (count);
-}
-
-void	free_array(char **arr)
-{
-	int	i;
-
-	i = 0;
-	while (arr[i])
-		free(arr[i++]);
-	free(arr);
 }

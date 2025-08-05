@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 23:04:36 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/03 21:35:10 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/05 14:49:11 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,23 +18,23 @@ char	*open_quotes_heredoc(t_shell *shell, const char *str, int *open_flag)
 	char	quote;
 	char	*res;
 
-	i = 0;
+	i = -1;
 	quote = 0;
 	*open_flag = 0;
 	res = ft_calloc(1, 1);
 	(void)shell;
-	while (str[i])
+	while (str[++i])
 	{
 		if (!quote && (str[i] == '\'' || str[i] == '"'))
 		{
 			shell->heredoc_quote = 1;
+			shell->exit_code_flag = 1;
 			quote = str[i];
 		}
 		else if (quote && str[i] == quote)
 			quote = 0;
 		else
 			append_char(&res, str[i]);
-		i++;
 	}
 	if (check_is_open_quote(quote) == 0)
 		return (NULL);

@@ -6,11 +6,11 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 14:36:43 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/02 21:31:47 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/04 04:50:00 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "builtin.h"
 
 void	remove_env_key(t_env *env, const char *key)
 {
@@ -40,7 +40,7 @@ void	remove_env_key(t_env *env, const char *key)
 	}
 }
 
-bool	unset_builtin(char **args, t_env *env)
+int	unset_builtin(char **args, t_env *env)
 {
 	int	i;
 
@@ -55,5 +55,5 @@ bool	unset_builtin(char **args, t_env *env)
 		remove_env_key(env, args[i]);
 		i++;
 	}
-	return (true);
+	return (FUNCTION_SUCCESS);
 }

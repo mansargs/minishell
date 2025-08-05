@@ -6,11 +6,11 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 12:54:15 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/03 16:31:09 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/04 19:29:37 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "builtin.h"
 
 long	ft_atol(const char *str)
 {
@@ -110,7 +110,7 @@ bool	is_numeric(const char *str)
 	return (true);
 }
 
-bool	exit_builtin(t_shell *shell, char **args, bool has_forked)
+int	exit_builtin(t_shell *shell, char **args, bool has_forked)
 {
 	int		exit_code;
 
@@ -124,15 +124,15 @@ bool	exit_builtin(t_shell *shell, char **args, bool has_forked)
 		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(args[1], 2);
 		ft_putendl_fd(": numeric argument required", 2);
-		exit(255);
+		exit(2);
 	}
 	if (args[2])
 	{
 		ft_putendl_fd("minishell: exit: too many arguments", 2);
 		shell->exit_code = 1;
-		return (false);
+		return (FUNCTION_FAIL);
 	}
 	exit_code = ft_atol(args[1]);
 	exit(exit_code % 256);
-	return (true);
+	return (FUNCTION_SUCCESS);
 }

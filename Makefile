@@ -5,40 +5,43 @@ NAME = minishell
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g3
 
-SRC_DIR = source
-OBJ_DIR = objects
-LIB_DIR = library
+SRC_DIR 	= source
+OBJ_DIR 	= objects
+LIB_DIR 	= library
 
-LIBFT_DIR = $(LIB_DIR)/libft
-GNL_DIR   = $(LIB_DIR)/gnl
-LEXICAL   = $(SRC_DIR)/lexical_analysis
-SYNTAX    = $(SRC_DIR)/syntax_analysis
-PARSER    = $(SRC_DIR)/parser
-BUILTIN   = $(SRC_DIR)/builtin
-ENV       = $(SRC_DIR)/environment
-EXECUTION       = $(SRC_DIR)/execution
+LIBFT_DIR	= $(LIB_DIR)/libft
+GNL_DIR		= $(LIB_DIR)/gnl
+UTILS		= $(SRC_DIR)/utils
+LEXICAL		= $(SRC_DIR)/lexical_analysis
+SYNTAX		= $(SRC_DIR)/syntax_analysis
+PARSER		= $(SRC_DIR)/parser
+BUILTIN		= $(SRC_DIR)/builtin
+ENV			= $(SRC_DIR)/environment
+EXECUTION	= $(SRC_DIR)/execution
 
 INCLUDES = -Iincludes -I$(LIBFT_DIR) -I$(GNL_DIR)
 
 SRCS = \
 	$(GNL_DIR)/get_next_line.c \
 	$(GNL_DIR)/get_next_line_utils.c \
-	$(SRC_DIR)/main.c \
+	$(UTILS)/simple_free_functions.c \
+	$(UTILS)/compound_free_functions.c \
+	$(UTILS)/env_utils.c \
+	$(UTILS)/execution_utils.c \
+	$(UTILS)/tokens_managing_utils.c \
+	$(UTILS)/tokenizer_utils.c \
+	$(UTILS)/builtin_utils.c \
 	$(LEXICAL)/tokenizer.c \
 	$(LEXICAL)/readline.c \
 	$(LEXICAL)/init.c \
-	$(LEXICAL)/tokenizer_utils.c \
 	$(LEXICAL)/token_quoted.c \
-	$(LEXICAL)/free.c \
-	$(LEXICAL)/utils.c \
 	$(SYNTAX)/strict_errors.c \
 	$(SYNTAX)/secondary_errors.c \
 	$(SYNTAX)/syntax.c \
-	$(SYNTAX)/absent_operand.c \
 	$(SYNTAX)/quotes_handle.c \
 	$(SYNTAX)/heredoc_utils.c \
 	$(SYNTAX)/heredoc.c \
-	$(SYNTAX)/utils.c \
+	$(SYNTAX)/exit_status.c \
 	$(PARSER)/ast_logic.c \
 	$(PARSER)/ast_redirection.c \
 	$(PARSER)/ast_parenthesis.c \
@@ -54,14 +57,17 @@ SRCS = \
 	$(BUILTIN)/history.c \
 	$(ENV)/env_init_utils.c \
 	$(ENV)/env_init.c \
-	$(ENV)/utils.c \
 	$(EXECUTION)/execute_ast.c \
+	$(EXECUTION)/execute_pipe.c \
+	$(EXECUTION)/execute_redirs.c \
 	$(EXECUTION)/execute_command.c \
-	$(EXECUTION)/execute_utils.c \
+	$(EXECUTION)/execute_command_no_fork.c \
 	$(EXECUTION)/execute_convert.c \
 	$(EXECUTION)/execute_cmd_path.c \
 	$(EXECUTION)/wildcard.c \
-	$(EXECUTION)/signals.c
+	$(EXECUTION)/wildcard_utils.c \
+	$(EXECUTION)/signals.c \
+	$(SRC_DIR)/main.c
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   execute_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/18 00:19:38 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/03 20:10:25 by alisharu         ###   ########.fr       */
+/*   Created: 2025/08/04 04:04:48 by mansargs          #+#    #+#             */
+/*   Updated: 2025/08/04 04:04:55 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execute.h"
+#include "utils.h"
 
 bool	add_cmd_to_path(char **paths, const char *cmd)
 {
@@ -89,6 +89,8 @@ char	*join(char *str1, char *str2, char *str3)
 	char	*joined;
 	size_t	len;
 
+	if (!str1 || !str2 || !str3)
+		return (NULL);
 	len = ft_strlen(str1) + ft_strlen(str2) + ft_strlen(str3) + 1;
 	joined = ft_calloc(len, sizeof(char));
 	if (!joined)

@@ -6,61 +6,68 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 20:27:17 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/03 21:22:04 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/05 11:57:00 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "builtin.h"
 
-char	*handle_cd_without_dir(char **args, t_env *env)
+char	*cd_tilda(char **args, t_env *env)
+{
+	t_env_node	*home;
+	char		*path;
+
+	home = env_get(env, "HOME");
+	if (!home || !home->value)
+	{
+		printf("minishell: cd: HOME not set\n");
+		env->shell->exit_code = 1;
+		return (NULL);
+	}
+	path = ft_strjoin(home->value, args[1] + 1);
+	return (path);
+}
+
+char	*cd_minus(char **args, t_env *env)
+{
+	t_env_node	*old_pwd;
+	char		*path;
+
+	old_pwd = env_get(env, "OLDPWD");
+	if (!old_pwd || !old_pwd->value)
+	{
+		printf("minishell: cd: OLDPWD not set\n");
+		env->shell->exit_code = 1;
+		return (NULL);
+	}
+	path = ft_strjoin(old_pwd->value, args[1] + 1);
+	return (path);
+}
+
+char	*cd_validation(char **args, t_env *env)
 {
 	char		*path;
 	t_env_node	*home;
 
-	path = NULL;
+	if (!check_too_many_dirs(args, env))
+		return (NULL);
 	if (!args[1])
 	{
 		home = env_get(env, "HOME");
 		if (!home || !home->value)
 		{
 			printf("minishell: cd: HOME not set\n");
+			env->shell->exit_code = 1;
 			return (NULL);
 		}
-		path = home->value;
+		path = ft_strdup(home->value);
 	}
-	return (path);
-}
-
-int	check_too_many_dirs(char **args, t_env *env)
-{
-	int	count;
-
-	(void)env;
-	count = 0;
-	while (args && args[count])
-		count++;
-	if (count > 2)
-	{
-		printf("minishell: cd: too many arguments\n");
-		return (0);
-	}
-	return (1);
-}
-
-char	*cd_validation(char **args, t_env *env)
-{
-	char	*path;
-
-	if (!check_too_many_dirs(args, env))
-		return (NULL);
-	if (!args[1])
-	{
-		path = handle_cd_without_dir(args, env);
-		if (!path)
-			return (NULL);
-	}
+	else if (args[1][0] == '~')
+		path = cd_tilda(args, env);
+	else if (args[1][0] == '-')
+		path = cd_minus(args, env);
 	else
-		path = args[1];
+		path = ft_strdup(args[1]);
 	return (path);
 }
 
@@ -80,27 +87,34 @@ static void	update_pwd_on_error(t_env *env)
 	env_set(env, "PWD", env->shell->pwd, 1);
 }
 
-bool	cd_builtin(char **args, t_env *env)
+int	cd_builtin(char **args, t_env *env)
 {
 	char		*old_pwd;
 	char		new_pwd[PATH_MAX];
 	char		*path;
+	t_env_node	*pwd_node;
 
 	path = cd_validation(args, env);
 	if (path == NULL)
-		return (false);
-	old_pwd = env_get(env, "PWD")->value;
+		return (free(path), FUNCTION_FAIL);
+	pwd_node = env_get(env, "PWD");
+	if (pwd_node && pwd_node->value)
+		old_pwd = pwd_node->value;
 	if (chdir(path) != 0)
 	{
-		env->shell->exit_code = 1;
-		perror("minishell: cd");
-		return (false);
+		if (errno == EACCES)
+			env->shell->exit_code = 126;
+		else
+			env->shell->exit_code = 1;
+		printf("minishell: cd: %s: %s\n", path, strerror(errno));
+		return (free(path), FUNCTION_FAIL);
 	}
 	if (!getcwd(new_pwd, sizeof(new_pwd)))
-		return (update_pwd_on_error(env), false);
+		return (free(path), update_pwd_on_error(env), false);
 	env_set(env, "OLDPWD", old_pwd, 1);
 	env_set(env, "PWD", new_pwd, 1);
 	free(env->shell->pwd);
 	env->shell->pwd = ft_strdup(new_pwd);
-	return (true);
+	free(path);
+	return (FUNCTION_SUCCESS);
 }

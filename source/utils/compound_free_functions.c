@@ -1,32 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free.c                                             :+:      :+:    :+:   */
+/*   compound_free_functions.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/04 02:22:30 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/04 02:32:12 by alisharu         ###   ########.fr       */
+/*   Created: 2025/08/04 02:53:04 by mansargs          #+#    #+#             */
+/*   Updated: 2025/08/04 04:59:09 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "token.h"
-
-void	free_matrix(char ***matrix)
-{
-	int	i;
-
-	if (!matrix || !*matrix)
-		return ;
-	i = 0;
-	while ((*matrix)[i])
-	{
-		free((*matrix)[i]);
-		i++;
-	}
-	free(*matrix);
-	*matrix = NULL;
-}
+#include "utils.h"
 
 void	free_ast(t_ast **tree)
 {

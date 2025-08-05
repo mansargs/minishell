@@ -6,11 +6,11 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 16:49:09 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/02 13:50:20 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/04 04:50:42 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "my_env.h"
 
 int	env_size(t_env *env)
 {

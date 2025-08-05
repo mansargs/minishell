@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   export_builtin.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 21:17:08 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/03 20:09:31 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/04 04:49:36 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "builtin.h"
 
 void	print_sorted_export(t_env *env)
 {
@@ -119,7 +119,7 @@ t_env_node	**get_all_env(t_env *env, int *count)
 	return (list);
 }
 
-bool	export_builtin(char **args, t_env *env)
+int	export_builtin(char **args, t_env *env)
 {
 	int	i;
 
@@ -128,5 +128,5 @@ bool	export_builtin(char **args, t_env *env)
 	i = 1;
 	while (args[i])
 		handle_export_argument(args[i++], env);
-	return (true);
+	return (FUNCTION_SUCCESS);
 }
