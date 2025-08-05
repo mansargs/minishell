@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 12:53:47 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/05 13:37:27 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/06 01:57:05 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,18 @@ void	print_arg_with_exitcode(char *arg, int *exit_code)
 	}
 }
 
+static bool	is_n_flag(char *arg)
+{
+	int	i;
+
+	if (!arg || arg[0] != '-' || arg[1] != 'n')
+		return (false);
+	i = 2;
+	while (arg[i] == 'n')
+		i++;
+	return (arg[i] == '\0');
+}
+
 int	echo_builtin(char **args, t_env *env)
 {
 	int		i;
@@ -39,7 +51,7 @@ int	echo_builtin(char **args, t_env *env)
 
 	i = 1;
 	newline = true;
-	while (args[i] && ft_strcmp(args[i], "-n") == 0)
+	while (args[i] && is_n_flag(args[i]))
 	{
 		newline = false;
 		i++;
