@@ -92,7 +92,7 @@ int	main(int argc, char *argv[], char **envp)
 	(void)argv;
 	if (argc > 1)
 		return (ft_putendl_fd("This program must be run without any arguments.",
-			STDERR_FILENO), EXIT_FAILURE);
+				STDERR_FILENO), EXIT_FAILURE);
 	shell = init_shell(envp);
 	if (!shell)
 		return (ENOMEM);

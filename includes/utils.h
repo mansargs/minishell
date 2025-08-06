@@ -30,6 +30,7 @@ char	*ft_strjoin_free(char *s1, const char *s2);
 int		is_env_char(char c);
 char	*get_env_value(char **envp, const char *str);
 int		count_env_vars(t_env *env);
+void	print_export_error(t_env *env, char *key);
 
 /* Execution */
 
@@ -53,5 +54,11 @@ int		skip_variable(const char *line, int i);
 
 /* Libs */
 char	*ft_strndup(const char *s, size_t n);
+
+/* Builtins */
+
+char	*handle_cd_without_dir(char **args, t_env *env);
+int		check_too_many_dirs(char **args, t_env *env);
+void	failed_chdir(t_env *env, char *path);
 
 #endif

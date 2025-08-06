@@ -19,7 +19,8 @@ static char	*read_using_readline(int count_lines, const char *delim)
 	line = readline("> ");
 	if (!line)
 	{
-		ft_putstr_fd("minishell: warning: here-document at line ", STDERR_FILENO);
+		ft_putstr_fd("minishell: warning: here-document at line ",
+			STDERR_FILENO);
 		ft_putnbr_fd(count_lines, STDERR_FILENO);
 		ft_putstr_fd("delimited by end-of-file (wanted `", STDERR_FILENO);
 		ft_putstr_fd((char *)delim, STDERR_FILENO);

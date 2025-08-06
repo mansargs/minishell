@@ -44,3 +44,14 @@ int	check_too_many_dirs(char **args, t_env *env)
 	}
 	return (1);
 }
+
+void	failed_chdir(t_env *env, char *path)
+{
+	if (errno == EACCES)
+		env->shell->exit_code = 126;
+	else
+		env->shell->exit_code = 1;
+	ft_putstr_fd("minishell: cd: ", STDERR_FILENO);
+	ft_putstr_fd(path, STDERR_FILENO);
+	ft_putendl_fd(strerror(errno), STDERR_FILENO);
+}

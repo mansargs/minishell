@@ -104,13 +104,7 @@ int	cd_builtin(char **args, t_env *env)
 		old_pwd = pwd_node->value;
 	if (chdir(path) != 0)
 	{
-		if (errno == EACCES)
-			env->shell->exit_code = 126;
-		else
-			env->shell->exit_code = 1;
-		ft_putstr_fd("minishell: cd: ", STDERR_FILENO);
-		ft_putstr_fd(path, STDERR_FILENO);
-		ft_putendl_fd(strerror(errno), STDERR_FILENO);
+		failed_chdir(env, path);
 		return (free(path), FUNCTION_FAIL);
 	}
 	if (!getcwd(new_pwd, sizeof(new_pwd)))

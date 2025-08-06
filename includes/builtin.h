@@ -29,8 +29,6 @@ int		exit_builtin(t_shell *shell, char **args, bool has_forked);
 int		history_builtin(void);
 int		count_env_vars(t_env *env);
 bool	is_valid_identifier(const char *s);
-char	*handle_cd_without_dir(char **args, t_env *env);
-int		check_too_many_dirs(char **args, t_env *env);
 bool	execute_builtin(char **argv, t_env *env, bool *is_builtin,
 			bool has_forked);
 

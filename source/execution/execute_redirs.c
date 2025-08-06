@@ -12,9 +12,8 @@
 
 #include "execute.h"
 
-static bool	file_in_redirs(t_token *redir, t_shell *shell)
+void	open_redirs_quote(t_token *redir, t_shell *shell)
 {
-	int		fd;
 	char	*str;
 	int		open_flag;
 
@@ -25,7 +24,14 @@ static bool	file_in_redirs(t_token *redir, t_shell *shell)
 		free(redir->file_name);
 	redir->file_name = str;
 	if (!str)
-		return (false);
+		return ;
+}
+
+static bool	file_in_redirs(t_token *redir, t_shell *shell)
+{
+	int		fd;
+
+	open_redirs_quote(redir, shell);
 	fd = open(redir->file_name, O_RDONLY);
 	if (fd < 0)
 		return (perror(redir->file_name), false);
@@ -37,25 +43,19 @@ static bool	file_in_redirs(t_token *redir, t_shell *shell)
 static bool	file_out_redirs(t_token *redir, t_shell *shell)
 {
 	int		fd;
-	char	*str;
-	int		open_flag;
 
-	open_flag = 0;
 	if (redir->token_redirect_type == REDIRECT_OUT)
 	{
-		str = open_quotes(shell->envp, redir->file_name,
-				&shell->heredoc_quote);
-		if (redir->file_name)
-			free(redir->file_name);
-		redir->file_name = str;
-		if (!str)
-			return (false);
+		open_redirs_quote(redir, shell);
 		fd = open(redir->file_name, O_WRONLY | O_CREAT
 				| O_TRUNC, 0644);
 	}
 	else
+	{
+		open_redirs_quote(redir, shell);
 		fd = open(redir->file_name, O_WRONLY | O_CREAT
 				| O_APPEND, 0644);
+	}
 	if (fd < 0)
 		return (perror(redir->file_name), false);
 	dup2(fd, STDOUT_FILENO);

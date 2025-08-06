@@ -62,15 +62,6 @@ void	sort_env_nodes(t_env_node **list, int count)
 	}
 }
 
-static void	print_export_error(t_env *env, char *key)
-{
-	env->shell->exit_code = 1,
-	ft_putstr_fd("minishell: export: `", STDERR_FILENO);
-	ft_putstr_fd(key, STDERR_FILENO);
-	ft_putendl_fd("'not a valid identifier", STDERR_FILENO);
-	free(key);
-}
-
 int	handle_export_argument(char *arg, t_env *env)
 {
 	char		*key;

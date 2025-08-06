@@ -40,7 +40,8 @@ bool	invalid_redirect(const t_token *token, const int strict_flag)
 			== PAREN_CLOSE
 			&& token->next_token->next_token
 			&& token->next_token->next_token->token_type == TOKEN_WORD)
-			return (print_error(token->next_token->next_token->token_data), true);
+			return (print_error(token->next_token->next_token->token_data),
+				true);
 	}
 	return (false);
 }
