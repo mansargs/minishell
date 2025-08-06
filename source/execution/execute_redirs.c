@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 14:28:33 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/05 15:00:54 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/06 17:06:18 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,23 +41,24 @@ static bool	file_out_redirs(t_token *redir)
 	return (true);
 }
 
-bool	open_redirects(t_ast *node)
+int	open_redirects(t_ast *node)
 {
 	t_token	*redirect;
+	bool	result;
 
 	if (!node->redir)
-		return (true);
+		return (FUNCTION_SUCCESS);
 	redirect = node->redir;
 	while (redirect)
 	{
 		if (redirect->token_redirect_type == REDIRECT_HEREDOC
 			|| redirect->token_redirect_type == REDIRECT_IN)
-			file_in_redirs(redirect);
+			result = file_in_redirs(redirect);
 		else
-		{
-			file_out_redirs(redirect);
-		}
+			result = file_out_redirs(redirect);
 		redirect = redirect->next_token;
 	}
-	return (true);
+	if (result)
+		return (FUNCTION_SUCCESS);
+	return (FUNCTION_FAIL);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_builtin.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 21:17:08 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/06 01:25:31 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/06 18:31:22 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,16 @@ void	sort_env_nodes(t_env_node **list, int count)
 	}
 }
 
-void	handle_export_argument(char *arg, t_env *env)
+static void	print_export_error(t_env *env, char *key)
+{
+	env->shell->exit_code = 1,
+	ft_putstr_fd("minishell: export: `", STDERR_FILENO);
+	ft_putstr_fd(key, STDERR_FILENO);
+	ft_putendl_fd("'not a valid identifier", STDERR_FILENO);
+	free(key);
+}
+
+int	handle_export_argument(char *arg, t_env *env)
 {
 	char		*key;
 	char		*value;
@@ -74,12 +83,7 @@ void	handle_export_argument(char *arg, t_env *env)
 		flags.has_equal_sign = true;
 	key = get_key_data(arg);
 	if (!is_valid_identifier(key))
-	{
-		env->shell->exit_code = 1;
-		printf("minishell: export: `%s': not a valid identifier\n", key);
-		free(key);
-		return ;
-	}
+		return (print_export_error(env, key), FUNCTION_FAIL);
 	if (flags.has_equal_sign)
 	{
 		value = get_value_data(arg, &flags.mem_error);
@@ -90,6 +94,7 @@ void	handle_export_argument(char *arg, t_env *env)
 	free(key);
 	if (flags.has_equal_sign && value)
 		free(value);
+	return (FUNCTION_SUCCESS);
 }
 
 t_env_node	**get_all_env(t_env *env, int *count)
@@ -123,11 +128,12 @@ t_env_node	**get_all_env(t_env *env, int *count)
 int	export_builtin(char **args, t_env *env)
 {
 	int	i;
+	int	result;
 
 	if (!args[1])
 		return (print_sorted_export(env), true);
 	i = 1;
 	while (args[i])
-		handle_export_argument(args[i++], env);
-	return (FUNCTION_SUCCESS);
+		result = handle_export_argument(args[i++], env);
+	return (result);
 }

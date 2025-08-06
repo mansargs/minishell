@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 19:49:43 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/05 15:08:19 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/06 17:03:48 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,8 @@ int	execute_ast(t_ast *node, t_env *env, bool has_forked)
 	old_stdin = dup(STDIN_FILENO);
 	old_stdout = dup(STDOUT_FILENO);
 	result = 0;
-	if (!open_redirects(node))
-		return (restore_standard_fd(old_stdin, old_stdout), 1);
+	if (open_redirects(node) == FUNCTION_FAIL)
+		return (restore_standard_fd(old_stdin, old_stdout), FUNCTION_FAIL);
 	if (node->cmd && node->cmd->token_operator_type == OPERATOR_AND)
 		result = execute_logic_and(node, env);
 	else if (node->cmd && node->cmd->token_operator_type == OPERATOR_OR)

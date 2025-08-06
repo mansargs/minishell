@@ -3,26 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command_no_fork.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 06:04:11 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/05 11:54:13 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/06 18:32:09 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
 
-static void	print_exec_error(const char *cmd, int exit_code)
+static void	print_exec_error(char *cmd, int exit_code)
 {
 	if (ft_strchr(cmd, '/'))
 	{
 		if (exit_code == 127)
-			printf("minishell: %s: No such file or directory\n", cmd);
+		{
+			ft_putstr_fd("minishell: ", STDERR_FILENO);
+			ft_putstr_fd(cmd, STDERR_FILENO);
+			ft_putendl_fd(": No such file or directory", STDERR_FILENO);
+		}
 		else if (exit_code == 126)
-			printf("minishell: %s: Permission denied\n", cmd);
+		{
+			ft_putstr_fd("minishell: ", STDERR_FILENO);
+			ft_putstr_fd(cmd, STDERR_FILENO);
+			ft_putendl_fd(": Permission denied", STDERR_FILENO);
+		}
 	}
 	else
-		printf("%s: command not found\n", cmd);
+	{
+		ft_putstr_fd(cmd, STDERR_FILENO);
+		ft_putendl_fd(": command not found", STDERR_FILENO);
+	}
 }
 
 static void	is_directory(char *cmd_path, char **argv, char ***envp)
@@ -31,7 +42,9 @@ static void	is_directory(char *cmd_path, char **argv, char ***envp)
 
 	if (stat(cmd_path, &st) == 0 && S_ISDIR(st.st_mode))
 	{
-		printf("minishell : %s: is a directory\n", argv[0]);
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(argv[0], STDERR_FILENO);
+		ft_putendl_fd(": is a directory", STDERR_FILENO);
 		free(cmd_path);
 		free_matrix(envp);
 		exit(126);

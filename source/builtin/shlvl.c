@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shlvl.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 13:49:14 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/04 23:39:18 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/06 18:21:04 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,9 @@ bool	shlvl(t_env *env)
 		shlvl_count = 0;
 	if (shlvl_count >= 1000)
 	{
-		printf("minishell: warning: shell level (%d", shlvl_count);
-		printf(") too high, resetting to 1\n");
+		ft_putstr_fd("minishell: warning: shell level (", STDERR_FILENO);
+		ft_putnbr_fd(shlvl_count, STDERR_FILENO);
+		ft_putendl_fd(") too high, resetting to 1", STDERR_FILENO);
 		shlvl_count = 1;
 	}
 	new_value = ft_itoa(shlvl_count);

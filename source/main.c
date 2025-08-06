@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:25 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/05 15:08:56 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/06 18:03:55 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,13 +91,13 @@ int	main(int argc, char *argv[], char **envp)
 
 	(void)argv;
 	if (argc > 1)
-		return (printf("This program must be run without any arguments.\n"),
-			EXIT_FAILURE);
+		return (ft_putendl_fd("This program must be run without any arguments.",
+			STDERR_FILENO), EXIT_FAILURE);
 	shell = init_shell(envp);
 	if (!shell)
 		return (ENOMEM);
 	if (!init_env(shell, envp))
-		return (printf("Failed to initialize env table.\n"),
+		return (ft_putendl_fd("Failed to initialize env table.", STDERR_FILENO),
 			free_tokens(&shell->tokens), free_shell(&shell), ENOMEM);
 	run_shell_loop(shell);
 	rl_clear_history();

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_builtin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 20:27:17 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/05 11:57:00 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/06 18:08:54 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*cd_tilda(char **args, t_env *env)
 	home = env_get(env, "HOME");
 	if (!home || !home->value)
 	{
-		printf("minishell: cd: HOME not set\n");
+		ft_putendl_fd("minishell: cd: HOME not set", STDERR_FILENO);
 		env->shell->exit_code = 1;
 		return (NULL);
 	}
@@ -36,7 +36,7 @@ char	*cd_minus(char **args, t_env *env)
 	old_pwd = env_get(env, "OLDPWD");
 	if (!old_pwd || !old_pwd->value)
 	{
-		printf("minishell: cd: OLDPWD not set\n");
+		ft_putendl_fd("minishell: cd: OLDPWD not set", STDERR_FILENO);
 		env->shell->exit_code = 1;
 		return (NULL);
 	}
@@ -56,7 +56,7 @@ char	*cd_validation(char **args, t_env *env)
 		home = env_get(env, "HOME");
 		if (!home || !home->value)
 		{
-			printf("minishell: cd: HOME not set\n");
+			ft_putendl_fd("minishell: cd: HOME not set", STDERR_FILENO);
 			env->shell->exit_code = 1;
 			return (NULL);
 		}
@@ -75,8 +75,10 @@ static void	update_pwd_on_error(t_env *env)
 {
 	t_env_node	*pwd_node;
 
-	printf("cd: error retrieving current directory: getcwd: ");
-	printf("cannot access parent directories: No such file or directory\n");
+	ft_putstr_fd("cd: error retrieving current directory: getcwd: ",
+		STDERR_FILENO);
+	ft_putendl_fd("cannot access parent directories: No such file or directory",
+		STDERR_FILENO);
 	pwd_node = env_get(env, "PWD");
 	if (env->shell->pwd)
 		free(env->shell->pwd);
@@ -106,7 +108,9 @@ int	cd_builtin(char **args, t_env *env)
 			env->shell->exit_code = 126;
 		else
 			env->shell->exit_code = 1;
-		printf("minishell: cd: %s: %s\n", path, strerror(errno));
+		ft_putstr_fd("minishell: cd: ", STDERR_FILENO);
+		ft_putstr_fd(path, STDERR_FILENO);
+		ft_putendl_fd(strerror(errno), STDERR_FILENO);
 		return (free(path), FUNCTION_FAIL);
 	}
 	if (!getcwd(new_pwd, sizeof(new_pwd)))

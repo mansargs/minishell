@@ -1,0 +1,6 @@
+*.o
+minishell
+*.a
+.mini_history
+.vscode
+readline.supp

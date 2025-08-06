@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 12:53:47 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/06 01:57:05 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/06 18:10:33 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	echo_builtin(char **args, t_env *env)
 		i++;
 	}
 	if (newline)
-		printf("\n");
+		write(STDOUT_FILENO, "\n", 1);
 	env->shell->exit_code = 0;
 	return (FUNCTION_SUCCESS);
 }
