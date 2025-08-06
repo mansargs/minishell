@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   secondary_errors.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 03:03:48 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/02 20:05:35 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/06 19:15:26 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,24 +23,22 @@ void	manage_parenthesis(const t_token *token, int *opened_parenthesis)
 static bool	invalid_open_parenthesis(const t_token *token)
 {
 	if (token->prev_token && token->prev_token->token_type == TOKEN_WORD)
-		return (printf("%s `('\n", SYN_ERR), true);
+		return (print_error("("), true);
 	if (token->next_token && (token->next_token->token_type == TOKEN_OPERATOR
 			|| token->next_token->token_paren_type == PAREN_CLOSE))
-		return (printf("%s `%s'\n", SYN_ERR,
-				token->next_token->token_data), true);
+		return (print_error(token->next_token->token_data), true);
 	return (false);
 }
 
 static bool	invalid_close_parenthesis(const t_token *token, const int opened)
 {
 	if (opened < 0)
-		return (printf("%s `)'\n", SYN_ERR), true);
+		return (print_error(")"), true);
 	if (token->next_token && (token->next_token->token_paren_type == PAREN_OPEN
 			|| token->next_token->token_type == TOKEN_WORD))
-		return (printf("%s `%s'\n", SYN_ERR,
-				token->next_token->token_data), true);
+		return (print_error(token->next_token->token_data), true);
 	if (token->prev_token && token->prev_token->token_type == TOKEN_REDIRECT)
-		return (printf("%s `)'\n", SYN_ERR), true);
+		return (print_error(")"), true);
 	return (false);
 }
 
@@ -60,6 +58,6 @@ bool	secondary_syntax_errors(const t_token *token, int	*opened_parenthesis)
 		&& invalid_open_parenthesis(token))
 		return (true);
 	if (!token->next_token && *opened_parenthesis > 0)
-		return (printf("%s `('\n", SYN_ERR), true);
+		return (print_error("newline"), true);
 	return (false);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 23:56:05 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/05 11:20:59 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/06 19:29:57 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*handle_cd_without_dir(char **args, t_env *env)
 		home = env_get(env, "HOME");
 		if (!home || !home->value)
 		{
-			printf("minishell: cd: HOME not set\n");
+			ft_putendl_fd("minishell: cd: HOME not set", STDERR_FILENO);
 			return (NULL);
 		}
 		return (ft_strdup(home->value));
@@ -39,7 +39,7 @@ int	check_too_many_dirs(char **args, t_env *env)
 		count++;
 	if (count > 2)
 	{
-		printf("minishell: cd: too many arguments\n");
+		ft_putendl_fd("minishell: cd: too many arguments", STDERR_FILENO);
 		return (0);
 	}
 	return (1);

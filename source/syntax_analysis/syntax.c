@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 13:38:09 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/05 13:50:49 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/06 19:28:08 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,6 @@ bool	valid_line(t_shell *shell, char **line)
 int	check_is_open_quote(int quote)
 {
 	if (quote)
-	{
-		printf("minishell: syntax error: unclosed quote\n");
-		return (0);
-	}
+		return (print_error("newline"), 0);
 	return (1);
 }

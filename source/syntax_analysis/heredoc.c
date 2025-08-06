@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 02:47:43 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/05 15:23:36 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/06 19:11:31 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,11 @@ static char	*read_using_readline(int count_lines, const char *delim)
 	line = readline("> ");
 	if (!line)
 	{
-		printf("minishell: warning: here-document at line %d "
-			"delimited by end-of-file (wanted `%s')\n", count_lines, delim);
+		ft_putstr_fd("minishell: warning: here-document at line ", STDERR_FILENO);
+		ft_putnbr_fd(count_lines, STDERR_FILENO);
+		ft_putstr_fd("delimited by end-of-file (wanted `", STDERR_FILENO);
+		ft_putstr_fd((char *)delim, STDERR_FILENO);
+		ft_putendl_fd("')", STDERR_FILENO);
 		return (NULL);
 	}
 	return (line);
@@ -107,7 +110,10 @@ char	*open_heredoc(t_shell *shell, const t_token *token,
 	if (token->file_name)
 		return (token->file_name);
 	if (!token->next_token)
-		return (printf("%s `newline'\n", SYN_ERR), NULL);
+	{
+		ft_putstr_fd(SYN_ERR, STDERR_FILENO);
+		return (ft_putendl_fd(" `newline'", STDERR_FILENO), NULL);
+	}
 	name = get_file_name();
 	if (!name)
 		return (NULL);

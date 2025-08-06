@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 16:24:51 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/05 11:14:47 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/06 19:07:27 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,6 @@ void	handle_heredoc_open_quote(t_shell *shell, char *line,
 void	signal_handler(int signum);
 void	handle_exitstatus(t_shell *shell);
 char	*replace_exit_code(t_shell *shell, char *token_str);
+void	print_error(char *unexpented);
 
 #endif

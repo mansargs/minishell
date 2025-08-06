@@ -6,11 +6,19 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 02:55:20 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/05 15:25:36 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/06 19:22:35 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "syntax.h"
+
+void	print_error(char *unexpented)
+{
+	ft_putstr_fd(SYN_ERR, STDERR_FILENO);
+	ft_putstr_fd(" `", STDERR_FILENO);
+	ft_putstr_fd(unexpented, STDERR_FILENO);
+	ft_putendl_fd("'", STDERR_FILENO);
+}
 
 bool	invalid_redirect(const t_token *token, const int strict_flag)
 {
@@ -18,24 +26,21 @@ bool	invalid_redirect(const t_token *token, const int strict_flag)
 	{
 		if (token->next_token && token->next_token->token_type
 			== TOKEN_REDIRECT)
-			return (printf("%s `%s'\n", SYN_ERR,
-					token->next_token->token_data), true);
+			return (print_error(token->next_token->token_data), true);
 		if (token->next_token && (token->next_token->token_type
 				== TOKEN_OPERATOR || token->next_token->token_paren_type
 				== PAREN_OPEN))
-			return (printf("%s `%s'\n", SYN_ERR,
-					token->next_token->token_data), true);
+			return (print_error(token->next_token->token_data), true);
 	}
 	else
 	{
 		if (!token->next_token)
-			return (printf("%s `newline'\n", SYN_ERR), true);
+			return (print_error("newline"), true);
 		if (token->prev_token && token->prev_token->token_paren_type
 			== PAREN_CLOSE
 			&& token->next_token->next_token
 			&& token->next_token->next_token->token_type == TOKEN_WORD)
-			return (printf("%s `%s'\n", SYN_ERR,
-					token->next_token->next_token->token_data), true);
+			return (print_error(token->next_token->next_token->token_data), true);
 	}
 	return (false);
 }
@@ -45,24 +50,21 @@ bool	invalid_operator(const t_token *token, const int strict_flag)
 	if (strict_flag)
 	{
 		if (!token->prev_token && token->token_type == TOKEN_OPERATOR)
-			return (printf("%s `%s'\n", SYN_ERR, token->token_data), true);
+			return (print_error(token->token_data), true);
 		if (token->next_token
 			&& token->next_token->token_type == TOKEN_OPERATOR)
-			return (printf("%s `%s'\n", SYN_ERR, token->next_token->token_data),
-				true);
+			return (print_error(token->next_token->token_data), true);
 		if (token->next_token && token->next_token->token_type
 			== TOKEN_OPERATOR)
-			return (printf("%s `%s'\n", SYN_ERR,
-					token->next_token->token_data), true);
+			return (print_error(token->next_token->token_data), true);
 	}
 	else
 	{
 		if (token->next_token && token->next_token->token_paren_type
 			== PAREN_CLOSE)
-			return (printf("%s `%s'\n", SYN_ERR, token->next_token->token_data),
-				true);
+			return (print_error(token->next_token->token_data), true);
 		if (!token->next_token)
-			return (printf("%s `newline'\n", SYN_ERR), true);
+			return (print_error("newline"), true);
 	}
 	return (false);
 }

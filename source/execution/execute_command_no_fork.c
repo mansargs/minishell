@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 06:04:11 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/06 18:32:09 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/06 18:36:06 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,10 @@ int	child_execute(char **argv, t_env *env)
 	envp = convert_env_to_matrix(env);
 	is_directory(cmd_path, argv, &envp);
 	execve(cmd_path, argv, envp);
-	printf("minishell : %s: %s\n", argv[0], strerror(errno));
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd(argv[0], STDERR_FILENO);
+	ft_putstr_fd(": ", STDERR_FILENO);
+	ft_putendl_fd(strerror(errno), STDERR_FILENO);
 	free(cmd_path);
 	free_matrix(&envp);
 	exit(126);
