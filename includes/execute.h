@@ -36,6 +36,6 @@ bool	find_directory_and_word(const char *line, char **dir, char **word);
 int		count_lines(char	**lines);
 bool	is_match(const char *item_name, const char *pattern);
 int		execute_pipe(t_ast *node, t_env *env);
-int		open_redirects(t_ast *node);
+int		open_redirects(t_ast *node, t_shell *shell);
 
 #endif
