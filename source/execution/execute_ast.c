@@ -79,7 +79,7 @@ int	execute_ast(t_ast *node, t_env *env, bool has_forked)
 	old_stdin = dup(STDIN_FILENO);
 	old_stdout = dup(STDOUT_FILENO);
 	result = 0;
-	if (open_redirects(node) == FUNCTION_FAIL)
+	if (open_redirects(node, env->shell) == FUNCTION_FAIL)
 		return (restore_standard_fd(old_stdin, old_stdout), FUNCTION_FAIL);
 	if (node->cmd && node->cmd->token_operator_type == OPERATOR_AND)
 		result = execute_logic_and(node, env);
