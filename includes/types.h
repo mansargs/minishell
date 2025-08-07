@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 03:11:37 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/05 13:56:10 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/07 15:20:29 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ typedef struct s_shell
 	t_token		*tokens;
 	t_ast		*tree;
 	t_env		*my_env;
+	bool		interactive_mode;
 }	t_shell;
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:25 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/06 18:03:55 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/07 15:42:56 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static void	process_line(t_shell *shell, char *line)
 	conditional_free(&shell, true, false);
 }
 
-void	run_shell_loop(t_shell *shell)
+void	run_shell_interactive(t_shell *shell)
 {
 	char	*line;
 	char	*prompt;
@@ -84,6 +84,22 @@ void	run_shell_loop(t_shell *shell)
 		process_line(shell, line);
 	}
 }
+void	run_shell_noninteractive(t_shell *shell)
+{
+	char	*line;
+
+	line = NULL;
+	while (1)
+	{
+		// cleanup_heredoc_tempfiles();
+		line = get_next_line(STDIN_FILENO);
+		if (!line)
+			break ;
+		process_line(shell, line);
+		line = NULL;
+	}
+}
+
 
 int	main(int argc, char *argv[], char **envp)
 {
@@ -99,9 +115,14 @@ int	main(int argc, char *argv[], char **envp)
 	if (!init_env(shell, envp))
 		return (ft_putendl_fd("Failed to initialize env table.", STDERR_FILENO),
 			free_tokens(&shell->tokens), free_shell(&shell), ENOMEM);
-	run_shell_loop(shell);
+	shell->interactive_mode = isatty(STDIN_FILENO);
+	if (shell->interactive_mode)
+		run_shell_interactive(shell);
+	else
+		run_shell_noninteractive(shell);
 	rl_clear_history();
+	if (shell->interactive_mode)
+		printf("exit\n");
 	conditional_free(&shell, true, true);
-	printf("exit\n");
 	return (0);
 }

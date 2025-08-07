@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes_handle.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 22:40:43 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/03 20:01:00 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/07 15:46:45 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,22 @@ char	*open_quotes(char **envp, const char *str, int *open_flag)
 	}
 	return (res);
 }
+char	*remove_dollar_before_quotes(char **str)
+{
+	char	*result;
+
+	if (!str || !*str)
+		return (NULL);
+	if ((*str)[0] == '$' && ((*str)[1] == '\"' || (*str)[1] == '\''))
+		result = ft_strdup(*str + 1);
+	else
+		result = ft_strdup(*str);
+	if (!result)
+		return (NULL);
+	free(*str);
+	*str = NULL;
+	return (result);
+}
 
 int	handle_quots(char **envp, t_token *token)
 {
@@ -115,6 +131,10 @@ int	handle_quots(char **envp, t_token *token)
 	int		open_flag;
 
 	open_flag = 0;
+	str = remove_dollar_before_quotes(&token->token_data);
+	if (!str)
+		return (-1);
+	token->token_data = str;
 	str = open_quotes(envp, token->token_data, &open_flag);
 	if (!str)
 		return (-1);
