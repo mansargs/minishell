@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 12:22:37 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/05 13:33:19 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/08 20:57:19 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ static char	*find_command_path_in_path(const char *cmd, t_env *env)
 
 char	*find_command_path(const char *cmd, t_env *env)
 {
+	if (!cmd)
+		return (NULL);
 	if (ft_strchr(cmd, '/'))
 		return (find_command_path_with_slash(cmd, env));
 	else

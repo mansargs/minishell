@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 04:25:25 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/04 23:57:55 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/08 21:41:57 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int		exit_builtin(t_shell *shell, char **args, bool has_forked);
 int		history_builtin(void);
 int		count_env_vars(t_env *env);
 bool	is_valid_identifier(const char *s);
-bool	execute_builtin(char **argv, t_env *env, bool *is_builtin,
-			bool has_forked);
+bool	execute_builtin(char **argv, int cmd_pos, t_env *env, bool has_forked);
 
 #endif

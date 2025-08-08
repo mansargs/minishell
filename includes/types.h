@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 03:11:37 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/07 15:20:29 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/08 21:37:12 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ typedef struct s_env
 {
 	t_env_node	*env[HASH_SIZE];
 	t_shell		*shell;
+	bool		is_builtin;
 }	t_env;
 
 /* Abstract Syntax Tree struct */

@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 21:53:17 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/08 20:18:00 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/08 21:41:10 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,15 +57,20 @@ static int	execute_command_with_fork(t_ast *node, t_env *env, bool has_forked)
 	pid_t	pid;
 	int		status;
 	char	**argv;
-	bool	is_builtin;
+	int		i;
 
 	argv = get_arguments(node->cmd, env);
 	if (!argv)
 		return (FUNCTION_FAIL);
 	if (!open_wildcards(&argv))
 		return (free_matrix(&argv), FUNCTION_FAIL);
-	status = execute_builtin(argv, env, &is_builtin, has_forked);
-	if (is_builtin)
+	i = 0;
+	while (argv[i] && argv[i][0] == '\0')
+		++i;
+	if (!argv[i])
+		return (free_matrix(&argv), FUNCTION_SUCCESS);
+	status = execute_builtin(argv, i, env, has_forked);
+	if (env->is_builtin)
 		return (free_matrix(&argv), status);
 	pid = fork();
 	if (pid < 0)

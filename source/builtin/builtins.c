@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 21:32:20 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/04 04:48:51 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/08 21:42:49 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,26 +49,26 @@ char	**token_list_to_array(t_token *token)
 	return (arr);
 }
 
-bool	execute_builtin(char **argv, t_env *env, bool *is_builtin,
-	bool has_forked)
+bool	execute_builtin(char **argv, int cmd_pos, t_env *env, bool has_forked)
 {
-	*is_builtin = true;
-	if (!ft_strcmp("cd", argv[0]))
+	env->is_builtin = true;
+	printf("%s\n", argv[cmd_pos]);
+	if (!ft_strcmp("cd", argv[cmd_pos]))
 		return (cd_builtin(argv, env));
-	if (!ft_strcmp("pwd", argv[0]))
+	if (!ft_strcmp("pwd", argv[cmd_pos]))
 		return (pwd_builtin(argv, env));
-	if (!ft_strcmp("unset", argv[0]))
+	if (!ft_strcmp("unset", argv[cmd_pos]))
 		return (unset_builtin(argv, env));
-	if (!ft_strcmp("export", argv[0]))
+	if (!ft_strcmp("export", argv[cmd_pos]))
 		return (export_builtin(argv, env));
-	if (!ft_strcmp("env", argv[0]))
+	if (!ft_strcmp("env", argv[cmd_pos]))
 		return (env_builtin(argv, env));
-	if (!ft_strcmp("echo", argv[0]))
+	if (!ft_strcmp("echo", argv[cmd_pos]))
 		return (echo_builtin(argv, env));
-	if (!ft_strcmp("exit", argv[0]))
+	if (!ft_strcmp("exit", argv[cmd_pos]))
 		return (exit_builtin(env->shell, argv, has_forked));
-	if (!ft_strcmp("history", argv[0]))
+	if (!ft_strcmp("history", argv[cmd_pos]))
 		return (history_builtin());
-	*is_builtin = false;
+	env->is_builtin = false;
 	return (false);
 }
