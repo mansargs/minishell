@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 21:32:20 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/08 21:42:49 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/09 01:21:06 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,21 +52,20 @@ char	**token_list_to_array(t_token *token)
 bool	execute_builtin(char **argv, int cmd_pos, t_env *env, bool has_forked)
 {
 	env->is_builtin = true;
-	printf("%s\n", argv[cmd_pos]);
 	if (!ft_strcmp("cd", argv[cmd_pos]))
-		return (cd_builtin(argv, env));
+		return (cd_builtin(argv + cmd_pos, env));
 	if (!ft_strcmp("pwd", argv[cmd_pos]))
-		return (pwd_builtin(argv, env));
+		return (pwd_builtin(argv + cmd_pos, env));
 	if (!ft_strcmp("unset", argv[cmd_pos]))
-		return (unset_builtin(argv, env));
+		return (unset_builtin(argv + cmd_pos, env));
 	if (!ft_strcmp("export", argv[cmd_pos]))
-		return (export_builtin(argv, env));
+		return (export_builtin(argv + cmd_pos, env));
 	if (!ft_strcmp("env", argv[cmd_pos]))
-		return (env_builtin(argv, env));
+		return (env_builtin(argv + cmd_pos, env));
 	if (!ft_strcmp("echo", argv[cmd_pos]))
-		return (echo_builtin(argv, env));
+		return (echo_builtin(argv + cmd_pos, env));
 	if (!ft_strcmp("exit", argv[cmd_pos]))
-		return (exit_builtin(env->shell, argv, has_forked));
+		return (exit_builtin(env->shell, argv + cmd_pos, has_forked));
 	if (!ft_strcmp("history", argv[cmd_pos]))
 		return (history_builtin());
 	env->is_builtin = false;
