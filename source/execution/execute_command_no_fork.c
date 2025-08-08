@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 06:04:11 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/06 18:36:06 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/08 14:45:12 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static void	is_directory(char *cmd_path, char **argv, char ***envp)
 	{
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
 		ft_putstr_fd(argv[0], STDERR_FILENO);
-		ft_putendl_fd(": is a directory", STDERR_FILENO);
+		ft_putendl_fd(": Is a directory", STDERR_FILENO);
 		free(cmd_path);
 		free_matrix(envp);
 		exit(126);

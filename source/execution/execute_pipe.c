@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:56:36 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/04 16:29:25 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/08 19:56:00 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,17 @@ static void	pipe_children(t_ast *node, t_env *env, int pipe_fds[2], bool left)
 	close(pipe_fds[0]);
 	close(pipe_fds[1]);
 	if (left)
+	{
+		if (open_redirects(node->left_side, env->shell) == FUNCTION_FAIL)
+			exit(1);
 		exit(execute_ast(node->left_side, env, true));
+	}
 	else
+	{
+		if (open_redirects(node->right_side, env->shell) == FUNCTION_FAIL)
+			exit(1);
 		exit(execute_ast(node->right_side, env, true));
+	}
 }
 
 int	execute_pipe(t_ast *node, t_env *env)
@@ -50,8 +58,8 @@ int	execute_pipe(t_ast *node, t_env *env)
 		pipe_children(node, env, pipe_fds, false);
 	close(pipe_fds[0]);
 	close(pipe_fds[1]);
-	waitpid(pids[0], &status, 0);
-	handle_child_status(status, env);
 	waitpid(pids[1], &status, 0);
-	return (handle_child_status(status, env));
+	handle_child_status(status, env);
+	waitpid(pids[0], NULL, 0);
+	return (env->shell->exit_code);
 }

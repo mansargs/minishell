@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:25 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/07 15:49:05 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/08 14:38:36 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	run_shell_noninteractive(t_shell *shell)
 	line = NULL;
 	while (1)
 	{
-		// cleanup_heredoc_tempfiles();
+		cleanup_heredoc_tempfiles();
 		line = get_next_line(STDIN_FILENO);
 		if (!line)
 			break ;

@@ -4,3 +4,4 @@ minishell
 .mini_history
 .vscode
 readline.supp
+minishell_tester

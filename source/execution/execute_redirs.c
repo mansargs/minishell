@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 14:28:33 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/07 15:36:25 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/08 20:21:42 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,10 @@ static bool	file_in_redirs(t_token *redir, t_shell *shell)
 	open_redirs_quote(redir, shell);
 	fd = open(redir->file_name, O_RDONLY);
 	if (fd < 0)
+	{
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
 		return (perror(redir->file_name), false);
+	}
 	dup2(fd, STDIN_FILENO);
 	close(fd);
 	return (true);
@@ -57,7 +60,10 @@ static bool	file_out_redirs(t_token *redir, t_shell *shell)
 				| O_APPEND, 0644);
 	}
 	if (fd < 0)
+	{
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
 		return (perror(redir->file_name), false);
+	}
 	dup2(fd, STDOUT_FILENO);
 	close(fd);
 	return (true);
@@ -79,8 +85,8 @@ int	open_redirects(t_ast *node, t_shell *shell)
 		else
 			result = file_out_redirs(redirect, shell);
 		redirect = redirect->next_token;
+		if (!result)
+			return (FUNCTION_FAIL);
 	}
-	if (result)
-		return (FUNCTION_SUCCESS);
-	return (FUNCTION_FAIL);
+	return (FUNCTION_SUCCESS);
 }
