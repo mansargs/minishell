@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_ast.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 19:49:43 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/09 19:44:27 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/10 00:16:54 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ int	execute_subshell(t_ast *node, t_env *env, bool has_forked)
 	if (has_forked)
 	{
 		if (open_redirects(node, env->shell) == FUNCTION_FAIL)
-			return (restore_standard_fd(old_stdin_stdout[0], old_stdin_stdout[1]), FUNCTION_FAIL);
+			return (restore_standard_fd(old_stdin_stdout[0],
+					old_stdin_stdout[1]), FUNCTION_FAIL);
 		return (execute_ast(node->left_side, env, true));
 	}
 	pid = fork();
@@ -77,7 +78,6 @@ int	execute_subshell(t_ast *node, t_env *env, bool has_forked)
 	restore_standard_fd(old_stdin_stdout[0], old_stdin_stdout[1]);
 	return (env->exit_code);
 }
-
 
 int	execute_ast(t_ast *node, t_env *env, bool has_forked)
 {

@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 13:11:41 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/09 23:37:26 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/10 00:14:22 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ bool	fill_arguments(t_token *cmd, char **argv, int argc)
 	return (true);
 }
 
-static char	**build_argv_from_tokens(t_shell *shell, t_token *cmd_tokens, char **envp)
+static char	**build_argv_from_tokens(t_shell *shell,
+	t_token *cmd_tokens, char **envp)
 {
 	char	**argv;
 	t_token	*arg;

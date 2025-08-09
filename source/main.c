@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:25 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/09 23:38:29 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/10 00:13:28 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,12 +78,13 @@ void	run_shell_interactive(t_shell *shell)
 			break ;
 		if (g_received_signal)
 		{
-			shell->my_env->exit_code= g_received_signal + 128;
+			shell->my_env->exit_code = g_received_signal + 128;
 			g_received_signal = 0;
 		}
 		process_line(shell, line);
 	}
 }
+
 void	run_shell_noninteractive(t_shell *shell)
 {
 	char	*line;
@@ -99,7 +100,6 @@ void	run_shell_noninteractive(t_shell *shell)
 		line = NULL;
 	}
 }
-
 
 int	main(int argc, char *argv[], char **envp)
 {

@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 21:53:17 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/09 23:36:14 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/10 00:15:34 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,7 @@ static int	execute_command_with_fork(t_ast *node, t_env *env, bool has_forked)
 		return (free_matrix(&argv), status);
 	pid = fork();
 	if (pid < 0)
-	{
-		perror("fork failed");
-		free_matrix(&argv);
-		return (FUNCTION_FAIL);
-	}
+		return (perror("fork failed"), free_matrix(&argv), FUNCTION_FAIL);
 	return (handle_fork_result(pid, argv, env, node));
 }
 

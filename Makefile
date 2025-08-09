@@ -31,6 +31,7 @@ SRCS = \
 	$(UTILS)/tokens_managing_utils.c \
 	$(UTILS)/tokenizer_utils.c \
 	$(UTILS)/builtin_utils.c \
+	$(UTILS)/quotes_utils.c \
 	$(LEXICAL)/tokenizer.c \
 	$(LEXICAL)/readline.c \
 	$(LEXICAL)/init.c \

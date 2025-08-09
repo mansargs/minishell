@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 16:24:51 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/09 23:45:01 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/10 00:25:32 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 
 void	manage_parenthesis(const t_token *token, int *opened_parenthesis);
 bool	syntax_and_heredoc(t_shell *shell);
-bool	wait_for_input(t_shell *shell, char **line);
 bool	invalid_redirect(const t_token *token, const int strict_flag);
 bool	invalid_operator(const t_token *token, const int strict_flag);
 bool	strict_syntax_errors(t_shell *shell);
@@ -39,5 +38,8 @@ void	signal_handler(int signum);
 void	handle_exitstatus(t_shell *shell);
 void	print_error(char *unexpented);
 char	*replace_exit_code(t_shell *shell, char *token_str);
+void	append_exit_code(char **res, int code);
+void	append_var(char **res, char **envp, const char *str, int *i);
+char	*remove_dollar_before_quotes(char **str);
 
 #endif

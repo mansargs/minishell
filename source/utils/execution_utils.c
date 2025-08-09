@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 04:04:48 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/08 19:56:14 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/10 00:12:06 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,4 +104,3 @@ char	*join(char *str1, char *str2, char *str3)
 	ft_strcat(joined, str3);
 	return (joined);
 }
-
