@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_convert.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 13:11:41 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/09 19:44:27 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/09 23:37:26 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ bool	fill_arguments(t_token *cmd, char **argv, int argc)
 	return (true);
 }
 
-static char	**build_argv_from_tokens(t_token *cmd_tokens, char **envp)
+static char	**build_argv_from_tokens(t_shell *shell, t_token *cmd_tokens, char **envp)
 {
 	char	**argv;
 	t_token	*arg;
@@ -52,7 +52,7 @@ static char	**build_argv_from_tokens(t_token *cmd_tokens, char **envp)
 	{
 		if (arg->token_type == TOKEN_WORD)
 		{
-			if (handle_quots(envp, arg) == -1)
+			if (handle_quots(shell->my_env, envp, arg) == -1)
 				return (free_matrix(&argv), NULL);
 			argv[i++] = ft_strdup(arg->token_data);
 		}
@@ -70,7 +70,7 @@ char	**get_arguments(t_token *cmd_tokens, t_env *env)
 	envp = convert_env_to_matrix(env);
 	if (!envp)
 		return (NULL);
-	argv = build_argv_from_tokens(cmd_tokens, envp);
+	argv = build_argv_from_tokens(env->shell, cmd_tokens, envp);
 	free_matrix(&envp);
 	return (argv);
 }

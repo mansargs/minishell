@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 13:38:09 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/09 19:46:24 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/09 23:38:50 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ static void	handle_heredoc_flag(t_shell *shell, char **line)
 
 bool	valid_line(t_shell *shell, char **line)
 {
-	handle_exitstatus(shell);
 	handle_heredoc_flag(shell, line);
 	if (!syntax_and_heredoc(shell))
 	{

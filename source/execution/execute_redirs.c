@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_redirs.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 14:28:33 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/08 20:21:42 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/09 23:31:22 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,8 @@
 void	open_redirs_quote(t_token *redir, t_shell *shell)
 {
 	char	*str;
-	// int		open_flag;
 
-	// open_flag = 0;
-	str = open_quotes(shell->envp, redir->file_name,
+	str = open_quotes(shell->my_env, shell->envp, redir->file_name,
 			&shell->heredoc_quote);
 	if (redir->file_name)
 		free(redir->file_name);

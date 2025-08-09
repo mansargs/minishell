@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 16:24:51 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/06 19:07:27 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/09 23:45:01 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ bool	invalid_operator(const t_token *token, const int strict_flag);
 bool	strict_syntax_errors(t_shell *shell);
 bool	valid_line(t_shell *shell, char **line);
 bool	secondary_syntax_errors(const t_token *token, int *opened_parenthesis);
-int		handle_quots(char **envp, t_token *token);
+int		handle_quots(t_env *env, char **envp, t_token *token);
 char	*open_heredoc(t_shell *shell, const t_token *tokens,
 			const int fd_history);
 bool	is_quoted_delimiter(const char *s);
 char	*open_quotes_heredoc(t_shell *shell, const char *str, int *open_flag);
-char	*open_quotes(char **envp, const char *str, int *open_flag);
+char	*open_quotes(t_env *env, char **envp, const char *str, int *open_flag);
 void	append_char(char **res, char c);
 int		check_is_open_quote(int quote);
 char	*get_file_name(void);
@@ -37,7 +37,7 @@ void	handle_heredoc_open_quote(t_shell *shell, char *line,
 			const int fd);
 void	signal_handler(int signum);
 void	handle_exitstatus(t_shell *shell);
-char	*replace_exit_code(t_shell *shell, char *token_str);
 void	print_error(char *unexpented);
+char	*replace_exit_code(t_shell *shell, char *token_str);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 23:04:36 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/09 20:07:51 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/09 23:29:22 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ void	handle_heredoc_open_quote(t_shell *shell, char *line,
 	if (ft_strchr(line, '$') && shell->heredoc_quote == 0)
 	{
 		copy_flag = 0;
-		new_line = open_quotes(shell->envp, line, &copy_flag);
+		new_line = open_quotes(shell->my_env, shell->envp, line, &copy_flag);
 		ft_putendl_fd(new_line, fd);
 		free(new_line);
 	}

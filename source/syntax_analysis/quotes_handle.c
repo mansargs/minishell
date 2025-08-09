@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes_handle.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 22:40:43 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/07 15:49:17 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/09 23:27:44 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,21 @@ void	append_var(char **res, char **envp, const char *str, int *i)
 	*i = start + len;
 }
 
-static int	parser_quote_loop(char **envp, const char *str,
+static void	append_exit_code(char **res, int code)
+{
+	char	*tmp;
+	char	*num;
+
+	num = ft_itoa(code);
+	if (!num)
+		return ;
+	tmp = ft_strjoin(*res, num);
+	free(*res);
+	*res = tmp;
+	free(num);
+}
+
+static int	parser_quote_loop(t_env *env, char **envp, const char *str,
 	char **res, char *quote)
 {
 	int	i;
@@ -75,7 +89,15 @@ static int	parser_quote_loop(char **envp, const char *str,
 			i++;
 		}
 		else if (str[i] == '$' && *quote != '\'')
-			append_var(res, envp, str, &i);
+		{
+			if (str [i + 1] && str[i + 1] == '?')
+			{
+				append_exit_code(res, env->exit_code);
+				i += 2;
+			}
+			else
+				append_var(res, envp, str, &i);
+		}
 		else
 			append_char(res, str[i++]);
 		if (!*res)
@@ -84,7 +106,7 @@ static int	parser_quote_loop(char **envp, const char *str,
 	return (1);
 }
 
-char	*open_quotes(char **envp, const char *str, int *open_flag)
+char	*open_quotes(t_env *env, char **envp, const char *str, int *open_flag)
 {
 	char	quote;
 	char	*res;
@@ -96,18 +118,13 @@ char	*open_quotes(char **envp, const char *str, int *open_flag)
 	res = ft_calloc(1, 1);
 	if (!res)
 		return (NULL);
-	if (!parser_quote_loop(envp, str, &res, &quote))
-	{
-		free(res);
-		return (NULL);
-	}
+	if (!parser_quote_loop(env, envp, str, &res, &quote))
+		return (free(res), NULL);
 	if (check_is_open_quote(quote) == 0)
-	{
-		free(res);
-		return (NULL);
-	}
+		return (free(res), NULL);
 	return (res);
 }
+
 char	*remove_dollar_before_quotes(char **str)
 {
 	char	*result;
@@ -125,7 +142,7 @@ char	*remove_dollar_before_quotes(char **str)
 	return (result);
 }
 
-int	handle_quots(char **envp, t_token *token)
+int	handle_quots(t_env *env, char **envp, t_token *token)
 {
 	char	*str;
 	int		open_flag;
@@ -135,7 +152,7 @@ int	handle_quots(char **envp, t_token *token)
 	if (!str)
 		return (-1);
 	token->token_data = str;
-	str = open_quotes(envp, token->token_data, &open_flag);
+	str = open_quotes(env, envp, token->token_data, &open_flag);
 	if (!str)
 		return (-1);
 	free(token->token_data);

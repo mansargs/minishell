@@ -3,34 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   echo_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 12:53:47 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/09 19:44:27 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/09 23:46:27 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
-
-void	print_arg_with_exitcode(char *arg, int *exit_code)
-{
-	int	i;
-
-	i = 0;
-	while (arg[i])
-	{
-		if (arg[i] == '$' && arg[i + 1] == '?')
-		{
-			printf("%d", *exit_code);
-			i += 2;
-		}
-		else
-		{
-			printf("%c", arg[i]);
-			i++;
-		}
-	}
-}
 
 static bool	is_n_flag(char *arg)
 {
@@ -58,7 +38,7 @@ int	echo_builtin(char **args, t_env *env)
 	}
 	while (args[i])
 	{
-		print_arg_with_exitcode(args[i], &env->exit_code);
+		printf("%s", args[i]);
 		if (args[i + 1])
 			printf(" ");
 		i++;
