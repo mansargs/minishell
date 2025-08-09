@@ -6,61 +6,57 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 22:40:43 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/10 00:22:05 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/10 00:55:54 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "syntax.h"
 
-static int	handle_quotes(const char *str, int *i, char *quote)
+static int	handle_quotes(t_parser_data *data)
 {
-	if (!*quote && (str[*i] == '\'' || str[*i] == '"'))
+	if (!data->quote && (data->str[data->i] == '\''
+			|| data->str[data->i] == '"'))
 	{
-		*quote = str[*i];
-		(*i)++;
+		data->quote = data->str[data->i];
+		data->i++;
 		return (1);
 	}
-	if (*quote && str[*i] == *quote)
+	if (data->quote && data->str[data->i] == data->quote)
 	{
-		*quote = 0;
-		(*i)++;
+		data->quote = 0;
+		data->i++;
 		return (1);
 	}
 	return (0);
 }
 
-static int	handle_dollar(t_env *env, char **envp, const char *str,
-	char **res, int *i, char quote)
+static int	handle_dollar(t_parser_data *data)
 {
-	if (str[*i] == '$' && quote != '\'')
+	if (data->str[data->i] == '$' && data->quote != '\'')
 	{
-		if (str[*i + 1] && str[*i + 1] == '?')
+		if (data->str[data->i + 1] && data->str[data->i + 1] == '?')
 		{
-			append_exit_code(res, env->exit_code);
-			(*i) += 2;
+			append_exit_code(data->res, data->env->exit_code);
+			data->i += 2;
 		}
 		else
-			append_var(res, envp, str, i);
+			append_var(data->res, data->envp, data->str, &(data->i));
 		return (1);
 	}
 	return (0);
 }
 
-int	parser_quote_loop(t_env *env, char **envp, const char *str,
-	char **res, char *quote)
+int	parser_quote_loop(t_parser_data *data)
 {
-	int	i;
-
-	i = 0;
-	while (str[i])
+	while (data->str[data->i])
 	{
-		if (handle_quotes(str, &i, quote))
+		if (handle_quotes(data))
 			continue ;
-		if (handle_dollar(env, envp, str, res, &i, *quote))
+		if (handle_dollar(data))
 			continue ;
-		append_char(res, str[i]);
-		i++;
-		if (!*res)
+		append_char(data->res, data->str[data->i]);
+		data->i++;
+		if (!*data->res)
 			return (0);
 	}
 	return (1);
@@ -69,19 +65,24 @@ int	parser_quote_loop(t_env *env, char **envp, const char *str,
 
 char	*open_quotes(t_env *env, char **envp, const char *str, int *open_flag)
 {
-	char	quote;
-	char	*res;
+	t_parser_data	data;
+	char			*res;
 
 	if (!str)
 		return (NULL);
-	quote = 0;
+	data.env = env;
+	data.envp = envp;
+	data.str = str;
+	data.quote = 0;
+	data.i = 0;
 	*open_flag = 0;
 	res = ft_calloc(1, 1);
 	if (!res)
 		return (NULL);
-	if (!parser_quote_loop(env, envp, str, &res, &quote))
+	data.res = &res;
+	if (!parser_quote_loop(&data))
 		return (free(res), NULL);
-	if (check_is_open_quote(quote) == 0)
+	if (check_is_open_quote(data.quote) == 0)
 		return (free(res), NULL);
 	return (res);
 }

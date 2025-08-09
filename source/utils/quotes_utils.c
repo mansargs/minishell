@@ -6,7 +6,7 @@
 /*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 00:21:22 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/10 00:24:31 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/10 00:45:33 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,4 +89,3 @@ char	*remove_dollar_before_quotes(char **str)
 	*str = NULL;
 	return (result);
 }
-

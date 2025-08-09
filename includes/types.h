@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   types.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 03:11:37 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/09 19:39:43 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/10 00:49:02 by alisharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,16 @@ typedef struct s_history
 	bool	is_there_heredoc;
 	bool	exitstatus_flag;
 }				t_history;
+
+typedef struct s_parser_data
+{
+	t_env		*env;
+	char		**envp;
+	const char	*str;
+	char		**res;
+	char		quote;
+	int			i;
+}	t_parser_data;
 
 typedef struct s_shell
 {
