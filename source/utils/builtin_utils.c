@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 23:56:05 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/06 22:13:02 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/09 19:44:27 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ int	check_too_many_dirs(char **args, t_env *env)
 void	failed_chdir(t_env *env, char *path)
 {
 	if (errno == EACCES)
-		env->shell->exit_code = 126;
+		env->exit_code = 126;
 	else
-		env->shell->exit_code = 1;
+		env->exit_code = 1;
 	ft_putstr_fd("minishell: cd: ", STDERR_FILENO);
 	ft_putstr_fd(path, STDERR_FILENO);
 	ft_putstr_fd(": ", STDERR_FILENO);

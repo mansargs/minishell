@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 03:11:37 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/08 21:37:12 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/09 19:39:43 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ typedef struct s_env
 	t_env_node	*env[HASH_SIZE];
 	t_shell		*shell;
 	bool		is_builtin;
+	int			exit_code;
 }	t_env;
 
 /* Abstract Syntax Tree struct */
@@ -114,7 +115,6 @@ typedef struct s_shell
 	bool		mem_error;
 	int			heredoc_quote;
 	int			exit_code_flag;
-	int			exit_code;
 	char		*pwd;
 	char		**envp;
 	t_history	history;

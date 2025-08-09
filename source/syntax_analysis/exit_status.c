@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 10:18:03 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/05 14:18:19 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/09 20:06:51 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*replace_exit_code(t_shell *shell, char *token_str)
 	pos = ft_strnstr(token_str, "$?", ft_strlen(token_str));
 	if (!pos)
 		return (NULL);
-	exit_code_str = ft_itoa(shell->exit_code);
+	exit_code_str = ft_itoa(shell->my_env->exit_code);
 	if (!exit_code_str)
 		return (NULL);
 	before = ft_strndup(token_str, pos - token_str);

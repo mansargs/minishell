@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 19:49:43 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/08 20:02:24 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/09 19:44:27 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,12 +70,12 @@ int	execute_subshell(t_ast *node, t_env *env, bool has_forked)
 	if (waitpid(pid, &status, 0) == -1)
 	{
 		perror("waiting failed");
-		env->shell->exit_code = 1;
+		env->exit_code = 1;
 	}
 	else
 		handle_child_status(status, env);
 	restore_standard_fd(old_stdin_stdout[0], old_stdin_stdout[1]);
-	return (env->shell->exit_code);
+	return (env->exit_code);
 }
 
 

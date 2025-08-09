@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:25 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/08 14:38:36 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/09 19:48:12 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static void	process_line(t_shell *shell, char *line)
 		free_shell(&shell);
 		exit(ENOMEM);
 	}
-	shell->exit_code = execute_ast(shell->tree, shell->my_env, false);
+	shell->my_env->exit_code= execute_ast(shell->tree, shell->my_env, false);
 	conditional_free(&shell, true, false);
 }
 
@@ -78,7 +78,7 @@ void	run_shell_interactive(t_shell *shell)
 			break ;
 		if (g_received_signal)
 		{
-			shell->exit_code = g_received_signal + 128;
+			shell->my_env->exit_code= g_received_signal + 128;
 			g_received_signal = 0;
 		}
 		process_line(shell, line);

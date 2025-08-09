@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_convert.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 13:11:41 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/06 02:10:59 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/09 19:44:27 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,9 @@ char	*command_search(char **paths, t_env *env)
 	while (paths[++i])
 	{
 		if (access(paths[i], F_OK) != 0)
-			env->shell->exit_code = 127;
+			env->exit_code = 127;
 		else if (access(paths[i], X_OK | R_OK) != 0)
-			env->shell->exit_code = 126;
+			env->exit_code = 126;
 		else if (access(paths[i], F_OK | X_OK) == 0)
 			return (ft_strdup(paths[i]));
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 12:54:15 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/04 19:29:37 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/09 20:04:49 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ int	exit_builtin(t_shell *shell, char **args, bool has_forked)
 	if (!has_forked)
 		ft_putendl_fd("exit", 1);
 	if (!args[1])
-		exit(shell->exit_code);
+		exit(shell->my_env->exit_code);
 	if (!is_numeric(args[1]) || ft_str_is_too_big(args[1]))
 	{
 		ft_putstr_fd("minishell: exit: ", 2);
@@ -129,7 +129,7 @@ int	exit_builtin(t_shell *shell, char **args, bool has_forked)
 	if (args[2])
 	{
 		ft_putendl_fd("minishell: exit: too many arguments", 2);
-		shell->exit_code = 1;
+		shell->my_env->exit_code= 1;
 		return (FUNCTION_FAIL);
 	}
 	exit_code = ft_atol(args[1]);

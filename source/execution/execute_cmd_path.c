@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 12:22:37 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/08 20:57:19 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/09 19:44:27 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,14 @@ static int	check_and_set_exit_code(const char *cmd, t_env *env)
 
 	ret = check_path_without_command(cmd);
 	if (ret)
-		env->shell->exit_code = ret;
+		env->exit_code = ret;
 	else if (access(cmd, F_OK) != 0)
-		env->shell->exit_code = 127;
+		env->exit_code = 127;
 	else if (access(cmd, X_OK) != 0)
-		env->shell->exit_code = 126;
+		env->exit_code = 126;
 	else
 		return (0);
-	return (env->shell->exit_code);
+	return (env->exit_code);
 }
 
 static char	*find_command_path_with_slash(const char *cmd, t_env *env)
@@ -62,20 +62,20 @@ static char	*find_command_path_in_path(const char *cmd, t_env *env)
 	path_node = env_get(env, "PATH");
 	if (!path_node)
 	{
-		env->shell->exit_code = 127;
+		env->exit_code = 127;
 		return (NULL);
 	}
 	bins = ft_split(path_node->value, ':');
 	if (!bins || !add_cmd_to_path(bins, cmd))
 	{
-		env->shell->exit_code = 127;
+		env->exit_code = 127;
 		free_matrix(&bins);
 		return (NULL);
 	}
 	cmd_path = command_search(bins, env);
 	free_matrix(&bins);
 	if (!cmd_path)
-		env->shell->exit_code = 127;
+		env->exit_code = 127;
 	return (cmd_path);
 }
 

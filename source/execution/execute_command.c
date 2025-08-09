@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 21:53:17 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/08 21:41:10 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/09 19:44:27 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,17 @@ int	handle_child_status(int status, t_env *env)
 	int	sig;
 
 	if (WIFEXITED(status))
-		env->shell->exit_code = WEXITSTATUS(status);
+		env->exit_code = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
 	{
 		sig = WTERMSIG(status);
-		env->shell->exit_code = sig + 128;
+		env->exit_code = sig + 128;
 		if (sig == SIGINT)
 			write(STDOUT_FILENO, "\n", 1);
 		else if (sig == SIGQUIT)
 			write(STDOUT_FILENO, "Quit (core dumped)\n", 20);
 	}
-	return (env->shell->exit_code);
+	return (env->exit_code);
 }
 
 static int	handle_fork_result(pid_t pid, char **argv, t_env *env, t_ast *node)
@@ -49,7 +49,7 @@ static int	handle_fork_result(pid_t pid, char **argv, t_env *env, t_ast *node)
 		free_matrix(&argv);
 		handle_child_status(status, env);
 	}
-	return (env->shell->exit_code);
+	return (env->exit_code);
 }
 
 static int	execute_command_with_fork(t_ast *node, t_env *env, bool has_forked)

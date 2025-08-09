@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:56:36 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/08 19:56:00 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/09 19:44:27 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,5 @@ int	execute_pipe(t_ast *node, t_env *env)
 	waitpid(pids[1], &status, 0);
 	handle_child_status(status, env);
 	waitpid(pids[0], NULL, 0);
-	return (env->shell->exit_code);
+	return (env->exit_code);
 }

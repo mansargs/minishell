@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 20:27:17 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/06 18:08:54 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/09 19:44:27 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*cd_tilda(char **args, t_env *env)
 	if (!home || !home->value)
 	{
 		ft_putendl_fd("minishell: cd: HOME not set", STDERR_FILENO);
-		env->shell->exit_code = 1;
+		env->exit_code = 1;
 		return (NULL);
 	}
 	path = ft_strjoin(home->value, args[1] + 1);
@@ -37,7 +37,7 @@ char	*cd_minus(char **args, t_env *env)
 	if (!old_pwd || !old_pwd->value)
 	{
 		ft_putendl_fd("minishell: cd: OLDPWD not set", STDERR_FILENO);
-		env->shell->exit_code = 1;
+		env->exit_code = 1;
 		return (NULL);
 	}
 	path = ft_strjoin(old_pwd->value, args[1] + 1);
@@ -57,7 +57,7 @@ char	*cd_validation(char **args, t_env *env)
 		if (!home || !home->value)
 		{
 			ft_putendl_fd("minishell: cd: HOME not set", STDERR_FILENO);
-			env->shell->exit_code = 1;
+			env->exit_code = 1;
 			return (NULL);
 		}
 		path = ft_strdup(home->value);

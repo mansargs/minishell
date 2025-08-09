@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 13:38:09 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/06 19:28:08 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/09 19:46:24 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ bool	valid_line(t_shell *shell, char **line)
 	handle_heredoc_flag(shell, line);
 	if (!syntax_and_heredoc(shell))
 	{
-		shell->exit_code = 2;
+		shell->my_env->exit_code = 2;
 		return (false);
 	}
 	if (*line)
