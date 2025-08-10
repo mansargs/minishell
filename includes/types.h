@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   types.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 03:11:37 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/10 00:49:02 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/11 02:27:33 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ typedef struct s_env
 	t_shell		*shell;
 	bool		is_builtin;
 	int			exit_code;
+	int			empty_quote_pos;
 }	t_env;
 
 /* Abstract Syntax Tree struct */
@@ -132,7 +133,6 @@ typedef struct s_shell
 	t_ast		*tree;
 	t_env		*my_env;
 	bool		interactive_mode;
-	bool		is_invalid_var;
 }	t_shell;
 
 #endif

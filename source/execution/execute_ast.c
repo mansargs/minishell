@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   execute_ast.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 19:49:43 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/10 00:16:54 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/11 01:17:34 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
 
-void	restore_standard_fd(int std_in, int std_out)
+static void	restore_standard_fd(int std_in, int std_out)
 {
 	dup2(std_in, STDIN_FILENO);
 	dup2(std_out, STDOUT_FILENO);
@@ -44,18 +44,10 @@ int	execute_subshell(t_ast *node, t_env *env, bool has_forked)
 {
 	pid_t	pid;
 	int		status;
-	int		old_stdin_stdout[2];
 
 	status = 0;
-	old_stdin_stdout[0] = dup(STDIN_FILENO);
-	old_stdin_stdout[1] = dup(STDOUT_FILENO);
 	if (has_forked)
-	{
-		if (open_redirects(node, env->shell) == FUNCTION_FAIL)
-			return (restore_standard_fd(old_stdin_stdout[0],
-					old_stdin_stdout[1]), FUNCTION_FAIL);
 		return (execute_ast(node->left_side, env, true));
-	}
 	pid = fork();
 	if (pid < 0)
 		return (perror("fork failed"), FUNCTION_FAIL);
@@ -64,8 +56,6 @@ int	execute_subshell(t_ast *node, t_env *env, bool has_forked)
 	{
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
-		if (open_redirects(node, env->shell) == FUNCTION_FAIL)
-			exit(1);
 		exit(execute_ast(node->left_side, env, true));
 	}
 	if (waitpid(pid, &status, 0) == -1)
@@ -75,17 +65,22 @@ int	execute_subshell(t_ast *node, t_env *env, bool has_forked)
 	}
 	else
 		handle_child_status(status, env);
-	restore_standard_fd(old_stdin_stdout[0], old_stdin_stdout[1]);
 	return (env->exit_code);
 }
 
 int	execute_ast(t_ast *node, t_env *env, bool has_forked)
 {
+	int	old_stdin;
+	int	old_stdout;
 	int	result;
 
 	if (!node)
 		return (0);
+	old_stdin = dup(STDIN_FILENO);
+	old_stdout = dup(STDOUT_FILENO);
 	result = 0;
+	if (open_redirects(node, env->shell) == FUNCTION_FAIL)
+		return (restore_standard_fd(old_stdin, old_stdout), FUNCTION_FAIL);
 	if (node->cmd && node->cmd->token_operator_type == OPERATOR_AND)
 		result = execute_logic_and(node, env);
 	else if (node->cmd && node->cmd->token_operator_type == OPERATOR_OR)
@@ -96,5 +91,6 @@ int	execute_ast(t_ast *node, t_env *env, bool has_forked)
 		result = execute_subshell(node, env, has_forked);
 	else if (node->cmd)
 		result = execute_command(node, env, has_forked);
+	restore_standard_fd(old_stdin, old_stdout);
 	return (result);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 21:53:17 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/10 00:15:34 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/11 02:24:40 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	handle_child_status(int status, t_env *env)
 	return (env->exit_code);
 }
 
-static int	handle_fork_result(pid_t pid, char **argv, t_env *env, t_ast *node)
+static int	handle_fork_result(pid_t pid, char **argv, t_env *env)
 {
 	int	status;
 
@@ -39,8 +39,6 @@ static int	handle_fork_result(pid_t pid, char **argv, t_env *env, t_ast *node)
 	{
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
-		if (open_redirects(node, env->shell) == FUNCTION_FAIL)
-			exit(1);
 		child_execute(argv, env);
 	}
 	else
@@ -66,47 +64,30 @@ static int	execute_command_with_fork(t_ast *node, t_env *env, bool has_forked)
 		return (free_matrix(&argv), FUNCTION_FAIL);
 	i = 0;
 	while (argv[i] && argv[i][0] == '\0')
-		++i;
-	if (!argv[i])
 	{
-		if (env->shell->is_invalid_var)
-		{
-			env->shell->is_invalid_var = false;
-			env->exit_code = 0;
-		}
-		else
+		if (i == env->empty_quote_pos)
 		{
 			env->exit_code = 127;
-			ft_putendl_fd(": command not found", STDERR_FILENO);
+			ft_putendl_fd("minishell: : command not found", STDERR_FILENO);
+			return (free_matrix(&argv), env->exit_code);
 		}
-		return (free_matrix(&argv), env->exit_code);
+		++i;
 	}
+	if (!argv[i])
+		return (free_matrix(&argv), FUNCTION_SUCCESS);
 	status = execute_builtin(argv, i, env, has_forked);
 	if (env->is_builtin)
 		return (free_matrix(&argv), status);
 	pid = fork();
 	if (pid < 0)
 		return (perror("fork failed"), free_matrix(&argv), FUNCTION_FAIL);
-	return (handle_fork_result(pid, argv, env, node));
+	return (handle_fork_result(pid, argv, env));
 }
 
 int	execute_command(t_ast *node, t_env *env, bool has_forked)
 {
-	int	result;
-	int	old_stdin_stdout[2];
-
-	old_stdin_stdout[0] = dup(STDIN_FILENO);
-	old_stdin_stdout[1] = dup(STDOUT_FILENO);
 	if (has_forked)
-	{
-		if (open_redirects(node, env->shell) == FUNCTION_FAIL)
-			exit(1);
 		return (execute_command_no_fork(node, env, has_forked));
-	}
 	else
-	{
-		result = execute_command_with_fork(node, env, has_forked);
-		restore_standard_fd(old_stdin_stdout[0], old_stdin_stdout[1]);
-		return (result);
-	}
+		return (execute_command_with_fork(node, env, has_forked));
 }

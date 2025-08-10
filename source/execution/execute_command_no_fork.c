@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 06:04:11 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/09 19:44:27 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/11 02:25:31 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,15 @@ int	execute_command_no_fork(t_ast *node, t_env *env, bool has_forked)
 		return (free(argv), FUNCTION_FAIL);
 	i = 0;
 	while (argv[i] && argv[i][0] == '\0')
+	{
+		if (i == env->empty_quote_pos)
+		{
+			env->exit_code = 127;
+			ft_putendl_fd("minishell: : command not found", STDERR_FILENO);
+			return (free_matrix(&argv), env->exit_code);
+		}
 		++i;
+	}
 	if (!argv[i])
 		return (free_matrix(&argv), FUNCTION_SUCCESS);
 	result = execute_builtin(argv, i, env, has_forked);

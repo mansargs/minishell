@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_quoted.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 01:28:36 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/03 20:22:17 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/11 01:39:05 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,6 @@ t_shell	*init_shell(char **envp)
 	if (shell == NULL)
 		return (NULL);
 	shell->envp = envp;
-	shell->is_invalid_var = false;
 	shell->pwd = getcwd(NULL, 0);
 	if (!shell->pwd)
 	{

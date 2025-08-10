@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 00:21:22 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/10 00:45:33 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/11 02:27:44 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,7 @@ void	append_var(t_shell *shell, char **res, const char *str, int *i)
 	if (val)
 		*res = ft_strjoin_free(*res, val);
 	else
-	{
-		shell->is_invalid_var = true;
 		*res = ft_strjoin_free(*res, "");
-	}
 	*i = start + len;
 }
 
