@@ -68,7 +68,19 @@ static int	execute_command_with_fork(t_ast *node, t_env *env, bool has_forked)
 	while (argv[i] && argv[i][0] == '\0')
 		++i;
 	if (!argv[i])
-		return (free_matrix(&argv), FUNCTION_SUCCESS);
+	{
+		if (env->shell->is_invalid_var)
+		{
+			env->shell->is_invalid_var = false;
+			env->exit_code = 0;
+		}
+		else
+		{
+			env->exit_code = 127;
+			ft_putendl_fd(": command not found", STDERR_FILENO);
+		}
+		return (free_matrix(&argv), env->exit_code);
+	}
 	status = execute_builtin(argv, i, env, has_forked);
 	if (env->is_builtin)
 		return (free_matrix(&argv), status);

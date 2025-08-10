@@ -39,7 +39,7 @@ void	handle_exitstatus(t_shell *shell);
 void	print_error(char *unexpented);
 char	*replace_exit_code(t_shell *shell, char *token_str);
 void	append_exit_code(char **res, int code);
-void	append_var(char **res, char **envp, const char *str, int *i);
+void	append_var(t_shell *shell, char **res, const char *str, int *i);
 char	*remove_dollar_before_quotes(char **str);
 
 #endif

@@ -132,6 +132,7 @@ typedef struct s_shell
 	t_ast		*tree;
 	t_env		*my_env;
 	bool		interactive_mode;
+	bool		is_invalid_var;
 }	t_shell;
 
 #endif

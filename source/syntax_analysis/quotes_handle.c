@@ -30,7 +30,7 @@ static int	handle_quotes(t_parser_data *data)
 	return (0);
 }
 
-static int	handle_dollar(t_parser_data *data)
+static int	handle_dollar(t_shell *shell, t_parser_data *data)
 {
 	if (data->str[data->i] == '$' && data->quote != '\'')
 	{
@@ -40,19 +40,19 @@ static int	handle_dollar(t_parser_data *data)
 			data->i += 2;
 		}
 		else
-			append_var(data->res, data->envp, data->str, &(data->i));
+			append_var(shell, data->res, data->str, &(data->i));
 		return (1);
 	}
 	return (0);
 }
 
-int	parser_quote_loop(t_parser_data *data)
+int	parser_quote_loop(t_shell *shell, t_parser_data *data)
 {
 	while (data->str[data->i])
 	{
 		if (handle_quotes(data))
 			continue ;
-		if (handle_dollar(data))
+		if (handle_dollar(shell, data))
 			continue ;
 		append_char(data->res, data->str[data->i]);
 		data->i++;
@@ -61,7 +61,7 @@ int	parser_quote_loop(t_parser_data *data)
 	}
 	return (1);
 }
-//
+
 
 char	*open_quotes(t_env *env, char **envp, const char *str, int *open_flag)
 {
@@ -80,7 +80,7 @@ char	*open_quotes(t_env *env, char **envp, const char *str, int *open_flag)
 	if (!res)
 		return (NULL);
 	data.res = &res;
-	if (!parser_quote_loop(&data))
+	if (!parser_quote_loop(env->shell, &data))
 		return (free(res), NULL);
 	if (check_is_open_quote(data.quote) == 0)
 		return (free(res), NULL);

@@ -93,6 +93,7 @@ t_shell	*init_shell(char **envp)
 	if (shell == NULL)
 		return (NULL);
 	shell->envp = envp;
+	shell->is_invalid_var = false;
 	shell->pwd = getcwd(NULL, 0);
 	if (!shell->pwd)
 	{

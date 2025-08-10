@@ -32,7 +32,7 @@ void	append_char(char **res, char c)
 	*res = new;
 }
 
-void	append_var(char **res, char **envp, const char *str, int *i)
+void	append_var(t_shell *shell, char **res, const char *str, int *i)
 {
 	int		start;
 	int		len;
@@ -50,12 +50,15 @@ void	append_var(char **res, char **envp, const char *str, int *i)
 		return ;
 	}
 	name = ft_substr(str, start, len);
-	val = get_env_value(envp, name);
+	val = get_env_value(shell->envp, name);
 	free(name);
 	if (val)
 		*res = ft_strjoin_free(*res, val);
 	else
+	{
+		shell->is_invalid_var = true;
 		*res = ft_strjoin_free(*res, "");
+	}
 	*i = start + len;
 }
 
