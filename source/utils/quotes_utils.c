@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 00:21:22 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/11 02:27:44 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/11 03:06:18 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,20 +59,6 @@ void	append_var(t_shell *shell, char **res, const char *str, int *i)
 	*i = start + len;
 }
 
-void	append_exit_code(char **res, int code)
-{
-	char	*tmp;
-	char	*num;
-
-	num = ft_itoa(code);
-	if (!num)
-		return ;
-	tmp = ft_strjoin(*res, num);
-	free(*res);
-	*res = tmp;
-	free(num);
-}
-
 char	*remove_dollar_before_quotes(char **str)
 {
 	char	*result;
@@ -88,4 +74,32 @@ char	*remove_dollar_before_quotes(char **str)
 	free(*str);
 	*str = NULL;
 	return (result);
+}
+
+bool	all_is_quote(const char *line)
+{
+	if (!line || *line == '\0')
+		return (false);
+	while (*line)
+	{
+		if (*line != '\'' && *line != '"')
+			return (false);
+		++line;
+	}
+	return (true);
+}
+
+bool	process_token(t_env *env, t_token *arg, char **argv, int *i)
+{
+	bool	only_quotes;
+
+	only_quotes = false;
+	if (env->empty_quote_pos == -1 && all_is_quote(arg->token_data))
+		only_quotes = true;
+	if (handle_quots(env, NULL, arg) == -1)
+		return (false);
+	if (arg->token_data[0] == '\0' && only_quotes)
+		env->empty_quote_pos = *i;
+	argv[(*i)] = ft_strdup(arg->token_data);
+	return (argv[(*i)++] != NULL);
 }

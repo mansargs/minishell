@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes_handle.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 22:40:43 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/10 00:55:54 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/11 02:40:15 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ int	parser_quote_loop(t_shell *shell, t_parser_data *data)
 	}
 	return (1);
 }
-
 
 char	*open_quotes(t_env *env, char **envp, const char *str, int *open_flag)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 02:53:22 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/05 10:33:53 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/11 02:56:28 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,5 +60,8 @@ char	*ft_strndup(const char *s, size_t n);
 char	*handle_cd_without_dir(char **args, t_env *env);
 int		check_too_many_dirs(char **args, t_env *env);
 void	failed_chdir(t_env *env, char *path);
+
+bool	all_is_quote(const char *line);
+bool	process_token(t_env *env, t_token *arg, char **argv, int *i);
 
 #endif

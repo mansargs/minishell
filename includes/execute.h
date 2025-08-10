@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 19:50:18 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/11 01:28:06 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/11 02:45:20 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,6 @@ int		count_lines(char	**lines);
 bool	is_match(const char *item_name, const char *pattern);
 int		execute_pipe(t_ast *node, t_env *env);
 int		open_redirects(t_ast *node, t_shell *shell);
+bool	handle_empty_command(char **argv, t_env *env);
 
 #endif

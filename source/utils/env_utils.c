@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 03:58:18 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/09 19:44:27 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/11 03:06:36 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,18 @@ void	print_export_error(t_env *env, char *key)
 	ft_putstr_fd(key, STDERR_FILENO);
 	ft_putendl_fd("': not a valid identifier", STDERR_FILENO);
 	free(key);
+}
+
+void	append_exit_code(char **res, int code)
+{
+	char	*tmp;
+	char	*num;
+
+	num = ft_itoa(code);
+	if (!num)
+		return ;
+	tmp = ft_strjoin(*res, num);
+	free(*res);
+	*res = tmp;
+	free(num);
 }

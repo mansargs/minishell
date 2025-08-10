@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 13:11:41 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/11 02:16:20 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/11 02:59:21 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,48 +35,28 @@ bool	fill_arguments(t_token *cmd, char **argv, int argc)
 	return (true);
 }
 
-static bool all_is_quote(const char *line)
-{
-	if (!line || *line == '\0')
-		return (false);
-	while (*line)
-	{
-		if (*line != '\'' && *line != '"')
-			return (false);
-		++line;
-	}
-	return (true);
-}
-
-
 static char	**build_argv_from_tokens(t_env *env,
-	t_token *cmd_tokens, char **envp)
+	t_token *arg)
 {
 	char	**argv;
-	t_token	*arg;
 	int		count;
 	int		i;
-	bool	only_quotes;
 
-	count = count_tokens(cmd_tokens);
+	count = count_tokens(arg);
 	argv = ft_calloc((count + 1), sizeof(char *));
 	if (!argv)
 		return (NULL);
-	arg = cmd_tokens;
 	i = 0;
-	only_quotes = false;
 	env->empty_quote_pos = -1;
 	while (arg)
 	{
-		if (env->empty_quote_pos == -1 && all_is_quote(arg->token_data))
-			only_quotes = true;
 		if (arg->token_type == TOKEN_WORD)
 		{
-			if (handle_quots(env, envp, arg) == -1)
-				return (free_matrix(&argv), NULL);
-			if (arg->token_data[0] == '\0' && only_quotes)
-				env->empty_quote_pos = i;
-			argv[i++] = ft_strdup(arg->token_data);
+			if (!process_token(env, arg, argv, &i))
+			{
+				free_matrix(&argv);
+				return (NULL);
+			}
 		}
 		arg = arg->next_token;
 	}
@@ -92,7 +72,7 @@ char	**get_arguments(t_token *cmd_tokens, t_env *env)
 	envp = convert_env_to_matrix(env);
 	if (!envp)
 		return (NULL);
-	argv = build_argv_from_tokens(env, cmd_tokens, envp);
+	argv = build_argv_from_tokens(env, cmd_tokens);
 	free_matrix(&envp);
 	return (argv);
 }
