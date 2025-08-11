@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 02:55:20 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/06 19:22:35 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/11 16:40:49 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,8 @@ bool	strict_syntax_errors(t_shell *shell)
 		if (temp->token_type == TOKEN_REDIRECT)
 			if (invalid_redirect(temp, STRICT))
 				return (true);
-		check_heredoc_case(shell, temp);
+		if (check_heredoc_case(shell, temp))
+			return (true);
 		if (temp->token_type == TOKEN_OPERATOR)
 			if (invalid_operator(temp, STRICT))
 				return (true);

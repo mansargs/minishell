@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 16:24:51 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/10 00:25:32 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/11 16:37:52 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ bool	secondary_syntax_errors(const t_token *token, int *opened_parenthesis);
 int		handle_quots(t_env *env, char **envp, t_token *token);
 char	*open_heredoc(t_shell *shell, const t_token *tokens,
 			const int fd_history);
-bool	is_quoted_delimiter(const char *s);
 char	*open_quotes_heredoc(t_shell *shell, const char *str, int *open_flag);
 char	*open_quotes(t_env *env, char **envp, const char *str, int *open_flag);
 void	append_char(char **res, char c);

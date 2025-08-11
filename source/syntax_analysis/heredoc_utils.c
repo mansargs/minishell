@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 23:04:36 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/09 23:29:22 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/11 18:01:48 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,23 +37,8 @@ char	*open_quotes_heredoc(t_shell *shell, const char *str, int *open_flag)
 			append_char(&res, str[i]);
 	}
 	if (check_is_open_quote(quote) == 0)
-		return (NULL);
+		return (free(res), NULL);
 	return (res);
-}
-
-bool	is_quoted_delimiter(const char *s)
-{
-	size_t	len;
-
-	if (!s)
-		return (false);
-	len = ft_strlen(s);
-	if (len < 2)
-		return (false);
-	if ((s[0] == '\'' && s[len - 1] == '\'')
-		|| (s[0] == '"' && s[len - 1] == '"'))
-		return (true);
-	return (false);
 }
 
 static int	get_random_number(void)
