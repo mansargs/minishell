@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 19:49:43 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/11 01:17:34 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/11 21:07:23 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,17 +70,15 @@ int	execute_subshell(t_ast *node, t_env *env, bool has_forked)
 
 int	execute_ast(t_ast *node, t_env *env, bool has_forked)
 {
-	int	old_stdin;
-	int	old_stdout;
 	int	result;
 
 	if (!node)
 		return (0);
-	old_stdin = dup(STDIN_FILENO);
-	old_stdout = dup(STDOUT_FILENO);
+	env->old_stdin = dup(STDIN_FILENO);
+	env->old_stdout = dup(STDOUT_FILENO);
 	result = 0;
 	if (open_redirects(node, env->shell) == FUNCTION_FAIL)
-		return (restore_standard_fd(old_stdin, old_stdout), FUNCTION_FAIL);
+		return (restore_standard_fd(env->old_stdin, env->old_stdout), FUNCTION_FAIL);
 	if (node->cmd && node->cmd->token_operator_type == OPERATOR_AND)
 		result = execute_logic_and(node, env);
 	else if (node->cmd && node->cmd->token_operator_type == OPERATOR_OR)
@@ -91,6 +89,6 @@ int	execute_ast(t_ast *node, t_env *env, bool has_forked)
 		result = execute_subshell(node, env, has_forked);
 	else if (node->cmd)
 		result = execute_command(node, env, has_forked);
-	restore_standard_fd(old_stdin, old_stdout);
+	restore_standard_fd(env->old_stdin, env->old_stdout);
 	return (result);
 }

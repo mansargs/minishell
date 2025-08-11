@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 03:11:37 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/11 02:27:33 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/11 21:06:33 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,8 @@ typedef struct s_env
 	bool		is_builtin;
 	int			exit_code;
 	int			empty_quote_pos;
+	int			old_stdin;
+	int			old_stdout;
 }	t_env;
 
 /* Abstract Syntax Tree struct */

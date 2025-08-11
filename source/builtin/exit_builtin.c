@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 12:54:15 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/09 23:26:04 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/11 21:30:00 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,14 @@ bool	is_numeric(const char *str)
 	return (true);
 }
 
+void	free_before_exit(t_shell *shell, char **args)
+{
+	free_matrix(&args);
+	close(shell->my_env->old_stdin);
+	close(shell->my_env->old_stdout);
+	conditional_free(&shell, true, true);
+}
+
 int	exit_builtin(t_shell *shell, char **args, bool has_forked)
 {
 	int		exit_code;
@@ -118,12 +126,16 @@ int	exit_builtin(t_shell *shell, char **args, bool has_forked)
 	if (!has_forked)
 		ft_putendl_fd("exit", 1);
 	if (!args[1])
-		exit(shell->my_env->exit_code);
+	{
+		free_before_exit(shell, args);
+		exit(exit_code);
+	}
 	if (!is_numeric(args[1]) || ft_str_is_too_big(args[1]))
 	{
 		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(args[1], 2);
 		ft_putendl_fd(": numeric argument required", 2);
+		free_before_exit(shell, args);
 		exit(2);
 	}
 	if (args[2])
@@ -133,6 +145,7 @@ int	exit_builtin(t_shell *shell, char **args, bool has_forked)
 		return (FUNCTION_FAIL);
 	}
 	exit_code = ft_atol(args[1]);
+	free_before_exit(shell, args);
 	exit(exit_code % 256);
 	return (FUNCTION_SUCCESS);
 }
