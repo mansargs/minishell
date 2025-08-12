@@ -24,6 +24,23 @@ static bool	is_n_flag(char *arg)
 	return (arg[i] == '\0');
 }
 
+int	print_tilda(char **args, t_env *env)
+{
+	t_env_node	*home;
+	char		*path;
+
+	home = env_get(env, "HOME");
+	if (!home || !home->value)
+	{
+		ft_putendl_fd("minishell: cd: HOME not set", STDERR_FILENO);
+		env->exit_code = 1;
+		return (FUNCTION_FAIL);
+	}
+	path = ft_strjoin(home->value, args[1] + 1);
+	printf("%s\n", path);
+	return (FUNCTION_SUCCESS);
+}
+
 int	echo_builtin(char **args, t_env *env)
 {
 	int		i;
@@ -31,6 +48,8 @@ int	echo_builtin(char **args, t_env *env)
 
 	i = 1;
 	newline = true;
+	if (args[1] && ft_strcmp(args[1], "~") == 0)
+		return (print_tilda(args, env));
 	while (args[i] && is_n_flag(args[i]))
 	{
 		newline = false;
