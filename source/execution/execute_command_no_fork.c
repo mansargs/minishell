@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 06:04:11 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/12 14:23:14 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/12 14:27:21 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	print_exec_error(char *cmd, int exit_code)
 	}
 }
 
-static void	is_directory(char *cmd_path, char **argv, int cmd_pos, char ***envp)
+static bool	is_directory(char *cmd_path, char **argv, int cmd_pos, char ***envp)
 {
 	struct stat	st;
 
@@ -47,8 +47,9 @@ static void	is_directory(char *cmd_path, char **argv, int cmd_pos, char ***envp)
 		ft_putendl_fd(": Is a directory", STDERR_FILENO);
 		free(cmd_path);
 		free_matrix(envp);
-		exit(126);
+		return (true);
 	}
+	return (false);
 }
 
 void	reclaim_child_resources(t_shell *shell, char **argv)
@@ -77,7 +78,11 @@ int	child_execute(char **argv, int cmd_pos, t_env *env)
 		exit(exit_code);
 	}
 	envp = convert_env_to_matrix(env);
-	is_directory(cmd_path, argv, cmd_pos, &envp);
+	if (is_directory(cmd_path, argv, cmd_pos, &envp))
+	{
+		reclaim_child_resources(env->shell, argv);
+		exit(126);
+	}
 	execve(cmd_path, argv + cmd_pos, envp);
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	ft_putstr_fd(argv[cmd_pos], STDERR_FILENO);
