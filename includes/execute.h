@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 19:50:18 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/11 02:45:20 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/12 13:55:31 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 int		execute_ast(t_ast *node, t_env *env, bool has_forked);
 int		execute_command(t_ast *node, t_env *env, bool has_forked);
 int		execute_command_no_fork(t_ast *node, t_env *env, bool has_forked);
-int		child_execute(char **argv, t_env *env);
+int		child_execute(char **argv, int cmd_pos, t_env *env);
 char	**convert_env_to_matrix(t_env *env);
 char	*command_search(char **paths, t_env *env);
 char	**get_arguments(t_token *cmd_tokens, t_env *env);

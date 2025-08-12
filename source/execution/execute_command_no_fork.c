@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 06:04:11 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/11 02:45:07 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/12 14:23:14 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,14 @@ static void	print_exec_error(char *cmd, int exit_code)
 	}
 }
 
-static void	is_directory(char *cmd_path, char **argv, char ***envp)
+static void	is_directory(char *cmd_path, char **argv, int cmd_pos, char ***envp)
 {
 	struct stat	st;
 
 	if (stat(cmd_path, &st) == 0 && S_ISDIR(st.st_mode))
 	{
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
-		ft_putstr_fd(argv[0], STDERR_FILENO);
+		ft_putstr_fd(argv[cmd_pos], STDERR_FILENO);
 		ft_putendl_fd(": Is a directory", STDERR_FILENO);
 		free(cmd_path);
 		free_matrix(envp);
@@ -51,22 +51,36 @@ static void	is_directory(char *cmd_path, char **argv, char ***envp)
 	}
 }
 
-int	child_execute(char **argv, t_env *env)
+void	reclaim_child_resources(t_shell *shell, char **argv)
+{
+	close(shell->my_env->old_stdin);
+	close(shell->my_env->old_stdout);
+	close(shell->history.fd);
+	free_matrix(&argv);
+	free_env_table(shell->my_env);
+	shell->my_env = NULL;
+	conditional_free(&shell, true, true);
+}
+
+int	child_execute(char **argv, int cmd_pos, t_env *env)
 {
 	char	*cmd_path;
 	char	**envp;
+	int		exit_code;
 
-	cmd_path = find_command_path(argv[0], env);
+	cmd_path = find_command_path(argv[cmd_pos], env);
 	if (!cmd_path)
 	{
-		print_exec_error(argv[0], env->exit_code);
-		exit(env->exit_code);
+		exit_code = env->exit_code;
+		print_exec_error(argv[cmd_pos], env->exit_code);
+		reclaim_child_resources(env->shell, argv);
+		exit(exit_code);
 	}
 	envp = convert_env_to_matrix(env);
-	is_directory(cmd_path, argv, &envp);
-	execve(cmd_path, argv, envp);
+	is_directory(cmd_path, argv, cmd_pos, &envp);
+	execve(cmd_path, argv + cmd_pos, envp);
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
-	ft_putstr_fd(argv[0], STDERR_FILENO);
+	ft_putstr_fd(argv[cmd_pos], STDERR_FILENO);
 	ft_putstr_fd(": ", STDERR_FILENO);
 	ft_putendl_fd(strerror(errno), STDERR_FILENO);
 	free(cmd_path);
@@ -119,7 +133,7 @@ int	execute_command_no_fork(t_ast *node, t_env *env, bool has_forked)
 		return (free_matrix(&argv), result);
 	else
 	{
-		child_execute(argv + i, env);
+		child_execute(argv, i, env);
 		exit(EXIT_FAILURE);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 21:53:17 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/11 18:17:27 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/12 13:53:17 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	handle_child_status(int status, t_env *env)
 	return (env->exit_code);
 }
 
-static int	handle_fork_result(pid_t pid, char **argv, t_env *env)
+static int	handle_fork_result(pid_t pid, char **argv, int cmd_pos, t_env *env)
 {
 	int	status;
 
@@ -39,7 +39,7 @@ static int	handle_fork_result(pid_t pid, char **argv, t_env *env)
 	{
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
-		child_execute(argv, env);
+		child_execute(argv, cmd_pos, env);
 	}
 	else
 	{
@@ -73,7 +73,7 @@ static int	execute_command_with_fork(t_ast *node, t_env *env, bool has_forked)
 	pid = fork();
 	if (pid < 0)
 		return (perror("fork failed"), free_matrix(&argv), FUNCTION_FAIL);
-	return (handle_fork_result(pid, argv, env));
+	return (handle_fork_result(pid, argv, i, env));
 }
 
 int	execute_command(t_ast *node, t_env *env, bool has_forked)
