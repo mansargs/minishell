@@ -12,6 +12,14 @@
 
 #include "utils.h"
 
+void	free_before_exit(t_shell *shell, char **args)
+{
+	free_matrix(&args);
+	close(shell->my_env->old_stdin);
+	close(shell->my_env->old_stdout);
+	conditional_free(&shell, true, true);
+}
+
 void	free_ast(t_ast **tree)
 {
 	if (!tree || !*tree)
@@ -57,6 +65,7 @@ void	free_shell(t_shell **shell)
 	if (!*shell)
 		return ;
 	free((*shell)->pwd);
+	free((*shell)->username);
 	if ((*shell)->history.fd >= 0)
 		close((*shell)->history.fd);
 	if ((*shell)->my_env)

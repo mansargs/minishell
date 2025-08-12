@@ -85,6 +85,16 @@ int	handle_quots_token(char *line, int i, t_token **head)
 	return (j - i);
 }
 
+char	*get_username(t_shell *shell)
+{
+	char	*username;
+
+	username = get_env_value(shell->envp, "USER");
+	if (!username)
+		username = ft_strdup("unknown");
+	return (ft_strdup(username));
+}
+
 t_shell	*init_shell(char **envp)
 {
 	t_shell	*shell;

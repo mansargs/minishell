@@ -12,31 +12,6 @@
 
 #include "builtin.h"
 
-long	ft_atol(const char *str)
-{
-	long	result;
-	int		sign;
-	int		i;
-
-	result = 0;
-	sign = 1;
-	i = 0;
-	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
-		i++;
-	if (str[i] == '-' || str[i] == '+')
-	{
-		if (str[i] == '-')
-			sign = -1;
-		i++;
-	}
-	while (str[i] >= '0' && str[i] <= '9')
-	{
-		result = result * 10 + (str[i] - '0');
-		i++;
-	}
-	return (result * sign);
-}
-
 bool	is_str_greater(const char *str1, const char *str2)
 {
 	int	len1;
@@ -110,12 +85,16 @@ bool	is_numeric(const char *str)
 	return (true);
 }
 
-void	free_before_exit(t_shell *shell, char **args)
+void	check_exit_argument(t_shell *shell, char **args)
 {
-	free_matrix(&args);
-	close(shell->my_env->old_stdin);
-	close(shell->my_env->old_stdout);
-	conditional_free(&shell, true, true);
+	if (!is_numeric(args[1]) || ft_str_is_too_big(args[1]))
+	{
+		ft_putstr_fd("minishell: exit: ", 2);
+		ft_putstr_fd(args[1], 2);
+		ft_putendl_fd(": numeric argument required", 2);
+		free_before_exit(shell, args);
+		exit(2);
+	}
 }
 
 int	exit_builtin(t_shell *shell, char **args, bool has_forked)
@@ -130,14 +109,7 @@ int	exit_builtin(t_shell *shell, char **args, bool has_forked)
 		free_before_exit(shell, args);
 		exit(exit_code);
 	}
-	if (!is_numeric(args[1]) || ft_str_is_too_big(args[1]))
-	{
-		ft_putstr_fd("minishell: exit: ", 2);
-		ft_putstr_fd(args[1], 2);
-		ft_putendl_fd(": numeric argument required", 2);
-		free_before_exit(shell, args);
-		exit(2);
-	}
+	check_exit_argument(shell, args);
 	if (args[2])
 	{
 		ft_putendl_fd("minishell: exit: too many arguments", 2);

@@ -115,6 +115,7 @@ int	main(int argc, char *argv[], char **envp)
 	if (!init_env(shell, envp))
 		return (ft_putendl_fd("Failed to initialize env table.", STDERR_FILENO),
 			free_tokens(&shell->tokens), free_shell(&shell), ENOMEM);
+	shell->username = get_username(shell);
 	shell->interactive_mode = isatty(STDIN_FILENO);
 	if (shell->interactive_mode)
 		run_shell_interactive(shell);

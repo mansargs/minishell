@@ -32,12 +32,18 @@ int	print_tilda(char **args, t_env *env)
 	home = env_get(env, "HOME");
 	if (!home || !home->value)
 	{
-		ft_putendl_fd("minishell: cd: HOME not set", STDERR_FILENO);
-		env->exit_code = 1;
-		return (FUNCTION_FAIL);
+		path = ft_strjoin("/home/", env->shell->username);
+		if (!path)
+			return (ENOMEM);
+		printf("%s\n", path);
+		free(path);
+		return (FUNCTION_SUCCESS);
 	}
 	path = ft_strjoin(home->value, args[1] + 1);
+	if (!path)
+		return (ENOMEM);
 	printf("%s\n", path);
+	free(path);
 	return (FUNCTION_SUCCESS);
 }
 

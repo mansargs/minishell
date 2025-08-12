@@ -30,5 +30,7 @@ int		history_builtin(void);
 int		count_env_vars(t_env *env);
 bool	is_valid_identifier(const char *s);
 bool	execute_builtin(char **argv, int cmd_pos, t_env *env, bool has_forked);
-
+long	ft_atol(const char *str);
+void	free_before_exit(t_shell *shell, char **args);
+char	*get_username(t_shell *shell);
 #endif

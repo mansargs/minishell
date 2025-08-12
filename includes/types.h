@@ -130,6 +130,7 @@ typedef struct s_shell
 	int			exit_code_flag;
 	char		*pwd;
 	char		**envp;
+	char		*username;
 	t_history	history;
 	t_token		*tokens;
 	t_ast		*tree;

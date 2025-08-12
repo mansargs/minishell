@@ -12,7 +12,7 @@
 
 #include "execute.h"
 
-static void	print_exec_error(char *cmd, int exit_code)
+void	print_exec_error(char *cmd, int exit_code)
 {
 	if (ft_strchr(cmd, '/'))
 	{
