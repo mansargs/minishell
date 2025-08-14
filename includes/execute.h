@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 19:50:18 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/14 16:06:09 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/15 03:05:30 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,8 @@ bool	is_match(const char *item_name, const char *pattern);
 int		execute_pipe(t_ast *node, t_env *env);
 int		open_redirects(t_ast *node, t_shell *shell);
 bool	handle_empty_command(char **argv, t_env *env);
+void	default_signals_setup(void);
+int		if_are_redir_open(t_ast *node, t_env *env);
+void	restore_standard_fd(t_env *env);
 
 #endif

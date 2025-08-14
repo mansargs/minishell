@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 06:04:11 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/14 21:43:56 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/15 02:16:03 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,7 @@ int	child_execute(char **argv, int cmd_pos, t_env *env)
 		exit(126);
 	}
 	execve(cmd_path, argv + cmd_pos, envp);
-	ft_putstr_fd("minishell: ", STDERR_FILENO);
-	ft_putstr_fd(argv[cmd_pos], STDERR_FILENO);
-	ft_putstr_fd(": ", STDERR_FILENO);
-	ft_putendl_fd(strerror(errno), STDERR_FILENO);
-	free(cmd_path);
-	free_matrix(&envp);
+	free_if_execve_fail(argv, cmd_pos, cmd_path, envp);
 	exit(126);
 }
 

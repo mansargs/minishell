@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 02:47:43 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/14 22:01:58 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/15 02:06:28 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,20 +28,6 @@ static char	*read_using_readline(int count_lines, const char *delim)
 		return (NULL);
 	}
 	return (line);
-}
-
-void	handle_exit_and_quote(t_shell *shell, const int fd, char *line)
-{
-	char	*replaced;
-
-	if (ft_strnstr(line, "$?", ft_strlen(line)) && shell->exit_code_flag == 0)
-	{
-		replaced = replace_exit_code(shell, line);
-		ft_putendl_fd(replaced, fd);
-		free(replaced);
-	}
-	else
-		handle_heredoc_open_quote(shell, line, fd);
 }
 
 static void	read_from_stdin(t_shell *shell, const int fd, const char *delim,
@@ -72,6 +58,17 @@ static void	read_from_stdin(t_shell *shell, const int fd, const char *delim,
 	rl_clear_history();
 }
 
+static void	child_heredoc(t_shell *shell, const t_token *token,
+	const int fd, const int fd_history)
+{
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_IGN);
+	read_from_stdin(shell, fd, token->next_token->token_data, fd_history);
+	close(fd);
+	free_all_data(shell, NULL, true);
+	exit(0);
+}
+
 static int	fork_heredoc_reader(t_shell *shell, const t_token *token,
 	const int fd, const int fd_history)
 {
@@ -84,14 +81,7 @@ static int	fork_heredoc_reader(t_shell *shell, const t_token *token,
 		return (perror("fork failed"), -1);
 	signal(SIGINT, SIG_IGN);
 	if (pid == 0)
-	{
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_IGN);
-		read_from_stdin(shell, fd, token->next_token->token_data, fd_history);
-		close(fd);
-		free_all_data(shell, NULL, true);
-		exit(0);
-	}
+		child_heredoc(shell, token, fd, fd_history);
 	if (waitpid(pid, &status, 0) == -1)
 		return (perror("waiting failed"), -1);
 	if (WIFSIGNALED(status))

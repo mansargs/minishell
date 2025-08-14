@@ -3,14 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 15:08:55 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/04 13:55:54 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/15 02:23:05 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
+
+void	default_signals_setup(void)
+{
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+}
 
 void	signal_handler(int signum)
 {

@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 04:21:43 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/04 04:53:58 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/15 02:14:12 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define MY_ENV_H
 
 # include "parser.h"
-# include <errno.h>
 
 /* Env Helpers */
 char				*get_value_data(char *env_line, bool *memprob);

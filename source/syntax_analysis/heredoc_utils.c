@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 23:04:36 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/11 18:01:48 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/15 02:05:59 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,4 +98,18 @@ void	handle_heredoc_open_quote(t_shell *shell, char *line,
 	}
 	else
 		ft_putendl_fd(line, fd);
+}
+
+void	handle_exit_and_quote(t_shell *shell, const int fd, char *line)
+{
+	char	*replaced;
+
+	if (ft_strnstr(line, "$?", ft_strlen(line)) && shell->exit_code_flag == 0)
+	{
+		replaced = replace_exit_code(shell, line);
+		ft_putendl_fd(replaced, fd);
+		free(replaced);
+	}
+	else
+		handle_heredoc_open_quote(shell, line, fd);
 }

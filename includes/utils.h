@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 02:53:22 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/14 21:44:38 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/15 02:17:08 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define UTILS_H
 
 # include "types.h"
+# include <errno.h>
 
 /* Free functions */
 void	free_all_data(t_shell *shell, char **argv, bool heredoc);
@@ -25,6 +26,8 @@ void	conditional_free(t_shell **shell, bool ast, bool minishell);
 void	free_tokens(t_token **tokens);
 void	free_token(t_token **token);
 char	*ft_strjoin_free(char *s1, const char *s2);
+void	free_if_execve_fail(char **argv, int cmd_pos, char *cmd_path,
+			char **envp);
 
 /* Environement */
 

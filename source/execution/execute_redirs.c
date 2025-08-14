@@ -3,14 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   execute_redirs.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 14:28:33 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/09 23:31:22 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/15 02:42:51 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
+
+int	if_are_redir_open(t_ast *node, t_env *env)
+{
+	if (node->redir)
+	{
+		env->old_stdin = dup(STDIN_FILENO);
+		env->old_stdout = dup(STDOUT_FILENO);
+	}
+	else
+	{
+		env->old_stdin = -1;
+		env->old_stdout = -1;
+	}
+	if (open_redirects(node, env->shell) == FUNCTION_FAIL)
+	{
+		restore_standard_fd(env);
+		return (FUNCTION_FAIL);
+	}
+	return (FUNCTION_SUCCESS);
+}
 
 void	open_redirs_quote(t_token *redir, t_shell *shell)
 {

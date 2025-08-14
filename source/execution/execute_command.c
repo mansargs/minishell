@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 21:53:17 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/12 13:53:17 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/15 03:21:56 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,7 @@ static int	handle_fork_result(pid_t pid, char **argv, int cmd_pos, t_env *env)
 	signal(SIGINT, SIG_IGN);
 	if (pid == 0)
 	{
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
+		default_signals_setup();
 		child_execute(argv, cmd_pos, env);
 	}
 	else

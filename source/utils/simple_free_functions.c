@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 03:45:26 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/05 15:12:30 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/15 03:04:36 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,14 @@ void	free_token(t_token **token)
 	}
 	free(*token);
 	*token = NULL;
+}
+
+void	free_if_execve_fail(char **argv, int cmd_pos, char *cmd_path,
+		char **envp)
+{
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd(argv[cmd_pos], STDERR_FILENO);
+	perror("");
+	free(cmd_path);
+	free_matrix(&envp);
 }

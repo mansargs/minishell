@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 16:24:51 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/14 22:00:56 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/15 02:20:07 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,6 @@ char	*replace_exit_code(t_shell *shell, char *token_str);
 void	append_exit_code(char **res, int code);
 void	append_var(t_shell *shell, char **res, const char *str, int *i);
 char	*remove_dollar_before_quotes(char **str);
+void	handle_exit_and_quote(t_shell *shell, const int fd, char *line);
 
 #endif

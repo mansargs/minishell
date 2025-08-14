@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 02:53:04 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/14 21:42:51 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/15 02:09:12 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,11 @@
 
 void	free_all_data(t_shell *shell, char **argv, bool heredoc)
 {
-	if (shell->my_env->old_stdin >= 0 && shell->my_env->old_stdin != STDIN_FILENO)
+	if (shell->my_env->old_stdin >= 0
+		&& shell->my_env->old_stdin != STDIN_FILENO)
 		close(shell->my_env->old_stdin);
-	if (shell->my_env->old_stdout >= 0 && shell->my_env->old_stdout != STDOUT_FILENO)
+	if (shell->my_env->old_stdout >= 0
+		&& shell->my_env->old_stdout != STDOUT_FILENO)
 		close(shell->my_env->old_stdout);
 	close(shell->history.fd);
 	if (argv)
