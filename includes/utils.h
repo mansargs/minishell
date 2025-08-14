@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 02:53:22 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/14 16:27:25 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/14 21:44:38 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include "types.h"
 
 /* Free functions */
-void	free_all_data(t_shell *shell, char **argv);
+void	free_all_data(t_shell *shell, char **argv, bool heredoc);
 void	free_matrix(char ***matrix);
 void	free_ast(t_ast **tree);
 void	free_env_table(t_env *env);

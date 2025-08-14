@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 02:47:43 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/09 23:40:22 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/14 21:44:19 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ static int	fork_heredoc_reader(t_shell *shell, const t_token *token,
 		signal(SIGQUIT, SIG_IGN);
 		read_from_stdin(shell, fd, token->next_token->token_data, fd_history);
 		close(fd);
+		free_all_data(shell, NULL, true);
 		exit(0);
 	}
 	if (waitpid(pid, &status, 0) == -1)

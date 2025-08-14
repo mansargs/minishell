@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 19:49:43 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/14 16:36:45 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/14 21:43:44 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	execute_subshell(t_ast *node, t_env *env, bool has_forked)
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 		status = execute_ast(node->left_side, env, true);
-		free_all_data(env->shell, NULL);
+		free_all_data(env->shell, NULL, false);
 		exit(status);
 	}
 	if (waitpid(pid, &status, 0) == -1)
@@ -80,7 +80,7 @@ int	execute_ast(t_ast *node, t_env *env, bool has_forked)
 		return (0);
 
 	// Only duplicate stdin/stdout if we have redirects or if we're not in a forked process
-	if (node->redir || !has_forked)
+	if (node->redir)
 	{
 		env->old_stdin = dup(STDIN_FILENO);
 		env->old_stdout = dup(STDOUT_FILENO);

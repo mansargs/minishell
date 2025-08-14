@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 06:04:11 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/14 15:55:39 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/14 21:43:56 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,13 @@ int	child_execute(char **argv, int cmd_pos, t_env *env)
 	{
 		exit_code = env->exit_code;
 		print_exec_error(argv[cmd_pos], env->exit_code);
-		free_all_data(env->shell, argv);
+		free_all_data(env->shell, argv, false);
 		exit(exit_code);
 	}
 	envp = convert_env_to_matrix(env);
 	if (is_directory(cmd_path, argv, cmd_pos, &envp))
 	{
-		free_all_data(env->shell, argv);
+		free_all_data(env->shell, argv, false);
 		exit(126);
 	}
 	execve(cmd_path, argv + cmd_pos, envp);

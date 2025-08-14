@@ -6,26 +6,30 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 02:53:04 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/14 16:21:16 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/14 21:42:51 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
-void	free_all_data(t_shell *shell, char **argv)
+void	free_all_data(t_shell *shell, char **argv, bool heredoc)
 {
-	if (shell->my_env->old_stdin != STDIN_FILENO)
+	if (shell->my_env->old_stdin >= 0 && shell->my_env->old_stdin != STDIN_FILENO)
 		close(shell->my_env->old_stdin);
-	if (shell->my_env->old_stdout != STDOUT_FILENO)
+	if (shell->my_env->old_stdout >= 0 && shell->my_env->old_stdout != STDOUT_FILENO)
 		close(shell->my_env->old_stdout);
 	close(shell->history.fd);
 	if (argv)
 		free_matrix(&argv);
 	free_env_table(shell->my_env);
 	shell->my_env = NULL;
-	// if (shell->tokens)
-	// 	free_tokens(&shell->tokens);
-	conditional_free(&shell, true, true);
+	if (heredoc)
+	{
+		free_tokens(&shell->tokens);
+		free_shell(&shell);
+	}
+	else
+		conditional_free(&shell, true, true);
 }
 
 void	free_ast(t_ast **tree)
