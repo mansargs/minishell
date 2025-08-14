@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 06:04:11 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/12 14:27:21 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/14 15:55:39 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,17 +52,6 @@ static bool	is_directory(char *cmd_path, char **argv, int cmd_pos, char ***envp)
 	return (false);
 }
 
-void	reclaim_child_resources(t_shell *shell, char **argv)
-{
-	close(shell->my_env->old_stdin);
-	close(shell->my_env->old_stdout);
-	close(shell->history.fd);
-	free_matrix(&argv);
-	free_env_table(shell->my_env);
-	shell->my_env = NULL;
-	conditional_free(&shell, true, true);
-}
-
 int	child_execute(char **argv, int cmd_pos, t_env *env)
 {
 	char	*cmd_path;
@@ -74,13 +63,13 @@ int	child_execute(char **argv, int cmd_pos, t_env *env)
 	{
 		exit_code = env->exit_code;
 		print_exec_error(argv[cmd_pos], env->exit_code);
-		reclaim_child_resources(env->shell, argv);
+		free_all_data(env->shell, argv);
 		exit(exit_code);
 	}
 	envp = convert_env_to_matrix(env);
 	if (is_directory(cmd_path, argv, cmd_pos, &envp))
 	{
-		reclaim_child_resources(env->shell, argv);
+		free_all_data(env->shell, argv);
 		exit(126);
 	}
 	execve(cmd_path, argv + cmd_pos, envp);

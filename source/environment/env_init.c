@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 14:37:31 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/11 01:41:00 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/14 16:28:55 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,5 +107,7 @@ bool	init_env(t_shell *my_shell, char **envp)
 		return (false);
 	my_shell->my_env->shell = my_shell;
 	my_shell->my_env->empty_quote_pos = -1;
+	my_shell->my_env->old_stdin = -1;
+	my_shell->my_env->old_stdout = -1;
 	return (true);
 }

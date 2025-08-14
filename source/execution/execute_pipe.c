@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:56:36 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/11 18:19:34 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/14 18:10:13 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 static void	pipe_children(t_ast *node, t_env *env, int pipe_fds[2], bool left)
 {
+	int	result;
+
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	if (left)
@@ -22,12 +24,23 @@ static void	pipe_children(t_ast *node, t_env *env, int pipe_fds[2], bool left)
 		dup2(pipe_fds[0], STDIN_FILENO);
 	close(pipe_fds[0]);
 	close(pipe_fds[1]);
+	if (env->old_stdin != STDIN_FILENO)
+		close(env->old_stdin);
+	if (env->old_stdout != STDOUT_FILENO)
+		close(env->old_stdout);
 	if (left)
-		exit(execute_ast(node->left_side, env, true));
+	{
+		result = execute_ast(node->left_side, env, true);
+		free_all_data(env->shell, NULL);
+		exit(result);
+	}
 	else
-		exit(execute_ast(node->right_side, env, true));
+	{
+		result = execute_ast(node->right_side, env, true);
+		free_all_data(env->shell, NULL);
+		exit(result);
+	}
 }
-
 void	print_signaled_message(int status, t_env *env)
 {
 	if (!env->exit_code && WIFSIGNALED(status))
@@ -38,13 +51,11 @@ void	print_signaled_message(int status, t_env *env)
 			ft_putendl_fd("Quit (core dumped)", STDERR_FILENO);
 	}
 }
-
 int	execute_pipe(t_ast *node, t_env *env)
 {
 	int		pipe_fds[2];
 	pid_t	pids[2];
 	int		status[2];
-
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 	if (pipe(pipe_fds) == -1)

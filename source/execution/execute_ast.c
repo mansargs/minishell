@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 19:49:43 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/11 21:07:23 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/14 16:36:45 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 
 static void	restore_standard_fd(int std_in, int std_out)
 {
-	dup2(std_in, STDIN_FILENO);
-	dup2(std_out, STDOUT_FILENO);
+	if (std_in != STDIN_FILENO)
+		dup2(std_in, STDIN_FILENO);
+	if (std_out != STDOUT_FILENO)
+		dup2(std_out, STDOUT_FILENO);
 	close(std_in);
 	close(std_out);
 }
@@ -56,7 +58,9 @@ int	execute_subshell(t_ast *node, t_env *env, bool has_forked)
 	{
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
-		exit(execute_ast(node->left_side, env, true));
+		status = execute_ast(node->left_side, env, true);
+		free_all_data(env->shell, NULL);
+		exit(status);
 	}
 	if (waitpid(pid, &status, 0) == -1)
 	{
@@ -74,12 +78,29 @@ int	execute_ast(t_ast *node, t_env *env, bool has_forked)
 
 	if (!node)
 		return (0);
-	env->old_stdin = dup(STDIN_FILENO);
-	env->old_stdout = dup(STDOUT_FILENO);
+
+	// Only duplicate stdin/stdout if we have redirects or if we're not in a forked process
+	if (node->redir || !has_forked)
+	{
+		env->old_stdin = dup(STDIN_FILENO);
+		env->old_stdout = dup(STDOUT_FILENO);
+	}
+	else
+	{
+		env->old_stdin = STDIN_FILENO;
+		env->old_stdout = STDOUT_FILENO;
+	}
+
 	result = 0;
 	if (open_redirects(node, env->shell) == FUNCTION_FAIL)
-		return (restore_standard_fd(env->old_stdin,
-				env->old_stdout), FUNCTION_FAIL);
+	{
+		if (env->old_stdin != STDIN_FILENO)
+			close(env->old_stdin);
+		if (env->old_stdout != STDOUT_FILENO)
+			close(env->old_stdout);
+		return (FUNCTION_FAIL);
+	}
+
 	if (node->cmd && node->cmd->token_operator_type == OPERATOR_AND)
 		result = execute_logic_and(node, env);
 	else if (node->cmd && node->cmd->token_operator_type == OPERATOR_OR)
@@ -90,6 +111,10 @@ int	execute_ast(t_ast *node, t_env *env, bool has_forked)
 		result = execute_subshell(node, env, has_forked);
 	else if (node->cmd)
 		result = execute_command(node, env, has_forked);
-	restore_standard_fd(env->old_stdin, env->old_stdout);
+
+	// Only restore if we actually duplicated the file descriptors
+	if (env->old_stdin != STDIN_FILENO || env->old_stdout != STDOUT_FILENO)
+		restore_standard_fd(env->old_stdin, env->old_stdout);
+
 	return (result);
 }

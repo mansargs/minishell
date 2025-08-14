@@ -6,17 +6,25 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 02:53:04 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/04 04:59:09 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/14 16:21:16 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
-void	free_before_exit(t_shell *shell, char **args)
+void	free_all_data(t_shell *shell, char **argv)
 {
-	free_matrix(&args);
-	close(shell->my_env->old_stdin);
-	close(shell->my_env->old_stdout);
+	if (shell->my_env->old_stdin != STDIN_FILENO)
+		close(shell->my_env->old_stdin);
+	if (shell->my_env->old_stdout != STDOUT_FILENO)
+		close(shell->my_env->old_stdout);
+	close(shell->history.fd);
+	if (argv)
+		free_matrix(&argv);
+	free_env_table(shell->my_env);
+	shell->my_env = NULL;
+	// if (shell->tokens)
+	// 	free_tokens(&shell->tokens);
 	conditional_free(&shell, true, true);
 }
 
