@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alisharu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 13:38:09 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/09 23:38:50 by alisharu         ###   ########.fr       */
+/*   Updated: 2025/08/14 21:54:11 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ bool	syntax_and_heredoc(t_shell *shell)
 {
 	t_token	*temp;
 	int		opened_parenthesis;
-	char	*heredoc_file;
 
 	if (strict_syntax_errors(shell))
 		return (free_tokens(&shell->tokens), false);
@@ -45,10 +44,9 @@ bool	syntax_and_heredoc(t_shell *shell)
 		{
 			if (!temp->file_name)
 			{
-				heredoc_file = open_heredoc(shell, temp, shell->history.fd);
-				if (!heredoc_file)
+				temp->file_name = open_heredoc(shell, temp, shell->history.fd);
+				if (!temp->file_name)
 					return (false);
-				temp->file_name = heredoc_file;
 			}
 		}
 		else if (secondary_syntax_errors(temp, &opened_parenthesis))

@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 02:47:43 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/14 21:44:19 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/14 22:01:58 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,11 +103,10 @@ static int	fork_heredoc_reader(t_shell *shell, const t_token *token,
 	return (0);
 }
 
-char	*open_heredoc(t_shell *shell, const t_token *token,
+char	*open_heredoc(t_shell *shell, t_token *token,
 	const int fd_history)
 {
 	int		fd;
-	char	*name;
 
 	if (token->file_name)
 		return (token->file_name);
@@ -116,13 +115,13 @@ char	*open_heredoc(t_shell *shell, const t_token *token,
 		ft_putstr_fd(SYN_ERR, STDERR_FILENO);
 		return (ft_putendl_fd(" `newline'", STDERR_FILENO), NULL);
 	}
-	name = get_file_name();
-	if (!name)
+	token->file_name = get_file_name();
+	if (!token->file_name)
 		return (NULL);
-	fd = open(name, O_CREAT | O_RDWR | O_TRUNC, 0644);
+	fd = open(token->file_name, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (fd == -1)
-		return (free(name), NULL);
+		return (free(token->file_name), NULL);
 	if (fork_heredoc_reader(shell, token, fd, fd_history) == -1)
-		return (free(name), NULL);
-	return (name);
+		return (free(token->file_name), NULL);
+	return (token->file_name);
 }
