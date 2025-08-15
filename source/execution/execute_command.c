@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 21:53:17 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/15 03:21:56 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/15 16:46:13 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,14 @@ int	handle_child_status(int status, t_env *env)
 	{
 		sig = WTERMSIG(status);
 		env->exit_code = sig + 128;
-		if (sig == SIGINT)
-			write(STDERR_FILENO, "\n", 1);
-		else if (sig == SIGQUIT)
-			write(STDERR_FILENO, "Quit (core dumped)\n", 20);
+		if (g_received_signal == 0)
+		{
+			if (sig == SIGINT)
+				write(STDERR_FILENO, "\n", 1);
+			else if (sig == SIGQUIT)
+				write(STDERR_FILENO, "Quit (core dumped)\n", 20);
+			g_received_signal = sig;
+		}
 	}
 	return (env->exit_code);
 }
