@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 01:28:36 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/11 01:39:05 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/15 19:47:07 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,10 @@ char	*get_username(t_shell *shell)
 
 	username = get_env_value(shell->envp, "USER");
 	if (!username)
+	{
 		username = ft_strdup("unknown");
+		return (username);
+	}
 	return (ft_strdup(username));
 }
 

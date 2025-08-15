@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:56:36 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/15 16:56:33 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/15 20:14:03 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,25 +58,16 @@ int	execute_left_side(t_ast *node, t_env *env, int pipe_fds[2])
 	pid_t	left_pid;
 	int		left_status;
 
-	if (node->left_side->cmd->token_operator_type == OPERATOR_PIPE)
-	{
-		close(pipe_fds[0]);
-		close(pipe_fds[1]);
-		return (execute_pipe(node->left_side, env));
-	}
-	else
-	{
-		left_pid = fork();
-		if (left_pid < 0)
-			return (perror("fork failed"), FUNCTION_FAIL);
-		if (left_pid == 0)
-			pipe_children(node, env, pipe_fds, true);
-		close(pipe_fds[0]);
-		close(pipe_fds[1]);
-		waitpid(left_pid, &left_status, 0);
-		print_signaled_message(left_status);
-		return (FUNCTION_SUCCESS);
-	}
+	left_pid = fork();
+	if (left_pid < 0)
+		return (perror("fork failed"), FUNCTION_FAIL);
+	if (left_pid == 0)
+		pipe_children(node, env, pipe_fds, true);
+	close(pipe_fds[0]);
+	close(pipe_fds[1]);
+	waitpid(left_pid, &left_status, 0);
+	print_signaled_message(left_status);
+	return (FUNCTION_SUCCESS);
 }
 
 int	execute_pipe(t_ast *node, t_env *env)
