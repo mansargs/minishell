@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 02:18:23 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/04 04:49:42 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/15 17:05:56 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	history_builtin(void)
 		++count_line;
 		line = get_next_line(fd);
 		if (!line)
-			return (false);
+			break ;
 		printf("%lu %s", count_line, line);
 		free(line);
 	}

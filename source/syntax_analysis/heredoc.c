@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 02:47:43 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/15 02:06:28 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/15 17:02:45 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ char	*open_heredoc(t_shell *shell, t_token *token,
 	if (fd == -1)
 		return (free(token->file_name), NULL);
 	if (fork_heredoc_reader(shell, token, fd, fd_history) == -1)
-		return (free(token->file_name), NULL);
+		return (close(fd), free(token->file_name), NULL);
+	close(fd);
 	return (token->file_name);
 }

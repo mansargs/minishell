@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 03:45:26 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/15 03:04:36 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/15 17:06:44 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,6 @@ void	free_token(t_token **token)
 	}
 	if ((*token)->file_name)
 	{
-		if ((*token)->token_redirect_type == REDIRECT_HEREDOC)
-			unlink((*token)->file_name);
 		free((*token)->file_name);
 		(*token)->file_name = NULL;
 	}

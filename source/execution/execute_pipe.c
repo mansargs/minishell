@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:56:36 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/15 16:47:16 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/15 16:56:33 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ static void	pipe_children(t_ast *node, t_env *env, int pipe_fds[2], bool left)
 		dup2(pipe_fds[0], STDIN_FILENO);
 	close(pipe_fds[0]);
 	close(pipe_fds[1]);
-	if (env->old_stdin != STDIN_FILENO)
+	if (env->old_stdin != -1)
 		close(env->old_stdin);
-	if (env->old_stdout != STDOUT_FILENO)
+	if (env->old_stdout != -1)
 		close(env->old_stdout);
 	if (left)
 	{
