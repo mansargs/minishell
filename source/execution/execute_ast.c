@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 19:49:43 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/15 16:45:12 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/19 19:17:39 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ int	execute_logic_or(t_ast *node, t_env *env)
 	int	left_return;
 
 	left_return = execute_ast(node->left_side, env, false);
+	if (env->exit_code == 130 || env->exit_code == 131)
+		return (env->exit_code);
 	if (left_return == FUNCTION_SUCCESS)
 		return (left_return);
 	return (execute_ast(node->right_side, env, false));

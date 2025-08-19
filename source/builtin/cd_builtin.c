@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 20:27:17 by alisharu          #+#    #+#             */
-/*   Updated: 2025/08/15 19:13:57 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/15 20:35:51 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,10 +105,7 @@ int	cd_builtin(char **args, t_env *env)
 	else
 		old_pwd = "";
 	if (chdir(path) != 0)
-	{
-		failed_chdir(env, path);
-		return (free(path), FUNCTION_FAIL);
-	}
+		return (failed_chdir(env, path), free(path), FUNCTION_FAIL);
 	if (!getcwd(new_pwd, sizeof(new_pwd)))
 		return (free(path), update_pwd_on_error(env), false);
 	env_set(env, "OLDPWD", old_pwd, 1);

@@ -6,7 +6,7 @@
 /*   By: mansargs <mansargs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 02:47:43 by mansargs          #+#    #+#             */
-/*   Updated: 2025/08/15 17:02:45 by mansargs         ###   ########.fr       */
+/*   Updated: 2025/08/19 19:23:26 by mansargs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static char	*read_using_readline(int count_lines, const char *delim)
 		ft_putstr_fd("minishell: warning: here-document at line ",
 			STDERR_FILENO);
 		ft_putnbr_fd(count_lines, STDERR_FILENO);
-		ft_putstr_fd("delimited by end-of-file (wanted `", STDERR_FILENO);
+		ft_putstr_fd(" delimited by end-of-file (wanted `", STDERR_FILENO);
 		ft_putstr_fd((char *)delim, STDERR_FILENO);
 		ft_putendl_fd("')", STDERR_FILENO);
 		return (NULL);
